@@ -16,7 +16,6 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Zen Kaku Gothic New',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-/* ── HEADER ── */
 header{background:var(--green-dark);color:#fff;padding:13px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:60;}
 .logo{font-size:22px;}
 header h1{font-size:16px;font-weight:700;letter-spacing:.04em;}
@@ -24,50 +23,45 @@ header small{font-size:9px;opacity:.6;font-family:'Shippori Mincho',serif;}
 .today-pill{margin-left:auto;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);border-radius:30px;padding:3px 11px;font-size:11px;text-align:center;line-height:1.5;}
 .today-pill b{display:block;font-size:14px;}
 
-/* ── TABS ── */
+/* season badge in header */
+.season-badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:3px 9px;font-size:11px;display:flex;align-items:center;gap:4px;}
+
 .tabs{display:flex;background:var(--surface);border-bottom:2px solid var(--border);position:sticky;top:55px;z-index:50;}
 .tab-btn{flex:1;padding:10px 4px;border:none;background:transparent;font-family:inherit;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .18s;}
 .tab-btn.active{color:var(--green-mid);border-bottom-color:var(--green-mid);}
 
-/* ── SUMMARY ── */
 .summary{display:flex;background:var(--surface);border-bottom:1px solid var(--border);}
 .sum-item{flex:1;padding:8px 4px;text-align:center;border-right:1px solid var(--border);font-size:10px;color:var(--muted);}
 .sum-item:last-child{border-right:none;}
 .sum-item b{display:block;font-size:19px;color:var(--text);margin-bottom:1px;}
 .sum-urgent b{color:var(--red);} .sum-soon b{color:var(--yellow);} .sum-ok b{color:var(--green-mid);}
 
-/* ── LOCATION TABS (scroll) ── */
+/* humidity bar */
+.humidity-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:8px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.hum-label{font-size:11px;color:var(--muted);white-space:nowrap;}
+.hum-btns{display:flex;gap:5px;}
+.hum-btn{padding:4px 12px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:inherit;font-size:11px;cursor:pointer;color:var(--muted);transition:all .15s;}
+.hum-btn.active{background:var(--green-dark);border-color:var(--green-dark);color:#fff;}
+.hum-hint{font-size:10px;color:var(--muted);margin-left:auto;}
+
 .loc-scroll-wrap{background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;}
 .loc-scroll-wrap::-webkit-scrollbar{display:none;}
 .loc-tabs{display:flex;gap:0;min-width:max-content;padding:0 10px;}
 .loc-tab{padding:8px 14px;border:none;background:transparent;font-family:inherit;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:0;white-space:nowrap;transition:all .15s;}
 .loc-tab.active{color:var(--green-mid);border-bottom-color:var(--green-mid);}
 
-/* ── CONTROLS ── */
 .controls{padding:8px 10px;display:flex;gap:5px;flex-wrap:wrap;align-items:center;}
 .filter-btn{padding:4px 10px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:inherit;font-size:11px;cursor:pointer;color:var(--muted);transition:all .15s;white-space:nowrap;}
 .filter-btn.active{background:var(--green-dark);border-color:var(--green-dark);color:#fff;}
 .search-box{margin-left:auto;padding:5px 10px;border:1.5px solid var(--border);border-radius:20px;background:var(--surface);font-family:inherit;font-size:12px;color:var(--text);outline:none;width:130px;}
 .search-box:focus{border-color:var(--green-mid);}
 
-/* ── SELECT MODE TOGGLE ── */
-.sel-mode-bar{
-  background:var(--surface);border-bottom:2px solid var(--border);
-  padding:8px 12px;display:flex;align-items:center;gap:8px;
-}
-.sel-mode-btn{
-  padding:7px 16px;border-radius:20px;border:2px solid var(--green-mid);
-  background:transparent;color:var(--green-mid);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;
-}
+.sel-mode-bar{background:var(--surface);border-bottom:2px solid var(--border);padding:8px 12px;display:flex;align-items:center;gap:8px;}
+.sel-mode-btn{padding:7px 16px;border-radius:20px;border:2px solid var(--green-mid);background:transparent;color:var(--green-mid);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;}
 .sel-mode-btn.on{background:var(--green-mid);color:#fff;}
 .sel-hint{font-size:11px;color:var(--muted);}
 
-/* ── BULK ACTION BAR ── */
-.bulk-bar{
-  display:none;background:var(--green-dark);color:#fff;
-  padding:10px 14px;align-items:center;gap:8px;flex-wrap:wrap;
-  position:sticky;top:55px;z-index:45;
-}
+.bulk-bar{display:none;background:var(--green-dark);color:#fff;padding:10px 14px;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:55px;z-index:45;}
 .bulk-bar.vis{display:flex;}
 .bulk-count{font-size:12px;font-weight:700;min-width:60px;}
 .bulk-add-group{display:flex;gap:5px;flex-wrap:wrap;align-items:center;flex:1;}
@@ -77,84 +71,54 @@ header small{font-size:9px;opacity:.6;font-family:'Shippori Mincho',serif;}
 .bulk-ok{padding:7px 16px;border-radius:8px;border:none;background:#fff;color:var(--green-dark);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;}
 .bulk-clr{font-size:10px;opacity:.7;cursor:pointer;text-decoration:underline;}
 
-/* ── PLANT LIST ── */
 .plant-list{padding:6px 10px 80px;display:flex;flex-direction:column;gap:5px;}
-.loc-section-label{
-  font-size:11px;font-weight:700;color:var(--green-dark);
-  padding:12px 6px 4px;display:flex;align-items:center;gap:6px;
-}
+.loc-section-label{font-size:11px;font-weight:700;color:var(--green-dark);padding:12px 6px 4px;display:flex;align-items:center;gap:6px;}
 .loc-section-label .loc-icon{font-size:15px;}
-.status-section-label{
-  font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--muted);
-  text-transform:uppercase;padding:6px 5px 2px;border-top:1px dashed var(--border);margin-top:2px;
-}
+.status-section-label{font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;padding:6px 5px 2px;border-top:1px dashed var(--border);margin-top:2px;}
 
-/* Card layout redesign: left=checkbox area, center=img+info, right=days only */
-.plant-card{
-  background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);
-  display:flex;align-items:stretch;overflow:hidden;transition:all .15s;position:relative;
-}
+/* plant card */
+.plant-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);display:flex;align-items:stretch;overflow:hidden;transition:all .15s;position:relative;}
 .plant-card.urgent{border-color:#f0c0c0;background:var(--red-pale);}
 .plant-card.soon{border-color:#f0e0a0;background:var(--yellow-pale);}
 .plant-card.sel-card{box-shadow:0 0 0 2.5px var(--green-mid);}
 
-/* Left: checkbox zone - only visible in select mode */
-.card-check{
-  display:none;width:44px;flex-shrink:0;align-items:center;justify-content:center;cursor:pointer;
-  background:transparent;border:none;
-}
+.card-check{display:none;width:44px;flex-shrink:0;align-items:center;justify-content:center;cursor:pointer;background:transparent;border:none;}
 .select-mode .card-check{display:flex;}
-.chk-circle{
-  width:22px;height:22px;border-radius:50%;border:2px solid var(--border);
-  background:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .15s;
-}
+.chk-circle{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .15s;}
 .sel-card .chk-circle{background:var(--green-mid);border-color:var(--green-mid);color:#fff;}
 
-/* Center: image */
-.plant-img{
-  width:58px;min-height:58px;flex-shrink:0;background:var(--green-pale);
-  display:flex;align-items:center;justify-content:center;font-size:24px;overflow:hidden;cursor:pointer;
-}
-.plant-img img{width:100%;height:100%;object-fit:cover;display:block;}
-.select-mode .plant-img{cursor:pointer;}
+/* plant icon (replaces image) */
+.plant-icon-box{width:58px;min-height:58px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;}
 
 .status-bar{width:4px;align-self:stretch;flex-shrink:0;}
 .urgent .status-bar{background:var(--red);}
 .soon .status-bar{background:var(--yellow);}
 .ok .status-bar{background:var(--green-light);}
 
-/* Body */
 .plant-body{flex:1;padding:9px 8px;min-width:0;cursor:pointer;}
 .plant-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .plant-meta{font-size:10px;color:var(--muted);margin-top:3px;display:flex;gap:7px;flex-wrap:wrap;}
 .liq-tag{color:var(--amber);font-weight:700;}
-.loc-tag{color:var(--green-mid);font-weight:700;}
+.freq-tag{color:var(--green-mid);font-weight:700;}
 .memo-snip{font-size:10px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-style:italic;}
 
-/* Right: days + detail button stacked vertically */
 .plant-right{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px 9px 6px 4px;flex-shrink:0;}
-.days-pill{text-align:center;padding:4px 6px;border-radius:8px;min-width:42px;}
+.days-pill{text-align:center;padding:4px 6px;border-radius:8px;min-width:48px;}
 .days-pill .dn{font-size:16px;font-weight:700;line-height:1;}
 .days-pill .dl{font-size:9px;opacity:.7;}
 .urgent .days-pill{background:rgba(184,50,50,.1);color:var(--red);}
 .soon .days-pill{background:rgba(200,154,16,.12);color:var(--yellow);}
 .ok .days-pill{background:var(--green-pale);color:var(--green-dark);}
-.btn-detail{
-  padding:3px 8px;border-radius:6px;border:1px solid var(--border);
-  background:rgba(255,255,255,.8);color:var(--muted);font-size:10px;
-  cursor:pointer;white-space:nowrap;
-}
-/* hide detail button in select mode */
+.btn-detail{padding:3px 8px;border-radius:6px;border:1px solid var(--border);background:rgba(255,255,255,.8);color:var(--muted);font-size:10px;cursor:pointer;white-space:nowrap;}
 .select-mode .btn-detail{display:none;}
 
-/* ── MODALS ── */
+/* modals */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:flex-end;justify-content:center;}
 .overlay.open{display:flex;}
 .sheet{background:var(--surface);border-radius:20px 20px 0 0;padding:20px 18px;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;animation:up .25s ease;}
 @keyframes up{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .sh-hdr{display:flex;gap:10px;align-items:center;margin-bottom:14px;}
-.sh-img{width:52px;height:52px;border-radius:10px;overflow:hidden;background:var(--green-pale);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
-.sh-img img{width:100%;height:100%;object-fit:cover;}
+.sh-icon{width:52px;height:52px;border-radius:10px;background:var(--green-pale);display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;}
 .sh-title{font-size:15px;font-weight:700;}
 .sh-sub{font-size:11px;color:var(--muted);margin-top:3px;}
 .sh-sec{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.05em;margin-bottom:7px;}
@@ -165,7 +129,13 @@ header small{font-size:9px;opacity:.6;font-family:'Shippori Mincho',serif;}
 .btn-cancel-sh{flex:1;padding:11px;border-radius:10px;border:1.5px solid var(--border);background:transparent;font-family:inherit;font-size:13px;cursor:pointer;color:var(--muted);}
 .btn-ok-sh{flex:2;padding:11px;border-radius:10px;border:none;background:var(--green-dark);color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;}
 
-/* detail */
+/* freq info box in detail */
+.freq-box{background:var(--green-pale);border-radius:10px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.freq-box .freq-icon{font-size:22px;}
+.freq-box .freq-text{flex:1;}
+.freq-box .freq-main{font-size:13px;font-weight:700;color:var(--green-dark);}
+.freq-box .freq-sub{font-size:10px;color:var(--muted);margin-top:2px;}
+
 .det-sec{margin-bottom:13px;}
 .det-sec h4{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.05em;margin-bottom:6px;}
 .det-tags{display:flex;gap:6px;flex-wrap:wrap;}
@@ -175,7 +145,7 @@ header small{font-size:9px;opacity:.6;font-family:'Shippori Mincho',serif;}
 .hist-list li{font-size:12px;padding:4px 0;border-bottom:1px solid var(--border);color:var(--muted);display:flex;gap:8px;}
 .hist-list li span{color:var(--text);font-weight:600;}
 
-/* ── MANAGE TAB ── */
+/* manage tab */
 .manage-wrap{padding:0 0 80px;}
 .manage-section{background:var(--surface);border-bottom:2px solid var(--border);padding:14px;}
 .manage-section h3{font-size:13px;font-weight:700;margin-bottom:11px;}
@@ -187,12 +157,10 @@ header small{font-size:9px;opacity:.6;font-family:'Shippori Mincho',serif;}
 .f2{display:flex;flex-direction:column;gap:0;}
 .f3{display:flex;flex-direction:column;gap:0;}
 .btn-primary{width:100%;padding:10px;border-radius:10px;border:none;background:var(--green-dark);color:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;}
-.btn-secondary{padding:7px 14px;border-radius:8px;border:1.5px solid var(--border);background:transparent;font-family:inherit;font-size:12px;cursor:pointer;color:var(--muted);}
 
 .manage-list{padding:8px 10px;display:flex;flex-direction:column;gap:5px;}
 .manage-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);display:flex;align-items:center;overflow:hidden;}
-.mg-img{width:48px;height:48px;flex-shrink:0;background:var(--green-pale);display:flex;align-items:center;justify-content:center;font-size:20px;overflow:hidden;}
-.mg-img img{width:100%;height:100%;object-fit:cover;}
+.mg-icon{width:48px;height:48px;flex-shrink:0;background:var(--green-pale);display:flex;align-items:center;justify-content:center;font-size:22px;}
 .mg-body{flex:1;padding:7px 9px;min-width:0;}
 .mg-name{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .mg-sub{font-size:10px;color:var(--muted);margin-top:2px;}
@@ -200,38 +168,62 @@ header small{font-size:9px;opacity:.6;font-family:'Shippori Mincho',serif;}
 .btn-edit{padding:4px 10px;border-radius:7px;border:1.5px solid var(--border);background:var(--bg);color:var(--muted);font-family:inherit;font-size:11px;cursor:pointer;}
 .btn-del{padding:4px 10px;border-radius:7px;border:1.5px solid #f0c0c0;background:var(--red-pale);color:var(--red);font-family:inherit;font-size:11px;cursor:pointer;font-weight:700;}
 
-/* location manage */
+.manage-sort-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--border);}
+.manage-sort-label{font-size:11px;color:var(--muted);}
+.msort-btn{padding:5px 13px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:inherit;font-size:12px;cursor:pointer;color:var(--muted);transition:all .15s;}
+.msort-btn.active{background:var(--green-dark);border-color:var(--green-dark);color:#fff;}
+.mg-loc-header{display:flex;align-items:center;gap:7px;padding:12px 12px 5px;font-size:12px;font-weight:700;color:var(--green-dark);border-top:2px solid var(--border);margin-top:4px;}
+.mg-loc-header:first-child{border-top:none;margin-top:0;}
+.mg-loc-header .mli{font-size:16px;}
+.mg-loc-count{font-size:10px;color:var(--muted);font-weight:400;margin-left:2px;}
+
 .loc-item{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;display:flex;align-items:center;padding:9px 12px;gap:8px;margin-bottom:5px;}
 .loc-item-icon{font-size:18px;}
 .loc-item-name{flex:1;font-size:13px;font-weight:700;}
 .loc-item-count{font-size:11px;color:var(--muted);}
 
-/* edit overlay */
+/* settings tab */
+.settings-wrap{padding:0 0 80px;}
+.settings-section{background:var(--surface);border-bottom:1px solid var(--border);padding:16px;}
+.settings-section h3{font-size:13px;font-weight:700;margin-bottom:4px;color:var(--green-dark);}
+.settings-section p{font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6;}
+.hum-option{display:flex;flex-direction:column;gap:8px;}
+.hum-opt-btn{padding:12px 16px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);font-family:inherit;font-size:13px;cursor:pointer;text-align:left;transition:all .15s;display:flex;align-items:center;gap:10px;}
+.hum-opt-btn.active{border-color:var(--green-mid);background:var(--green-pale);}
+.hum-opt-btn .hopt-icon{font-size:20px;}
+.hum-opt-btn .hopt-text{flex:1;}
+.hum-opt-btn .hopt-name{font-weight:700;font-size:13px;}
+.hum-opt-btn .hopt-desc{font-size:10px;color:var(--muted);margin-top:2px;}
+.hum-opt-btn.active .hopt-desc{color:var(--green-mid);}
+.season-info{background:var(--green-pale);border-radius:10px;padding:12px 14px;margin-top:4px;}
+.season-info .si-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:3px 0;}
+.season-info .si-label{color:var(--muted);}
+.season-info .si-val{font-weight:700;color:var(--green-dark);}
+.freq-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:8px;}
+.freq-table th{background:var(--green-pale);padding:6px 8px;text-align:left;color:var(--green-dark);font-weight:700;}
+.freq-table td{padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text);}
+.freq-table tr:last-child td{border-bottom:none;}
+
 .edit-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:110;align-items:flex-end;justify-content:center;}
 .edit-ov.open{display:flex;}
 .edit-sheet{background:var(--surface);border-radius:20px 20px 0 0;padding:20px 18px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;animation:up .25s ease;}
 .edit-sheet h3{font-size:14px;margin-bottom:12px;}
 
-/* toast */
 .toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--green-dark);color:#fff;padding:9px 18px;border-radius:30px;font-size:12px;z-index:300;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.25);transition:all .28s;pointer-events:none;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .empty{text-align:center;padding:40px 20px;color:var(--muted);}
 .empty .ei{font-size:40px;margin-bottom:10px;}
-
-/* select mode body class */
 body.select-mode .plant-card{cursor:default;}
-body.select-mode .plant-body{cursor:pointer;}/* body still opens detail? No - in select mode body toggles */
 
-/* manage sort bar */
-.manage-sort-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--border);}
-.manage-sort-label{font-size:11px;color:var(--muted);}
-.msort-btn{padding:5px 13px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:inherit;font-size:12px;cursor:pointer;color:var(--muted);transition:all .15s;}
-.msort-btn.active{background:var(--green-dark);border-color:var(--green-dark);color:#fff;}
-/* location group header in manage list */
-.mg-loc-header{display:flex;align-items:center;gap:7px;padding:12px 12px 5px;font-size:12px;font-weight:700;color:var(--green-dark);border-top:2px solid var(--border);margin-top:4px;}
-.mg-loc-header:first-child{border-top:none;margin-top:0;}
-.mg-loc-header .mli{font-size:16px;}
-.mg-loc-count{font-size:10px;color:var(--muted);font-weight:400;margin-left:2px;}
+/* soil/pot/moss UI */
+.soil-custom-row{background:var(--green-pale);border-radius:8px;padding:10px 12px !important;}
+.soil-slider-wrap{display:flex;align-items:center;gap:8px;margin-top:6px;}
+.soil-slider-wrap input[type=range]{flex:1;accent-color:var(--green-mid);}
+.slider-lbl{font-size:10px;color:var(--muted);white-space:nowrap;}
+.moss-btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.moss-btn{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg);font-family:inherit;font-size:12px;cursor:pointer;transition:all .15s;}
+.moss-btn.active{background:var(--green-pale);border-color:var(--green-mid);font-weight:700;color:var(--green-dark);}
+.soil-mult-badge{font-size:10px;color:var(--green-mid);font-weight:700;margin-left:4px;}
 </style>
 </head>
 <body>
@@ -239,6 +231,7 @@ body.select-mode .plant-body{cursor:pointer;}/* body still opens detail? No - in
 <header>
   <div class="logo">🌿</div>
   <div><h1>みずやり手帳</h1><small>Plant Watering Journal</small></div>
+  <div class="season-badge" id="season-badge">🌸 春</div>
   <div class="today-pill"><b id="hd-date">--</b>今日</div>
 </header>
 
@@ -246,9 +239,10 @@ body.select-mode .plant-body{cursor:pointer;}/* body still opens detail? No - in
   <button class="tab-btn active" onclick="showTab('list',this)">💧 水やり</button>
   <button class="tab-btn" onclick="showTab('manage',this)">🌱 植物管理</button>
   <button class="tab-btn" onclick="showTab('locations',this)">📍 置き場所</button>
+  <button class="tab-btn" onclick="showTab('settings',this)">⚙️ 設定</button>
 </div>
 
-<!-- ===== LIST TAB ===== -->
+<!-- LIST TAB -->
 <div id="tab-list">
   <div class="summary">
     <div class="sum-item sum-urgent"><b id="cnt-u">0</b>要水やり</div>
@@ -257,7 +251,18 @@ body.select-mode .plant-body{cursor:pointer;}/* body still opens detail? No - in
     <div class="sum-item"><b id="cnt-t">0</b>全体</div>
   </div>
 
-  <!-- Location filter tabs -->
+  <!-- Humidity quick bar -->
+  <div class="humidity-bar">
+    <span class="hum-label">💧 湿度:</span>
+    <div class="hum-btns">
+      <button class="hum-btn" id="hq-h40" onclick="setHumidity('h40',true)">〜40%</button>
+      <button class="hum-btn" id="hq-h55" onclick="setHumidity('h55',true)">40〜55%</button>
+      <button class="hum-btn" id="hq-h70" onclick="setHumidity('h70',true)">55〜70%</button>
+      <button class="hum-btn" id="hq-h85" onclick="setHumidity('h85',true)">70%〜</button>
+    </div>
+    <span class="hum-hint" id="hum-hint">推奨頻度に反映されます</span>
+  </div>
+
   <div class="loc-scroll-wrap">
     <div class="loc-tabs" id="loc-tabs"></div>
   </div>
@@ -270,13 +275,11 @@ body.select-mode .plant-body{cursor:pointer;}/* body still opens detail? No - in
     <input class="search-box" type="text" placeholder="🔍 検索…" oninput="setSearch(this.value)">
   </div>
 
-  <!-- Select mode toggle bar -->
   <div class="sel-mode-bar">
     <button class="sel-mode-btn" id="sel-mode-btn" onclick="toggleSelectMode()">☑ 一括選択モード</button>
     <span class="sel-hint" id="sel-hint">まとめて水やりを記録するときに使います</span>
   </div>
 
-  <!-- Bulk action bar (shown only in select mode with selections) -->
   <div class="bulk-bar" id="bulk-bar">
     <div class="bulk-count" id="bulk-count">0件</div>
     <div class="bulk-add-group">
@@ -294,7 +297,7 @@ body.select-mode .plant-body{cursor:pointer;}/* body still opens detail? No - in
   <div class="plant-list" id="plant-list"></div>
 </div>
 
-<!-- ===== MANAGE TAB ===== -->
+<!-- MANAGE TAB -->
 <div id="tab-manage" style="display:none;">
   <div class="manage-wrap">
     <div class="manage-section">
@@ -302,7 +305,6 @@ body.select-mode .plant-body{cursor:pointer;}/* body still opens detail? No - in
       <div class="form-row"><label>植物名 *</label><input id="i-name" type="text" placeholder="例: モンステラ・デリシオーサ"></div>
       <div class="form-row"><label>置き場所</label><select id="i-loc"></select></div>
       <div class="f2">
-        <div class="form-row"><label>画像URL（任意）</label><input id="i-img" type="text" placeholder="https://..."></div>
         <div class="form-row"><label>活力剤</label>
           <select id="i-add">
             <option value="なし">なし</option><option value="リキダス">リキダス</option>
@@ -316,15 +318,44 @@ body.select-mode .plant-body{cursor:pointer;}/* body still opens detail? No - in
         <div class="form-row"><label>導入年月日</label><input id="i-intro" type="date"></div>
       </div>
       <div class="f3">
-        <div class="form-row"><label>植え替え年月</label><input id="i-repot" type="month" placeholder="YYYY-MM"></div>
-        <div class="form-row"><label>鉢サイズ（号）</label><input id="i-pot" type="text" placeholder="例: 6号"></div>
+        <div class="form-row"><label>植え替え年月</label><input id="i-repot" type="month"></div>
+        <div class="form-row"><label>鉢サイズ</label><select id="i-potSize"><option value="">— 未設定 —</option></select></div>
         <div class="form-row"><label>購入場所</label><input id="i-shop" type="text" placeholder="例: 渋谷GREEN"></div>
       </div>
-      <div class="form-row"><label>用土</label><input id="i-soil" type="text" placeholder="例: 観葉植物の土、赤玉土7:腐葉土3 など"></div>
-      <div class="form-row"><label>メモ・エピソード</label><textarea id="i-memo" placeholder="例: 引越し祝いにもらった。最初は小さかったのに…"></textarea></div>
+      <!-- 用土 -->
+      <div class="form-row">
+        <label>用土</label>
+        <select id="i-soilType" onchange="toggleSoilSlider('i-soil-custom')">
+          <option value="">— 未設定 —</option>
+        </select>
+      </div>
+      <div id="i-soil-custom" style="display:none;" class="form-row soil-custom-row">
+        <label>乾きやすさを調整 <span id="i-soil-val">1.0×</span></label>
+        <div class="soil-slider-wrap">
+          <span class="slider-lbl">乾きやすい</span>
+          <input type="range" id="i-soilCustomMult" min="75" max="130" value="100" step="5" oninput="updateSoilSliderLabel('i-soil-val',this.value)">
+          <span class="slider-lbl">乾きにくい</span>
+        </div>
+      </div>
+      <!-- 鉢タイプ -->
+      <div class="form-row">
+        <label>鉢タイプ</label>
+        <select id="i-potType">
+          <option value="">— 未設定 —</option>
+        </select>
+      </div>
+      <!-- 水苔マルチ -->
+      <div class="form-row">
+        <label>表土の水苔マルチ</label>
+        <div class="moss-btns" id="i-moss-btns">
+          <button type="button" class="moss-btn active" data-val="no" onclick="selectMoss('i-moss-btns','no')">なし</button>
+          <button type="button" class="moss-btn" data-val="yes" onclick="selectMoss('i-moss-btns','yes')">🌿 あり（乾きにくくなります）</button>
+        </div>
+        <input type="hidden" id="i-mossMulch" value="no">
+      </div>
+      <div class="form-row"><label>メモ・エピソード</label><textarea id="i-memo" placeholder="例: 引越し祝いにもらった。"></textarea></div>
       <button class="btn-primary" onclick="addPlant()">🌱 追加する</button>
     </div>
-    <!-- sort controls -->
     <div class="manage-sort-bar">
       <span class="manage-sort-label">並び順：</span>
       <button class="msort-btn active" id="msort-kana" onclick="setManageSort('kana',this)">あいうえお順</button>
@@ -333,13 +364,15 @@ body.select-mode .plant-body{cursor:pointer;}/* body still opens detail? No - in
     <div class="manage-list" id="manage-list"></div>
   </div>
 </div>
+
+<!-- LOCATIONS TAB -->
 <div id="tab-locations" style="display:none;">
   <div class="manage-wrap">
     <div class="manage-section">
       <h3>📍 置き場所を追加・編集</h3>
       <div style="display:grid;grid-template-columns:1fr 80px;gap:8px;">
         <div class="form-row"><label>場所の名前 *</label><input id="loc-inp-name" type="text" placeholder="例: リビング"></div>
-        <div class="form-row"><label>アイコン（絵文字）</label><input id="loc-inp-icon" type="text" placeholder="🛋" maxlength="2"></div>
+        <div class="form-row"><label>アイコン</label><input id="loc-inp-icon" type="text" placeholder="🛋" maxlength="2"></div>
       </div>
       <button class="btn-primary" onclick="addLocation()">📍 追加する</button>
     </div>
@@ -347,11 +380,70 @@ body.select-mode .plant-body{cursor:pointer;}/* body still opens detail? No - in
   </div>
 </div>
 
+<!-- SETTINGS TAB -->
+<div id="tab-settings" style="display:none;">
+  <div class="settings-wrap">
+    <!-- Humidity -->
+    <div class="settings-section">
+      <h3>💧 部屋の湿度設定</h3>
+      <p>湿度が高いほど土が乾きにくくなるため、推奨水やり頻度が長くなります。湿度計をお持ちの場合は数値で、そうでない場合は環境の説明を目安に選んでください。</p>
+      <div class="hum-option">
+        <button class="hum-opt-btn" id="s-hum-h40" onclick="setHumidity('h40',true)">
+          <span class="hopt-icon">🏜</span>
+          <span class="hopt-text">
+            <div class="hopt-name">40%以下</div>
+            <div class="hopt-desc">エアコン・暖房で乾燥 / 冬の暖房時期 / 乾燥注意報が出るような環境</div>
+          </span>
+        </button>
+        <button class="hum-opt-btn" id="s-hum-h55" onclick="setHumidity('h55',true)">
+          <span class="hopt-icon">🌤</span>
+          <span class="hopt-text">
+            <div class="hopt-name">40〜55%</div>
+            <div class="hopt-desc">一般的な室内環境（春・秋） / 快適と感じる標準的な湿度</div>
+          </span>
+        </button>
+        <button class="hum-opt-btn" id="s-hum-h70" onclick="setHumidity('h70',true)">
+          <span class="hopt-icon">🌦</span>
+          <span class="hopt-text">
+            <div class="hopt-name">55〜70%</div>
+            <div class="hopt-desc">やや湿潤 / 加湿器使用時 / 梅雨の時期</div>
+          </span>
+        </button>
+        <button class="hum-opt-btn" id="s-hum-h85" onclick="setHumidity('h85',true)">
+          <span class="hopt-icon">💦</span>
+          <span class="hopt-text">
+            <div class="hopt-name">70%以上</div>
+            <div class="hopt-desc">多湿 / 真夏 / 水槽のある部屋 / 植物が多く蒸散が激しい環境</div>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Season info -->
+    <div class="settings-section">
+      <h3>🌸 現在の季節（自動判定）</h3>
+      <p>月から自動的に季節を判定し、推奨水やり頻度に反映します。変更は不要です。</p>
+      <div class="season-info">
+        <div class="si-row"><span class="si-label">現在の月</span><span class="si-val" id="si-month">--月</span></div>
+        <div class="si-row"><span class="si-label">季節</span><span class="si-val" id="si-season">--</span></div>
+        <div class="si-row"><span class="si-label">水やり全体傾向</span><span class="si-val" id="si-trend">--</span></div>
+      </div>
+    </div>
+
+    <!-- Frequency table -->
+    <div class="settings-section">
+      <h3>📊 推奨水やり頻度の考え方</h3>
+      <p>植物のグループ・季節・湿度の3つで推奨頻度（日数）を計算しています。現在の設定での推奨日数：</p>
+      <table class="freq-table" id="freq-table"></table>
+    </div>
+  </div>
+</div>
+
 <!-- Water modal -->
 <div class="overlay" id="ov-water" onclick="closeOv('ov-water',event)">
   <div class="sheet">
     <div class="sh-hdr">
-      <div class="sh-img" id="sh-img"></div>
+      <div class="sh-icon" id="sh-icon"></div>
       <div><div class="sh-title" id="sh-name"></div><div class="sh-sub" id="sh-sub"></div></div>
     </div>
     <div class="sh-sec">活力剤・肥料</div>
@@ -367,9 +459,10 @@ body.select-mode .plant-body{cursor:pointer;}/* body still opens detail? No - in
 <div class="overlay" id="ov-detail" onclick="closeOv('ov-detail',event)">
   <div class="sheet">
     <div class="sh-hdr">
-      <div class="sh-img" id="det-img"></div>
+      <div class="sh-icon" id="det-icon"></div>
       <div><div class="sh-title" id="det-name"></div><div class="sh-sub" id="det-sub"></div></div>
     </div>
+    <div id="det-freq-box"></div>
     <div class="det-sec" id="det-info"></div>
     <div class="det-sec"><h4>📝 メモ</h4><div class="det-memo" id="det-memo"></div></div>
     <div class="det-sec"><h4>💧 水やり履歴</h4><ul class="hist-list" id="det-hist"></ul></div>
@@ -387,7 +480,6 @@ body.select-mode .plant-body{cursor:pointer;}/* body still opens detail? No - in
     <div class="form-row"><label>植物名 *</label><input id="ed-name" type="text"></div>
     <div class="form-row"><label>置き場所</label><select id="ed-loc"></select></div>
     <div class="f2">
-      <div class="form-row"><label>画像URL</label><input id="ed-img" type="text"></div>
       <div class="form-row"><label>活力剤</label>
         <select id="ed-add">
           <option value="なし">なし</option><option value="リキダス">リキダス</option>
@@ -402,10 +494,40 @@ body.select-mode .plant-body{cursor:pointer;}/* body still opens detail? No - in
     </div>
     <div class="f3">
       <div class="form-row"><label>植え替え年月</label><input id="ed-repot" type="month"></div>
-      <div class="form-row"><label>鉢サイズ（号）</label><input id="ed-pot" type="text"></div>
+      <div class="form-row"><label>鉢サイズ</label><select id="ed-potSize"><option value="">— 未設定 —</option></select></div>
       <div class="form-row"><label>購入場所</label><input id="ed-shop" type="text"></div>
     </div>
-    <div class="form-row"><label>用土</label><input id="ed-soil" type="text" placeholder="例: 観葉植物の土、赤玉土7:腐葉土3 など"></div>
+    <!-- 用土 -->
+    <div class="form-row">
+      <label>用土</label>
+      <select id="ed-soilType" onchange="toggleSoilSlider('ed-soil-custom')">
+        <option value="">— 未設定 —</option>
+      </select>
+    </div>
+    <div id="ed-soil-custom" style="display:none;" class="form-row soil-custom-row">
+      <label>乾きやすさを調整 <span id="ed-soil-val">1.0×</span></label>
+      <div class="soil-slider-wrap">
+        <span class="slider-lbl">乾きやすい</span>
+        <input type="range" id="ed-soilCustomMult" min="75" max="130" value="100" step="5" oninput="updateSoilSliderLabel('ed-soil-val',this.value)">
+        <span class="slider-lbl">乾きにくい</span>
+      </div>
+    </div>
+    <!-- 鉢タイプ -->
+    <div class="form-row">
+      <label>鉢タイプ</label>
+      <select id="ed-potType">
+        <option value="">— 未設定 —</option>
+      </select>
+    </div>
+    <!-- 水苔マルチ -->
+    <div class="form-row">
+      <label>表土の水苔マルチ</label>
+      <div class="moss-btns" id="ed-moss-btns">
+        <button type="button" class="moss-btn active" data-val="no" onclick="selectMoss('ed-moss-btns','no')">なし</button>
+        <button type="button" class="moss-btn" data-val="yes" onclick="selectMoss('ed-moss-btns','yes')">🌿 あり（乾きにくくなります）</button>
+      </div>
+      <input type="hidden" id="ed-mossMulch" value="no">
+    </div>
     <div class="form-row"><label>メモ</label><textarea id="ed-memo"></textarea></div>
     <div class="sh-acts">
       <button class="btn-cancel-sh" onclick="closeOvD('ov-edit')">キャンセル</button>
@@ -432,12 +554,225 @@ body.select-mode .plant-body{cursor:pointer;}/* body still opens detail? No - in
 <div class="toast" id="toast"></div>
 
 <script>
-const TODAY = new Date('2026-03-20');
-const TODAY_STR = '2026-03-20';
+// ── DATE & SEASON ──────────────────────────────────────────────────
+const TODAY = new Date();
+const TODAY_STR = TODAY.toISOString().slice(0,10);
+const MONTH = TODAY.getMonth() + 1; // 1-12
+const DAY = TODAY.getDate();
+
+function getSeason() {
+  // 3月: 1〜20日は冬、21日〜は春
+  if (MONTH === 3)  return DAY >= 21 ? 'spring' : 'winter';
+  // 4〜5月: 春
+  if (MONTH >= 4 && MONTH <= 5) return 'spring';
+  // 6〜9月: 夏
+  if (MONTH >= 6 && MONTH <= 9) return 'summer';
+  // 10月: 1〜15日は夏、16日〜は秋
+  if (MONTH === 10) return DAY <= 15 ? 'summer' : 'autumn';
+  // 11月: 秋
+  if (MONTH === 11) return 'autumn';
+  // 12〜2月: 冬
+  return 'winter';
+}
+const SEASON = getSeason();
+const SEASON_LABEL = {spring:'🌸 春', summer:'☀️ 夏', autumn:'🍂 秋', winter:'❄️ 冬'}[SEASON];
+const SEASON_JA = {
+  spring:'春（3/21〜5月末）',
+  summer:'夏（6月〜10/15）',
+  autumn:'秋（10/16〜11月末）',
+  winter:'冬（12月〜3/20）'
+}[SEASON];
+const SEASON_TREND = {
+  spring:'生育期。水やり頻度が増えてきます',
+  summer:'最盛期。土の乾きが早く水やり頻度が最も高い時期',
+  autumn:'生育緩慢。水やりを徐々に減らします',
+  winter:'休眠期。水やりを控えめに'
+}[SEASON];
+
+// ── WATERING FREQUENCY LOGIC ────────────────────────────────────────
+/*
+  植物カテゴリ（乾燥耐性）:
+  A: 乾燥に強い（サンスベリア・ザミオクルカス・パキラ・ドラセナ系）
+  B: 標準（フィカス系・モンステラ・シェフレラ・ストレリチア・アグラオネマ・ホマロメナ）
+  C: 水分を好む（カラテア系・クテナンテ・マランタ・トリオスター・スパティフィラム・アンスリウム・アロカシア・フィロデンドロン）
+  D: 多湿を好む（ネフロレピス系・シダ類・ベゴニア・ポトス・エスキナンサス・オリヅルラン）
+  E: やや乾燥気味を好む（ホヤ・リプサリス・ペペロミア・ゲオゲナンツス）
+
+  ベース頻度（日数）：
+              春   夏   秋   冬
+  A（乾燥強）  14   10   18   21
+  B（標準）    7    5    10   14
+  C（水好き）  5    4    7    10
+  D（多湿）    4    3    5    7
+  E（乾燥気味）10   7    14   18
+
+  湿度補正：
+  low  (乾燥): × 0.8（より早く乾く→頻度短縮）
+  mid  (普通): × 1.0
+  high (高め): × 1.3（乾きにくい→頻度延長）
+
+  結果は小数点以下四捨五入、最低2日
+*/
+
+const PLANT_CATEGORY = {
+  // A: 乾燥に強い
+  'サンスベリア・トリファッシアータ': 'A',
+  'ザミオクルカス・レイブン': 'A',
+  'パキラ（斑なし）': 'A',
+  '斑入りパキラ': 'A',
+  'ドラセナ・コンパクタ': 'A',
+  'ドラセナ・ジェイドジュエル': 'A',
+  // B: 標準
+  'エバーフレッシュ': 'B',
+  'モンステラ（リビング）': 'B',
+  'モンステラ・タイコンステレーション': 'B',
+  'ストレリチア・レギネ': 'B',
+  'シェフレラ・ハッピーイエロー': 'B',
+  'フィカス・ベンジャミン・ヌダ': 'B',
+  'フィカス・ベンガレンシス': 'B',
+  'フィカス・ソフィア': 'B',
+  'フィカス・スイートハート': 'B',
+  'ベンジャミン・バロック': 'B',
+  'アグラオネマ・マリア': 'B',
+  'ホマロメナ・ワリシー・カモフラージュ': 'B',
+  // C: 水分を好む
+  'カラテア・ホワイトスター': 'C',
+  'カラテア・マコヤナ': 'C',
+  'カラテア・ランキフォリア': 'C',
+  'カラテア・ゼブリナ': 'C',
+  'クテナンテ・アマグリス': 'C',
+  'トリオスター': 'C',
+  'マランタ・レウコネウラ': 'C',
+  'スパティフィラム・センセーショナル・バリエガータ': 'C',
+  'アンスリウム・クリスタルナム': 'C',
+  'アロカシア・オドラ・バリエガータ・バティック': 'C',
+  'フィロデンドロン・エルチョコレッド': 'C',
+  'フィロデンドロン・プリンス・オブ・オレンジ': 'C',
+  // D: 多湿を好む
+  'ポトス・エンジョイ': 'D',
+  'ポトス・ゴールデン': 'D',
+  'エスキナンサス': 'D',
+  'オリヅルラン・ボニー': 'D',
+  'ネフロレピス（新株）': 'D',
+  'ネフロレピス・ブロンド': 'D',
+  'ネフロレピス・スコッチ（eスコッチ）': 'D',
+  'スコッチシダ': 'D',
+  'ベゴニア・マクラータ（旧株）': 'D',
+  'ベゴニア・マクラータ（新株）': 'D',
+  // E: やや乾燥気味
+  'ホヤ・クミンギヤナ': 'E',
+  'リプサリス': 'E',
+  'ペペロミア・カペラータ': 'E',
+  'ゲオゲナンツス': 'E',
+};
+
+const BASE_FREQ = {
+  //       春   夏   秋   冬
+  A: { spring:14, summer:10, autumn:18, winter:21 },
+  B: { spring:7,  summer:5,  autumn:10, winter:14 },
+  C: { spring:5,  summer:4,  autumn:7,  winter:10 },
+  D: { spring:4,  summer:3,  autumn:5,  winter:7  },
+  E: { spring:10, summer:7,  autumn:14, winter:18 },
+};
+const CAT_LABEL = {A:'乾燥に強い', B:'標準', C:'水分を好む', D:'多湿を好む', E:'やや乾燥気味'};
+const CAT_ICON  = {A:'🏜', B:'🌿', C:'💧', D:'🌊', E:'🌵'};
+const HUM_MULT  = {h40:0.75, h55:1.0, h70:1.25, h85:1.5};
+const HUM_LABEL = {h40:'40%以下', h55:'40〜55%', h70:'55〜70%', h85:'70%以上'};
+
+// ── 用土プリセット ──────────────────────────────────────────────────
+const SOIL_PRESETS = [
+  { id:'hanagokoro',  label:'花ごころ 観葉植物の土（有機質）',           mult:1.15, desc:'保水性やや高め' },
+  { id:'protoleaf',   label:'プロトリーフ 硬質premium 観葉・多肉の土（無機質）', mult:0.85, desc:'排水性高め・乾きやすい' },
+  { id:'standard',    label:'標準的な観葉植物の土（市販汎用品）',         mult:1.0,  desc:'標準' },
+  { id:'drain_heavy', label:'排水性重視ブレンド（赤玉土多め・パーライト多め）', mult:0.80, desc:'排水性高め' },
+  { id:'water_heavy', label:'保水性重視ブレンド（腐葉土多め・ピートモス多め）', mult:1.20, desc:'保水性高め' },
+  { id:'custom',      label:'その他（スライダーで調整）',                 mult:null, desc:'' },
+];
+const SOIL_MULT_DEFAULT = 1.0;
+
+// ── 鉢タイプ ───────────────────────────────────────────────────────
+const POT_TYPES = [
+  { id:'plastic',  label:'通常プラスチック鉢', mult:1.0,  icon:'🪣' },
+  { id:'slit',     label:'スリット鉢',         mult:0.85, icon:'🔲' },
+  { id:'terracotta',label:'素焼き鉢',          mult:0.85, icon:'🏺' },
+  { id:'ceramic',  label:'陶器・グレーズ鉢',   mult:1.15, icon:'🫙' },
+  { id:'unknown',  label:'未設定',             mult:1.0,  icon:'❓' },
+];
+const POT_MULT_DEFAULT = 1.0;
+
+// ── 水苔（表土） ───────────────────────────────────────────────────
+const MOSS_MULT = { yes:1.20, no:1.0 };
+
+function getSoilMult(plant) {
+  const preset = SOIL_PRESETS.find(s => s.id === plant.soilType);
+  if (!preset) return SOIL_MULT_DEFAULT;
+  if (preset.id === 'custom') return parseFloat(plant.soilCustomMult) || 1.0;
+  return preset.mult;
+}
+function getPotMult(plant) {
+  const pt = POT_TYPES.find(p => p.id === plant.potType);
+  return pt ? pt.mult : POT_MULT_DEFAULT;
+}
+function getMossMult(plant) {
+  return plant.mossMulch === 'yes' ? MOSS_MULT.yes : MOSS_MULT.no;
+}
+
+// ── 鉢サイズ ───────────────────────────────────────────────────────
+const POT_SIZES = [
+  { id:'s2',  label:'2号以下（直径6cm以下）',  mult:0.70 },
+  { id:'s3',  label:'3号（直径9cm）',          mult:0.80 },
+  { id:'s45', label:'4〜5号（直径12〜15cm）',  mult:0.90 },
+  { id:'s67', label:'6〜7号（直径18〜21cm）',  mult:1.00 },
+  { id:'s89', label:'8〜9号（直径24〜27cm）',  mult:1.15 },
+  { id:'s10', label:'10号以上（直径30cm以上）', mult:1.30 },
+];
+const POT_SIZE_MULT_DEFAULT = 1.0;
+
+function getPotSizeMult(plant) {
+  const ps = POT_SIZES.find(s => s.id === plant.potSize);
+  return ps ? ps.mult : POT_SIZE_MULT_DEFAULT;
+}
+
+function getRecommendedFreq(plantName, plant) {
+  const cat = PLANT_CATEGORY[plantName] || customCategories[plantName] || 'B';
+  const base = BASE_FREQ[cat][SEASON];
+  const humMult     = HUM_MULT[humidity] || 1.0;
+  const soilMult    = plant ? getSoilMult(plant)    : SOIL_MULT_DEFAULT;
+  const potMult     = plant ? getPotMult(plant)     : POT_MULT_DEFAULT;
+  const potSizeMult = plant ? getPotSizeMult(plant) : POT_SIZE_MULT_DEFAULT;
+  const mossMult    = plant ? getMossMult(plant)    : 1.0;
+  const total = humMult * soilMult * potMult * potSizeMult * mossMult;
+  return Math.max(2, Math.round(base * total));
+}
+
+function status(daysSince, plantName, plant) {
+  const freq = getRecommendedFreq(plantName, plant);
+  const ratio = daysSince / freq;
+  if (ratio >= 1.0) return 'urgent';
+  if (ratio >= 0.7) return 'soon';
+  return 'ok';
+}
+
+// ── CONSTANTS ──────────────────────────────────────────────────────
 const ADDS = ['なし','リキダス','メネデール','ハイポネックス','その他'];
 const ADD_ICON = {なし:'💧',リキダス:'🌿',メネデール:'⚗️',ハイポネックス:'🌸',その他:'✨'};
 
-// ── DEFAULT LOCATIONS ──
+// Plant icon by category
+function getPlantIcon(name) {
+  const cat = PLANT_CATEGORY[name] || 'B';
+  const icons = {
+    A: ['🪴','🌵','🪴'],
+    B: ['🌳','🌿','🌱'],
+    C: ['🌺','🌿','🪴'],
+    D: ['🌿','🌱','🍃'],
+    E: ['🪴','🌵','🌿'],
+  };
+  // deterministic pick by name length
+  const arr = icons[cat];
+  return arr[name.length % arr.length];
+}
+
+// ── DEFAULT DATA ────────────────────────────────────────────────────
 const DEFAULT_LOCS = [
   {id:'living', name:'リビング', icon:'🛋'},
   {id:'bedroom', name:'寝室', icon:'🛏'},
@@ -447,56 +782,7 @@ const DEFAULT_LOCS = [
   {id:'other', name:'その他', icon:'📦'},
 ];
 
-// ── IMAGE MAP ──
-const IMG = {
-  'エバーフレッシュ':'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Starr_070906-8913_Albizia_julibrissin.jpg/320px-Starr_070906-8913_Albizia_julibrissin.jpg',
-  'モンステラ（リビング）':'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Monstera_deliciosa.JPG/320px-Monstera_deliciosa.JPG',
-  'モンステラ・タイコンステレーション':'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Monstera_deliciosa.JPG/320px-Monstera_deliciosa.JPG',
-  'ストレリチア・レギネ':'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Strelitzia_reginae_Herrenh%C3%A4user_G%C3%A4rten.jpg/320px-Strelitzia_reginae_Herrenh%C3%A4user_G%C3%A4rten.jpg',
-  'パキラ（斑なし）':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Pachira_aquatica_MS_4378.jpg/320px-Pachira_aquatica_MS_4378.jpg',
-  '斑入りパキラ':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Pachira_aquatica_MS_4378.jpg/320px-Pachira_aquatica_MS_4378.jpg',
-  'ザミオクルカス・レイブン':'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Zamioculcas_zamiifolia1.jpg/320px-Zamioculcas_zamiifolia1.jpg',
-  'シェフレラ・ハッピーイエロー':'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Schefflera_arboricola0.jpg/320px-Schefflera_arboricola0.jpg',
-  'フィカス・ベンジャミン・ヌダ':'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Ficus_benjamina_2.jpg/320px-Ficus_benjamina_2.jpg',
-  'フィカス・ベンガレンシス':'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Ficus_benghalensis_-_Indian_Banyan_Tree.jpg/320px-Ficus_benghalensis_-_Indian_Banyan_Tree.jpg',
-  'フィカス・ソフィア':'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Rubber_tree_%28Ficus_elastica%29_leaves.jpg/320px-Rubber_tree_%28Ficus_elastica%29_leaves.jpg',
-  'フィカス・スイートハート':'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Ficus_pumila_leaf.jpg/320px-Ficus_pumila_leaf.jpg',
-  'ベンジャミン・バロック':'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Ficus_benjamina_2.jpg/320px-Ficus_benjamina_2.jpg',
-  'ポトス・エンジョイ':'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Epipremnum_aureum_31082012.jpg/320px-Epipremnum_aureum_31082012.jpg',
-  'ポトス・ゴールデン':'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Epipremnum_aureum_31082012.jpg/320px-Epipremnum_aureum_31082012.jpg',
-  'アグラオネマ・マリア':'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Aglaonema_commutatum.jpg/320px-Aglaonema_commutatum.jpg',
-  'ドラセナ・コンパクタ':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Dracaena_fragrans.jpg/320px-Dracaena_fragrans.jpg',
-  'ドラセナ・ジェイドジュエル':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Dracaena_fragrans.jpg/320px-Dracaena_fragrans.jpg',
-  'サンスベリア・トリファッシアータ':'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Sansevieria_trifasciata_var._laurentii%2C_Barbados.jpg/320px-Sansevieria_trifasciata_var._laurentii%2C_Barbados.jpg',
-  'カラテア・ホワイトスター':'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Calathea_ornata_-_Pinstripe_plant.jpg/320px-Calathea_ornata_-_Pinstripe_plant.jpg',
-  'カラテア・マコヤナ':'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Calathea_makoyana.jpg/320px-Calathea_makoyana.jpg',
-  'カラテア・ランキフォリア':'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Calathea_lancifolia_-_Rattlesnake_plant.jpg/320px-Calathea_lancifolia_-_Rattlesnake_plant.jpg',
-  'カラテア・ゼブリナ':'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Calathea_zebrina0.jpg/320px-Calathea_zebrina0.jpg',
-  'クテナンテ・アマグリス':'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Ctenanthe_lubbersiana1.jpg/320px-Ctenanthe_lubbersiana1.jpg',
-  'トリオスター':'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Stromanthe_sanguinea_Tricolor.JPG/320px-Stromanthe_sanguinea_Tricolor.JPG',
-  'マランタ・レウコネウラ':'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Maranta_leuconeura.JPG/320px-Maranta_leuconeura.JPG',
-  'スパティフィラム・センセーショナル・バリエガータ':'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Spathiphyllum_wallisii_ies.jpg/320px-Spathiphyllum_wallisii_ies.jpg',
-  'アンスリウム・クリスタルナム':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Anthurium_crystallinum.jpg/320px-Anthurium_crystallinum.jpg',
-  'アロカシア・オドラ・バリエガータ・バティック':'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Alocasia_odora_Taiwan.jpg/320px-Alocasia_odora_Taiwan.jpg',
-  'フィロデンドロン・エルチョコレッド':'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Philodendron_erubescens.jpg/320px-Philodendron_erubescens.jpg',
-  'フィロデンドロン・プリンス・オブ・オレンジ':'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Philodendron_erubescens.jpg/320px-Philodendron_erubescens.jpg',
-  'ホマロメナ・ワリシー・カモフラージュ':'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Homalomena_rubescens.jpg/320px-Homalomena_rubescens.jpg',
-  'ペペロミア・カペラータ':'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Peperomia_caperata.jpg/320px-Peperomia_caperata.jpg',
-  'エスキナンサス':'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Aeschynanthus_radicans.jpg/320px-Aeschynanthus_radicans.jpg',
-  'ホヤ・クミンギヤナ':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Hoya_carnosa_flowers.jpg/320px-Hoya_carnosa_flowers.jpg',
-  'ゲオゲナンツス':'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Geogenanthus_poeppigii.jpg/320px-Geogenanthus_poeppigii.jpg',
-  'オリヅルラン・ボニー':'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Chlorophytum_comosum_-_Bonnie.jpg/320px-Chlorophytum_comosum_-_Bonnie.jpg',
-  'リプサリス':'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Rhipsalis_baccifera.jpg/320px-Rhipsalis_baccifera.jpg',
-  'ネフロレピス（新株）':'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Nephrolepis_exaltata_2.jpg/320px-Nephrolepis_exaltata_2.jpg',
-  'ネフロレピス・ブロンド':'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Nephrolepis_exaltata_2.jpg/320px-Nephrolepis_exaltata_2.jpg',
-  'ネフロレピス・スコッチ（eスコッチ）':'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Nephrolepis_exaltata_2.jpg/320px-Nephrolepis_exaltata_2.jpg',
-  'スコッチシダ':'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Nephrolepis_exaltata_2.jpg/320px-Nephrolepis_exaltata_2.jpg',
-  'ベゴニア・マクラータ（旧株）':'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Begonia_maculata.jpg/320px-Begonia_maculata.jpg',
-  'ベゴニア・マクラータ（新株）':'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Begonia_maculata.jpg/320px-Begonia_maculata.jpg',
-};
-
 const DEFAULT_PLANTS = [
-  // ── リビング ──
   {name:'エバーフレッシュ',loc:'living',lastWater:'2026-03-12',additive:'リキダス',intro:null,repot:null,pot:null,soil:null,shop:null,memo:'',history:[]},
   {name:'モンステラ（リビング）',loc:'living',lastWater:'2026-03-12',additive:'リキダス',intro:null,repot:null,pot:null,soil:null,shop:null,memo:'',history:[]},
   {name:'ストレリチア・レギネ',loc:'living',lastWater:'2026-03-12',additive:'リキダス',intro:'2026-01-04',repot:null,pot:'8号',soil:null,shop:null,memo:'',history:[]},
@@ -504,7 +790,6 @@ const DEFAULT_PLANTS = [
   {name:'ザミオクルカス・レイブン',loc:'living',lastWater:'2026-02-23',additive:'なし',intro:'2025-12-18',repot:null,pot:'6号',soil:null,shop:null,memo:'',history:[]},
   {name:'シェフレラ・ハッピーイエロー',loc:'living',lastWater:'2026-03-06',additive:'なし',intro:'2026-01-04',repot:null,pot:'3号',soil:null,shop:null,memo:'',history:[]},
   {name:'フィカス・ベンジャミン・ヌダ',loc:'living',lastWater:'2026-03-13',additive:'リキダス',intro:'2025-12-11',repot:null,pot:'9号',soil:null,shop:null,memo:'',history:[]},
-  // ── 寝室 ──
   {name:'フィカス・ベンガレンシス',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-02-12',repot:null,pot:null,soil:null,shop:null,memo:'',history:[]},
   {name:'フィカス・ソフィア',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-01-04',repot:null,pot:'3号',soil:null,shop:null,memo:'',history:[]},
   {name:'フィカス・スイートハート',loc:'bedroom',lastWater:'2026-03-08',additive:'なし',intro:'2026-01-04',repot:null,pot:'5号',soil:null,shop:null,memo:'',history:[]},
@@ -544,7 +829,8 @@ const DEFAULT_PLANTS = [
   {name:'モンステラ・タイコンステレーション',loc:'bedroom',lastWater:'2026-03-15',additive:'リキダス',intro:'2026-03-07',repot:null,pot:'3号',soil:null,shop:null,memo:'',history:[]},
 ];
 
-// ── LOAD STATE ──
+// ── LOAD STATE ──────────────────────────────────────────────────────
+// pw_locs_v5 / pw_plants_v5 を引き継ぎ
 function loadLocs() {
   const s = localStorage.getItem('pw_locs_v5');
   return s ? JSON.parse(s) : DEFAULT_LOCS.map(l=>({...l}));
@@ -553,13 +839,30 @@ function loadPlants() {
   const s = localStorage.getItem('pw_plants_v5');
   return s ? JSON.parse(s) : DEFAULT_PLANTS.map(p=>({...p}));
 }
+function loadHumidity() {
+  const v = localStorage.getItem('pw_humidity');
+  // migrate old values
+  if(v==='low') return 'h40';
+  if(v==='mid') return 'h55';
+  if(v==='high') return 'h70';
+  return v || 'h55';
+}
+function loadCustomCategories() {
+  const s = localStorage.getItem('pw_custom_cats');
+  return s ? JSON.parse(s) : {};
+}
+
 let locations = loadLocs();
 let plants = loadPlants();
+let humidity = loadHumidity();
+let customCategories = loadCustomCategories();
 
-function saveLocs() { localStorage.setItem('pw_locs_v5', JSON.stringify(locations)); }
+function saveLocs()   { localStorage.setItem('pw_locs_v5', JSON.stringify(locations)); }
 function savePlants() { localStorage.setItem('pw_plants_v5', JSON.stringify(plants)); }
+function saveHumidity(){ localStorage.setItem('pw_humidity', humidity); }
+function saveCustomCategories() { localStorage.setItem('pw_custom_cats', JSON.stringify(customCategories)); }
 
-// ── STATE ──
+// ── APP STATE ───────────────────────────────────────────────────────
 let selIds = new Set();
 let bulkAdd = 'なし';
 let selMode = false;
@@ -570,34 +873,76 @@ let singleIdx = null, singleAdd = null;
 let detailIdx = null;
 let editIdx = null;
 let editLocIdx = null;
+let manageSort = 'kana';
 
-// ── HELPERS ──
-function days(d) { if(!d) return 9999; return Math.floor((TODAY - new Date(d))/864e5); }
-function status(d) { return d>=14?'urgent':d>=7?'soon':'ok'; }
-function fmt(d) { if(!d) return '未実施'; const dt=new Date(d); return `${dt.getMonth()+1}/${dt.getDate()}`; }
+// ── HELPERS ─────────────────────────────────────────────────────────
+function daysSince(d) { if(!d) return 9999; return Math.floor((TODAY - new Date(d))/864e5); }
+function fmt(d)     { if(!d) return '未実施'; const dt=new Date(d); return `${dt.getMonth()+1}/${dt.getDate()}`; }
 function fmtFull(d) { if(!d) return null; const dt=new Date(d); return `${dt.getFullYear()}/${dt.getMonth()+1}/${dt.getDate()}`; }
-function fmtMonth(m) { if(!m) return null; const [y,mo]=m.split('-'); return `${y}年${parseInt(mo)}月`; }
+function fmtMonth(m){ if(!m) return null; const [y,mo]=m.split('-'); return `${y}年${parseInt(mo)}月`; }
 function getLoc(id) { return locations.find(l=>l.id===id) || {name:'未設定',icon:'📦'}; }
-function imgDiv(name, cls='plant-img') {
-  const src = IMG[name];
-  return src
-    ? `<div class="${cls}"><img src="${src}" alt="${name}" onerror="this.parentNode.innerHTML='🪴'"></div>`
-    : `<div class="${cls}">🪴</div>`;
-}
 function toast(msg) {
   const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),3000);
 }
 function closeOv(id,e) { if(e.target.id===id) closeOvD(id); }
 function closeOvD(id) { document.getElementById(id).classList.remove('open'); }
-
-// ── LOCATION SELECT HELPERS ──
-function buildLocOptions(selEl, selectedId) {
-  selEl.innerHTML = '<option value="">— 未設定 —</option>' +
-    locations.map(l=>`<option value="${l.id}" ${l.id===selectedId?'selected':''}>${l.icon} ${l.name}</option>`).join('');
+function buildLocOptions(el, sel) {
+  el.innerHTML = '<option value="">— 未設定 —</option>' +
+    locations.map(l=>`<option value="${l.id}" ${l.id===sel?'selected':''}>${l.icon} ${l.name}</option>`).join('');
 }
 
-// ── SELECT MODE ──
+// ── 用土・鉢UI helpers ────────────────────────────────────────────
+function buildSoilOptions(el, selectedId) {
+  el.innerHTML = '<option value="">— 未設定 —</option>' +
+    SOIL_PRESETS.map(s=>`<option value="${s.id}" ${s.id===selectedId?'selected':''}>${s.label}${s.mult?` (${s.mult}×)`:''}` + '</option>').join('');
+}
+function buildPotTypeOptions(el, selectedId) {
+  el.innerHTML = '<option value="">— 未設定 —</option>' +
+    POT_TYPES.filter(p=>p.id!=='unknown').map(p=>`<option value="${p.id}" ${p.id===selectedId?'selected':''}>${p.icon} ${p.label} (${p.mult}×)</option>`).join('');
+}
+function buildPotSizeOptions(el, selectedId) {
+  el.innerHTML = '<option value="">— 未設定 —</option>' +
+    POT_SIZES.map(s=>`<option value="${s.id}" ${s.id===selectedId?'selected':''}>${s.label} (×${s.mult})</option>`).join('');
+}
+function toggleSoilSlider(wrapperId) {
+  const prefix = wrapperId.startsWith('i-') ? 'i' : 'ed';
+  const sel = document.getElementById(prefix+'-soilType');
+  const wrap = document.getElementById(wrapperId);
+  wrap.style.display = sel.value === 'custom' ? 'block' : 'none';
+}
+function updateSoilSliderLabel(labelId, val) {
+  document.getElementById(labelId).textContent = (val/100).toFixed(2) + '×';
+}
+function selectMoss(groupId, val) {
+  const btns = document.querySelectorAll(`#${groupId} .moss-btn`);
+  btns.forEach(b=>b.classList.toggle('active', b.dataset.val===val));
+  const prefix = groupId.startsWith('i-') ? 'i' : 'ed';
+  document.getElementById(prefix+'-mossMulch').value = val;
+}
+
+// ── HUMIDITY ────────────────────────────────────────────────────────
+function setHumidity(val, save) {
+  humidity = val;
+  if(save) saveHumidity();
+  // update quick bar
+  ['h40','h55','h70','h85'].forEach(h=>{
+    document.getElementById('hq-'+h)?.classList.toggle('active', h===val);
+    document.getElementById('s-hum-'+h)?.classList.toggle('active', h===val);
+  });
+  const hints = {
+    h40:'40%以下（乾燥）：水やり頻度が増えます',
+    h55:'40〜55%（標準）：標準的な頻度で推奨します',
+    h70:'55〜70%（やや多湿）：水やり頻度が少し減ります',
+    h85:'70%以上（多湿）：水やり頻度がかなり減ります'
+  };
+  const hintEl = document.getElementById('hum-hint');
+  if(hintEl) hintEl.textContent = hints[val] || '';
+  render();
+  renderFreqTable();
+}
+
+// ── SELECT MODE ──────────────────────────────────────────────────────
 function toggleSelectMode() {
   selMode = !selMode;
   selIds.clear();
@@ -610,7 +955,7 @@ function toggleSelectMode() {
   updateBulkBar(); render();
 }
 
-// ── FILTER ──
+// ── FILTERS ─────────────────────────────────────────────────────────
 function setLocFilter(loc, btn) {
   curLocFilter = loc;
   document.querySelectorAll('.loc-tab').forEach(b=>b.classList.remove('active'));
@@ -623,7 +968,7 @@ function setStatusFilter(f, btn) {
 }
 function setSearch(v) { curSearch=v; render(); }
 
-// ── SELECTION ──
+// ── SELECTION ────────────────────────────────────────────────────────
 function toggleSel(idx) {
   if(!selMode) return;
   selIds.has(idx) ? selIds.delete(idx) : selIds.add(idx);
@@ -649,18 +994,17 @@ function bulkRecord() {
     if(plants[i].history.length>20) plants[i].history.pop();
   });
   const n=selIds.size; savePlants(); clearSel();
-  // keep select mode on so user can do another batch
   render(); toast(`💧 ${n}件を記録（${ADD_ICON[bulkAdd]} ${bulkAdd}）`);
 }
 
-// ── WATER MODAL ──
+// ── WATER MODAL ──────────────────────────────────────────────────────
 function openWater(idx) {
   singleIdx=idx; singleAdd=plants[idx].additive||'なし';
-  const p=plants[idx], d=days(p.lastWater);
+  const p=plants[idx], d=daysSince(p.lastWater);
+  const freq=getRecommendedFreq(p.name, p);
   document.getElementById('sh-name').textContent=p.name;
-  document.getElementById('sh-sub').textContent=`最終: ${fmt(p.lastWater)}（${d===9999?'未実施':d+'日前'}）`;
-  document.getElementById('sh-img').innerHTML = IMG[p.name]
-    ? `<img src="${IMG[p.name]}" alt="${p.name}" onerror="this.innerHTML='🪴'">` : '🪴';
+  document.getElementById('sh-sub').textContent=`最終: ${fmt(p.lastWater)}（${d===9999?'未実施':d+'日前'}）/ 推奨: ${freq}日ごと`;
+  document.getElementById('sh-icon').textContent=getPlantIcon(p.name);
   document.getElementById('sh-chips').innerHTML = ADDS.map(a=>
     `<button class="chip ${a===singleAdd?'sel':''}" onclick="pickWaterAdd('${a}',this)">${ADD_ICON[a]} ${a}</button>`
   ).join('');
@@ -682,19 +1026,52 @@ function confirmWater() {
   render(); toast(`💧 ${plants[singleIdx].name} を記録`);
 }
 
-// ── DETAIL MODAL ──
+// ── DETAIL MODAL ─────────────────────────────────────────────────────
 function openDetail(idx) {
-  detailIdx=idx; const p=plants[idx]; const d=days(p.lastWater);
+  detailIdx=idx; const p=plants[idx]; const d=daysSince(p.lastWater);
   const loc=getLoc(p.loc);
+  const freq=getRecommendedFreq(p.name, p);
+  const cat=PLANT_CATEGORY[p.name]||customCategories[p.name]||'B';
+  const st=status(d, p.name, p);
+  const remaining = freq - d;
+  let freqMsg = '';
+  if(d===9999) freqMsg='まだ水やり記録がありません';
+  else if(st==='urgent') freqMsg=`推奨の${freq}日を${d-freq}日超過しています`;
+  else if(st==='soon') freqMsg=`あと約${remaining}日で推奨時期です`;
+  else freqMsg=`次回まであと約${remaining}日`;
+
+  const humMult     = HUM_MULT[humidity]||1.0;
+  const soilMult    = getSoilMult(p);
+  const potMult     = getPotMult(p);
+  const potSizeMult = getPotSizeMult(p);
+  const mossMult    = getMossMult(p);
+  const totalMult   = humMult * soilMult * potMult * potSizeMult * mossMult;
+  const soilLabel   = p.soilType ? (SOIL_PRESETS.find(s=>s.id===p.soilType)?.label || p.soilType) : '未設定';
+  const potLabel    = p.potType  ? (POT_TYPES.find(pt=>pt.id===p.potType)?.label  || p.potType)  : '未設定';
+  const potSizeLabel= p.potSize  ? (POT_SIZES.find(s=>s.id===p.potSize)?.label   || p.potSize)  : '未設定';
+  const mossLabel   = p.mossMulch==='yes' ? '🌿 あり' : 'なし';
+
   document.getElementById('det-name').textContent=p.name;
   document.getElementById('det-sub').textContent=`${loc.icon} ${loc.name} ／ 最終: ${fmt(p.lastWater)}（${d===9999?'未実施':d+'日前'}）`;
-  document.getElementById('det-img').innerHTML = IMG[p.name]
-    ? `<img src="${IMG[p.name]}" alt="${p.name}" onerror="this.innerHTML='🪴'">` : '🪴';
+  document.getElementById('det-icon').textContent=getPlantIcon(p.name);
+
+  document.getElementById('det-freq-box').innerHTML=`
+    <div class="freq-box">
+      <div class="freq-icon">${CAT_ICON[cat]}</div>
+      <div class="freq-text">
+        <div class="freq-main">推奨水やり: <b>${freq}日ごと</b>（${SEASON_LABEL} / 湿度${HUM_LABEL[humidity]}）</div>
+        <div class="freq-sub">${CAT_LABEL[cat]} ／ ${freqMsg}</div>
+        <div class="freq-sub" style="margin-top:4px;line-height:1.7;">
+          補正内訳: 湿度×${humMult.toFixed(2)} × 用土×${soilMult.toFixed(2)} × 鉢タイプ×${potMult.toFixed(2)} × 鉢サイズ×${potSizeMult.toFixed(2)} × 水苔×${mossMult.toFixed(2)} ＝ <b>×${totalMult.toFixed(2)}</b><br>
+          用土: ${soilLabel} ／ 鉢タイプ: ${potLabel} ／ 鉢サイズ: ${potSizeLabel} ／ 水苔: ${mossLabel}
+        </div>
+      </div>
+    </div>`;
+
   let tags='';
   if(p.intro) tags+=`<span>📅 導入: ${fmtFull(p.intro)}</span>`;
-  if(p.repot) tags+=`<span>🪴 植え替え: ${fmtMonth(p.repot)}</span>`;
+  if(p.repot) tags+=`<span>🪴 植替: ${fmtMonth(p.repot)}</span>`;
   if(p.pot)   tags+=`<span>⬜ 鉢: ${p.pot}</span>`;
-  if(p.soil)  tags+=`<span>🌱 用土: ${p.soil}</span>`;
   if(p.shop)  tags+=`<span>🏪 ${p.shop}</span>`;
   if(p.additive&&p.additive!=='なし') tags+=`<span>${ADD_ICON[p.additive]} ${p.additive}</span>`;
   document.getElementById('det-info').innerHTML = tags
@@ -708,20 +1085,29 @@ function openDetail(idx) {
 }
 function waterFromDetail() { closeOvD('ov-detail'); setTimeout(()=>openWater(detailIdx),200); }
 
-// ── EDIT PLANT ──
+// ── EDIT PLANT ───────────────────────────────────────────────────────
 function openEdit(idx) {
   editIdx=idx; const p=plants[idx];
   document.getElementById('ed-name').value=p.name||'';
   buildLocOptions(document.getElementById('ed-loc'), p.loc||'');
-  document.getElementById('ed-img').value=IMG[p.name]||p.customImg||'';
+  buildSoilOptions(document.getElementById('ed-soilType'), p.soilType||'');
+  buildPotTypeOptions(document.getElementById('ed-potType'), p.potType||'');
+  buildPotSizeOptions(document.getElementById('ed-potSize'), p.potSize||'');
   document.getElementById('ed-water').value=p.lastWater||'';
   document.getElementById('ed-intro').value=p.intro||'';
   document.getElementById('ed-repot').value=p.repot||'';
-  document.getElementById('ed-pot').value=p.pot||'';
   document.getElementById('ed-shop').value=p.shop||'';
-  document.getElementById('ed-soil').value=p.soil||'';
   document.getElementById('ed-add').value=p.additive||'なし';
   document.getElementById('ed-memo').value=p.memo||'';
+  // soil custom
+  const customMult = p.soilCustomMult ? Math.round(p.soilCustomMult*100) : 100;
+  document.getElementById('ed-soilCustomMult').value=customMult;
+  updateSoilSliderLabel('ed-soil-val', customMult);
+  document.getElementById('ed-soil-custom').style.display = p.soilType==='custom' ? 'block' : 'none';
+  // moss
+  const moss = p.mossMulch || 'no';
+  document.getElementById('ed-mossMulch').value=moss;
+  document.querySelectorAll('#ed-moss-btns .moss-btn').forEach(b=>b.classList.toggle('active',b.dataset.val===moss));
   document.getElementById('ov-edit').classList.add('open');
 }
 function saveEdit() {
@@ -729,43 +1115,113 @@ function saveEdit() {
   const p=plants[editIdx];
   const nm=document.getElementById('ed-name').value.trim();
   if(!nm){alert('植物名を入力してください');return;}
-  const newImg=document.getElementById('ed-img').value.trim();
-  if(newImg && newImg!==IMG[p.name]) IMG[nm]=newImg;
   p.name=nm;
   p.loc=document.getElementById('ed-loc').value||null;
   p.lastWater=document.getElementById('ed-water').value||null;
   p.intro=document.getElementById('ed-intro').value||null;
   p.repot=document.getElementById('ed-repot').value||null;
-  p.pot=document.getElementById('ed-pot').value.trim()||null;
+  p.potSize=document.getElementById('ed-potSize').value||null;
   p.shop=document.getElementById('ed-shop').value.trim()||null;
-  p.soil=document.getElementById('ed-soil').value.trim()||null;
+  p.soilType=document.getElementById('ed-soilType').value||null;
+  p.soilCustomMult=p.soilType==='custom' ? parseInt(document.getElementById('ed-soilCustomMult').value)/100 : null;
+  p.potType=document.getElementById('ed-potType').value||null;
+  p.mossMulch=document.getElementById('ed-mossMulch').value||'no';
   p.additive=document.getElementById('ed-add').value;
   p.memo=document.getElementById('ed-memo').value.trim();
   savePlants(); closeOvD('ov-edit'); render(); renderManage(); toast('✅ 保存しました');
 }
 
-// ── ADD PLANT ──
-function addPlant() {
-  const name=document.getElementById('i-name').value.trim();
+// ── CLAUDE API: 植物カテゴリ自動判定 ────────────────────────────────
+async function detectPlantCategory(plantName) {
+  const prompt = `あなたは観葉植物の専門家です。以下の植物名から、水やり頻度グループを判定してください。
+
+植物名: 「${plantName}」
+
+以下の5グループから最も適切なものを1文字（A〜E）だけ回答してください。他の文字や説明は不要です。
+
+A: 乾燥に非常に強い（サンスベリア・ザミオクルカス・パキラ・ドラセナ・多肉植物・サボテン系）
+B: 標準的な水やり（フィカス系・モンステラ・シェフレラ・ストレリチア・アグラオネマ・ホマロメナ・一般的な観葉植物）
+C: 水分を好む（カラテア系・マランタ・クテナンテ・トリオスター・スパティフィラム・アンスリウム・アロカシア・フィロデンドロン）
+D: 多湿を好む（ネフロレピス・その他シダ類・ベゴニア・ポトス・エスキナンサス・オリヅルラン）
+E: やや乾燥気味を好む（ホヤ・リプサリス・ペペロミア・多肉系吊り植物）
+
+回答（A/B/C/D/Eのいずれか1文字のみ）:`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 10,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const text = data.content?.[0]?.text?.trim().toUpperCase() || '';
+    const match = text.match(/^[ABCDE]/);
+    return match ? match[0] : null;
+  } catch {
+    return null;
+  }
+}
+
+async function addPlant() {
+  const name = document.getElementById('i-name').value.trim();
   if(!name){alert('植物名を入力してください');return;}
-  const imgUrl=document.getElementById('i-img').value.trim();
-  if(imgUrl) IMG[name]=imgUrl;
+
+  const btn = document.querySelector('[onclick="addPlant()"]');
+  btn.textContent = '🔍 水やり頻度を判定中…';
+  btn.disabled = true;
+
+  let cat = PLANT_CATEGORY[name] || null;
+  let catSource = '内部データ';
+  if (!cat) {
+    const detected = await detectPlantCategory(name);
+    if (detected) {
+      cat = detected;
+      catSource = 'AI判定';
+      customCategories[name] = cat;
+      saveCustomCategories();
+    } else {
+      cat = 'B';
+      catSource = 'デフォルト（標準）';
+    }
+  }
+
+  btn.textContent = '🌱 追加する';
+  btn.disabled = false;
+
+  const soilType = document.getElementById('i-soilType').value || null;
+  const soilCustomMult = soilType==='custom' ? parseInt(document.getElementById('i-soilCustomMult').value)/100 : null;
+
   plants.push({
-    name, loc:document.getElementById('i-loc').value||null,
-    lastWater:document.getElementById('i-water').value||null,
-    additive:document.getElementById('i-add').value,
-    intro:document.getElementById('i-intro').value||null,
-    repot:document.getElementById('i-repot').value||null,
-    pot:document.getElementById('i-pot').value.trim()||null,
-    soil:document.getElementById('i-soil').value.trim()||null,
-    shop:document.getElementById('i-shop').value.trim()||null,
-    memo:document.getElementById('i-memo').value.trim(),
-    history:[]
+    name, loc: document.getElementById('i-loc').value||null,
+    lastWater: document.getElementById('i-water').value||null,
+    additive: document.getElementById('i-add').value,
+    intro: document.getElementById('i-intro').value||null,
+    repot: document.getElementById('i-repot').value||null,
+    potSize: document.getElementById('i-potSize').value||null,
+    soilType, soilCustomMult,
+    potType: document.getElementById('i-potType').value||null,
+    mossMulch: document.getElementById('i-mossMulch').value||'no',
+    shop: document.getElementById('i-shop').value.trim()||null,
+    memo: document.getElementById('i-memo').value.trim(),
+    history: []
   });
   savePlants(); render(); renderManage();
-  ['i-name','i-img','i-water','i-intro','i-repot','i-pot','i-soil','i-shop','i-memo'].forEach(id=>document.getElementById(id).value='');
+  ['i-name','i-water','i-intro','i-repot','i-shop','i-memo'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('i-add').value='なし';
-  toast(`🌱 ${name} を追加しました`);
+  document.getElementById('i-soilType').value='';
+  document.getElementById('i-potType').value='';
+  document.getElementById('i-potSize').value='';
+  document.getElementById('i-soil-custom').style.display='none';
+  selectMoss('i-moss-btns','no');
+
+  const newPlant = plants[plants.length-1];
+  const freq = getRecommendedFreq(name, newPlant);
+  toast(`🌱 ${name} を追加（${CAT_ICON[cat]} ${CAT_LABEL[cat]}・推奨${freq}日／${catSource}）`);
 }
 function deletePlant(idx) {
   if(!confirm(`「${plants[idx].name}」を削除しますか？`)) return;
@@ -773,13 +1229,12 @@ function deletePlant(idx) {
   savePlants(); render(); renderManage(); toast('🗑 削除しました');
 }
 
-// ── LOCATIONS CRUD ──
+// ── LOCATIONS ────────────────────────────────────────────────────────
 function addLocation() {
   const name=document.getElementById('loc-inp-name').value.trim();
   if(!name){alert('場所の名前を入力してください');return;}
   const icon=document.getElementById('loc-inp-icon').value.trim()||'📍';
-  const id='loc_'+Date.now();
-  locations.push({id,name,icon});
+  locations.push({id:'loc_'+Date.now(),name,icon});
   saveLocs(); renderLocTabs(); renderLocManage(); renderManage();
   document.getElementById('loc-inp-name').value='';
   document.getElementById('loc-inp-icon').value='';
@@ -803,14 +1258,14 @@ function saveEditLoc() {
 function deleteLoc(idx) {
   const l=locations[idx];
   const used=plants.filter(p=>p.loc===l.id).length;
-  if(used>0 && !confirm(`「${l.name}」には${used}件の植物があります。削除しますか？（植物の置き場所は「未設定」になります）`)) return;
+  if(used>0 && !confirm(`「${l.name}」には${used}件の植物があります。削除しますか？`)) return;
   plants.forEach(p=>{if(p.loc===l.id) p.loc=null;});
   locations.splice(idx,1);
   saveLocs(); savePlants(); renderLocTabs(); renderLocManage(); render(); renderManage();
   toast('🗑 削除しました');
 }
 
-// ── RENDER LOC TABS ──
+// ── RENDER LOC TABS ──────────────────────────────────────────────────
 function renderLocTabs() {
   const el=document.getElementById('loc-tabs');
   let html=`<button class="loc-tab ${curLocFilter==='all'?'active':''}" onclick="setLocFilter('all',this)">🌿 すべて</button>`;
@@ -823,55 +1278,61 @@ function renderLocTabs() {
   el.innerHTML=html;
 }
 
-// ── RENDER LIST ──
+// ── RENDER LIST ──────────────────────────────────────────────────────
 function render() {
   let u=0,s=0,o=0;
-  plants.forEach(p=>{const st=status(days(p.lastWater));if(st==='urgent')u++;else if(st==='soon')s++;else o++;});
+  plants.forEach(p=>{
+    const st=status(daysSince(p.lastWater), p.name, p);
+    if(st==='urgent')u++;else if(st==='soon')s++;else o++;
+  });
   document.getElementById('cnt-u').textContent=u;
   document.getElementById('cnt-s').textContent=s;
   document.getElementById('cnt-o').textContent=o;
   document.getElementById('cnt-t').textContent=plants.length;
   renderLocTabs();
 
-  let list=plants.map((p,i)=>({...p,idx:i,d:days(p.lastWater)}));
-
-  // loc filter
+  let list=plants.map((p,i)=>({...p,idx:i,d:daysSince(p.lastWater)}));
   if(curLocFilter==='none') list=list.filter(p=>!p.loc||!locations.find(l=>l.id===p.loc));
   else if(curLocFilter!=='all') list=list.filter(p=>p.loc===curLocFilter);
-
-  // status filter
-  if(curStatusFilter!=='all') list=list.filter(p=>status(p.d)===curStatusFilter);
-
-  // search
+  if(curStatusFilter!=='all') list=list.filter(p=>status(p.d,p.name,p)===curStatusFilter);
   if(curSearch){const q=curSearch.toLowerCase();list=list.filter(p=>p.name.toLowerCase().includes(q));}
 
   const el=document.getElementById('plant-list');
   if(!list.length){el.innerHTML=`<div class="empty"><div class="ei">🌵</div>該当なし</div>`;return;}
 
-  // grouping: by location first, then status within
   const isGroupedByLoc = curLocFilter==='all' && !curSearch && curStatusFilter==='all';
-
+  const gl={urgent:'🔴 要水やり',soon:'🟡 もうすぐ',ok:'🟢 良好'};
   let html='';
+
   if(isGroupedByLoc) {
-    // group by location
-    const locOrder=[...locations.map(l=>l.id), 'none'];
+    const locOrder=[...locations.map(l=>l.id),'none'];
     locOrder.forEach(lid=>{
       let grp = lid==='none'
         ? list.filter(p=>!p.loc||!locations.find(l=>l.id===p.loc))
         : list.filter(p=>p.loc===lid);
       if(!grp.length) return;
-      grp.sort((a,b)=>{const ord={urgent:0,soon:1,ok:2};return ord[status(a.d)]-ord[status(b.d)]||b.d-a.d;});
-      const loc = lid==='none' ? {name:'未設定',icon:'📦'} : getLoc(lid);
+      grp.sort((a,b)=>{
+        const ord={urgent:0,soon:1,ok:2};
+        const sa=status(a.d,a.name,a), sb=status(b.d,b.name,b);
+        if(ord[sa]!==ord[sb]) return ord[sa]-ord[sb];
+        const ra=a.d/getRecommendedFreq(a.name,a), rb=b.d/getRecommendedFreq(b.name,b);
+        return rb-ra;
+      });
+      const loc=lid==='none'?{name:'未設定',icon:'📦'}:getLoc(lid);
       html+=`<div class="loc-section-label"><span class="loc-icon">${loc.icon}</span>${loc.name}</div>`;
       grp.forEach(p=>{ html+=cardHtml(p); });
     });
   } else {
-    // flat sort by status
-    list.sort((a,b)=>{const ord={urgent:0,soon:1,ok:2};return ord[status(a.d)]-ord[status(b.d)]||b.d-a.d;});
-    const gl={urgent:'🔴 要水やり（14日以上）',soon:'🟡 もうすぐ（7〜13日）',ok:'🟢 良好'};
+    list.sort((a,b)=>{
+      const ord={urgent:0,soon:1,ok:2};
+      const sa=status(a.d,a.name,a), sb=status(b.d,b.name,b);
+      if(ord[sa]!==ord[sb]) return ord[sa]-ord[sb];
+      const ra=a.d/getRecommendedFreq(a.name,a), rb=b.d/getRecommendedFreq(b.name,b);
+      return rb-ra;
+    });
     let lastSt=null;
     list.forEach(p=>{
-      const st=status(p.d);
+      const st=status(p.d,p.name);
       if(st!==lastSt){html+=`<div class="status-section-label">${gl[st]}</div>`;lastSt=st;}
       html+=cardHtml(p);
     });
@@ -880,26 +1341,26 @@ function render() {
 }
 
 function cardHtml(p) {
-  const st=status(p.d);
+  const st=status(p.d, p.name, p);
   const sel=selIds.has(p.idx);
-  const dn=p.d===9999?'未':p.d; const du=p.d===9999?'実施':'日';
+  const freq=getRecommendedFreq(p.name, p);
+  const dn=p.d===9999?'未':p.d;
+  const du=p.d===9999?'実施':'日';
   const addTag=p.additive&&p.additive!=='なし'?`<span class="liq-tag">${ADD_ICON[p.additive]} ${p.additive}</span>`:'';
+  const freqTag=`<span class="freq-tag">💧${freq}日</span>`;
   const memoSnip=p.memo?`<div class="memo-snip">💬 ${p.memo}</div>`:'';
-  const src=IMG[p.name]||'';
-  const imgEl=src
-    ?`<div class="plant-img" onclick="handleImgClick(event,${p.idx})"><img src="${src}" alt="${p.name}" onerror="this.parentNode.innerHTML='🪴'"></div>`
-    :`<div class="plant-img" onclick="handleImgClick(event,${p.idx})">🪴</div>`;
+  const icon=getPlantIcon(p.name);
 
   return `
   <div class="plant-card ${st} ${sel?'sel-card':''}" id="card-${p.idx}">
     <button class="card-check" onclick="toggleSel(${p.idx})" aria-label="選択">
       <div class="chk-circle">${sel?'✓':''}</div>
     </button>
-    ${imgEl}
+    <div class="plant-icon-box" onclick="${selMode?`toggleSel(${p.idx})`:`openDetail(${p.idx})`}">${icon}</div>
     <div class="status-bar"></div>
-    <div class="plant-body" onclick="handleBodyClick(event,${p.idx})">
+    <div class="plant-body" onclick="${selMode?`toggleSel(${p.idx})`:`openDetail(${p.idx})`}">
       <div class="plant-name">${p.name}</div>
-      <div class="plant-meta"><span>📅 ${fmt(p.lastWater)}</span>${addTag}</div>
+      <div class="plant-meta"><span>📅 ${fmt(p.lastWater)}</span>${freqTag}${addTag}</div>
       ${memoSnip}
     </div>
     <div class="plant-right">
@@ -909,81 +1370,53 @@ function cardHtml(p) {
   </div>`;
 }
 
-function handleImgClick(e, idx) {
-  if(selMode) { e.stopPropagation(); toggleSel(idx); }
-  else openDetail(idx);
-}
-function handleBodyClick(e, idx) {
-  if(selMode) toggleSel(idx);
-  else openDetail(idx);
-}
-
-// ── RENDER MANAGE ──
-let manageSort = 'kana'; // 'kana' | 'intro'
-
+// ── RENDER MANAGE ────────────────────────────────────────────────────
 function setManageSort(val, btn) {
-  manageSort = val;
+  manageSort=val;
   document.querySelectorAll('.msort-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderManage();
+  btn.classList.add('active'); renderManage();
 }
-
 function renderManage() {
   buildLocOptions(document.getElementById('i-loc'), '');
-  const el = document.getElementById('manage-list');
-  if (!plants.length) {
-    el.innerHTML = `<div class="empty"><div class="ei">🌱</div>植物がまだ登録されていません</div>`;
-    return;
-  }
+  const el=document.getElementById('manage-list');
+  if(!plants.length){el.innerHTML=`<div class="empty"><div class="ei">🌱</div>植物がまだ登録されていません</div>`;return;}
 
-  // ソート関数
-  function sortFn(a, b) {
-    if (manageSort === 'intro') {
-      // 導入日昇順（nullは末尾）
-      if (!a.intro && !b.intro) return a.name.localeCompare(b.name, 'ja');
-      if (!a.intro) return 1;
-      if (!b.intro) return -1;
-      return a.intro < b.intro ? -1 : a.intro > b.intro ? 1 : 0;
+  function sortFn(a,b) {
+    if(manageSort==='intro'){
+      if(!a.intro&&!b.intro) return a.name.localeCompare(b.name,'ja');
+      if(!a.intro) return 1; if(!b.intro) return -1;
+      return a.intro<b.intro?-1:a.intro>b.intro?1:0;
     }
-    // あいうえお順
-    return a.name.localeCompare(b.name, 'ja');
+    return a.name.localeCompare(b.name,'ja');
   }
-
-  // 置き場所ごとにグループ化
-  const locOrder = [...locations.map(l => l.id), '__none__'];
-  let html = '';
-
-  locOrder.forEach(lid => {
-    const isNone = lid === '__none__';
-    const grp = plants
-      .map((p, i) => ({...p, _idx: i}))
-      .filter(p => isNone
-        ? (!p.loc || !locations.find(l => l.id === p.loc))
-        : p.loc === lid
-      )
+  const locOrder=[...locations.map(l=>l.id),'__none__'];
+  let html='';
+  locOrder.forEach(lid=>{
+    const isNone=lid==='__none__';
+    const grp=plants.map((p,i)=>({...p,_idx:i}))
+      .filter(p=>isNone?(!p.loc||!locations.find(l=>l.id===p.loc)):p.loc===lid)
       .sort(sortFn);
-    if (!grp.length) return;
-
-    const loc = isNone ? {name:'未設定', icon:'📦'} : getLoc(lid);
-    html += `<div class="mg-loc-header"><span class="mli">${loc.icon}</span>${loc.name}<span class="mg-loc-count">（${grp.length}鉢）</span></div>`;
-
-    grp.forEach(p => {
-      const i = p._idx;
-      const src = IMG[p.name] || '';
-      const imgEl = src
-        ? `<div class="mg-img"><img src="${src}" alt="${p.name}" onerror="this.parentNode.innerHTML='🪴'"></div>`
-        : `<div class="mg-img">🪴</div>`;
-      const subParts = [];
-      if (p.intro) subParts.push(`📅 ${fmtFull(p.intro)}`);
-      if (p.pot)   subParts.push(`⬜ ${p.pot}`);
-      if (p.repot) subParts.push(`🪴 植替: ${fmtMonth(p.repot)}`);
-      if (p.soil)  subParts.push(`🌱 ${p.soil}`);
-      html += `
+    if(!grp.length) return;
+    const loc=isNone?{name:'未設定',icon:'📦'}:getLoc(lid);
+    html+=`<div class="mg-loc-header"><span class="mli">${loc.icon}</span>${loc.name}<span class="mg-loc-count">（${grp.length}鉢）</span></div>`;
+    grp.forEach(p=>{
+      const i=p._idx;
+      const cat=PLANT_CATEGORY[p.name]||'B';
+      const freq=getRecommendedFreq(p.name);
+      const subParts=[];
+      if(p.intro)   subParts.push(`📅 ${fmtFull(p.intro)}`);
+      if(p.potSize) subParts.push(`⬜ ${POT_SIZES.find(s=>s.id===p.potSize)?.label.split('（')[0] || p.potSize}`);
+      if(p.repot)   subParts.push(`🪴 植替: ${fmtMonth(p.repot)}`);
+      if(p.soilType) subParts.push(`🌱 ${SOIL_PRESETS.find(s=>s.id===p.soilType)?.label.split('（')[0] || p.soilType}`);
+      if(p.potType)  subParts.push(`${POT_TYPES.find(pt=>pt.id===p.potType)?.icon||''} ${POT_TYPES.find(pt=>pt.id===p.potType)?.label||''}`);
+      if(p.mossMulch==='yes') subParts.push('🌿 水苔あり');
+      subParts.push(`💧 推奨${freq}日`);
+      html+=`
       <div class="manage-card">
-        ${imgEl}
+        <div class="mg-icon">${getPlantIcon(p.name)}</div>
         <div class="mg-body">
           <div class="mg-name">${p.name}</div>
-          ${subParts.length ? `<div class="mg-sub">${subParts.join('  ')}</div>` : ''}
+          <div class="mg-sub">${subParts.join('  ')}</div>
         </div>
         <div class="mg-acts">
           <button class="btn-edit" onclick="openEdit(${i})">編集</button>
@@ -992,11 +1425,10 @@ function renderManage() {
       </div>`;
     });
   });
-
-  el.innerHTML = html;
+  el.innerHTML=html;
 }
 
-// ── RENDER LOC MANAGE ──
+// ── RENDER LOC MANAGE ────────────────────────────────────────────────
 function renderLocManage() {
   const el=document.getElementById('loc-manage-list');
   if(!locations.length){el.innerHTML=`<div class="empty"><div class="ei">📍</div>置き場所がありません</div>`;return;}
@@ -1013,21 +1445,72 @@ function renderLocManage() {
   }).join('');
 }
 
-// ── TABS ──
+// ── RENDER FREQ TABLE ────────────────────────────────────────────────
+function renderFreqTable() {
+  const cats = ['A','B','C','D','E'];
+  let html=`<tr><th>グループ</th><th>推奨頻度</th><th>代表植物</th></tr>`;
+  const reps = {
+    A:'サンスベリア・ザミオクルカス・パキラ・ドラセナ',
+    B:'フィカス系・モンステラ・シェフレラ・エバーフレッシュ',
+    C:'カラテア系・マランタ・アンスリウム・フィロデンドロン',
+    D:'ネフロレピス・ポトス・ベゴニア・エスキナンサス',
+    E:'ホヤ・リプサリス・ペペロミア・ゲオゲナンツス',
+  };
+  cats.forEach(c=>{
+    const base = BASE_FREQ[c][SEASON];
+    const mult = HUM_MULT[humidity] || 1.0;
+    const f = Math.max(2, Math.round(base * mult));
+    html+=`<tr><td>${CAT_ICON[c]} ${CAT_LABEL[c]}</td><td><b>${f}日ごと</b></td><td style="font-size:10px;color:#7a7a68;">${reps[c]}</td></tr>`;
+  });
+  const el=document.getElementById('freq-table');
+  if(el) el.innerHTML=html;
+}
+
+// ── TABS ─────────────────────────────────────────────────────────────
 function showTab(tab, btn) {
-  ['list','manage','locations'].forEach(t=>{
-    document.getElementById('tab-'+t).style.display = t===tab?'':'none';
+  ['list','manage','locations','settings'].forEach(t=>{
+    document.getElementById('tab-'+t).style.display=t===tab?'':'none';
   });
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   if(tab==='manage') renderManage();
   if(tab==='locations') renderLocManage();
+  if(tab==='settings') {
+    renderFreqTable();
+    document.getElementById('si-month').textContent=`${MONTH}月`;
+    document.getElementById('si-season').textContent=SEASON_JA;
+    document.getElementById('si-trend').textContent=SEASON_TREND;
+  }
 }
 
-// ── INIT ──
-document.getElementById('hd-date').textContent = `${TODAY.getMonth()+1}/${TODAY.getDate()} `;
-document.getElementById('i-water').value = TODAY_STR;
-document.getElementById('i-intro').value = TODAY_STR;
+// ── INIT ─────────────────────────────────────────────────────────────
+// 既存データのpot（テキスト）をpotSize（ID）に自動変換
+function migratePotSize(potText) {
+  if(!potText) return null;
+  const n = parseInt(potText);
+  if(isNaN(n)) return null;
+  if(n <= 2)  return 's2';
+  if(n === 3) return 's3';
+  if(n <= 5)  return 's45';
+  if(n <= 7)  return 's67';
+  if(n <= 9)  return 's89';
+  return 's10';
+}
+plants.forEach(p => {
+  if(!p.potSize && p.pot) {
+    p.potSize = migratePotSize(p.pot);
+  }
+});
+savePlants();
+
+document.getElementById('hd-date').textContent=`${TODAY.getMonth()+1}/${TODAY.getDate()} `;
+document.getElementById('season-badge').textContent=SEASON_LABEL;
+document.getElementById('i-water').value=TODAY_STR;
+document.getElementById('i-intro').value=TODAY_STR;
+buildSoilOptions(document.getElementById('i-soilType'), '');
+buildPotTypeOptions(document.getElementById('i-potType'), '');
+buildPotSizeOptions(document.getElementById('i-potSize'), '');
+setHumidity(humidity, false);
 render();
 </script>
 </body>
