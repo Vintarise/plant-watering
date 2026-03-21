@@ -232,6 +232,7 @@ body.select-mode .plant-card{cursor:default;}
   <div class="logo">🌿</div>
   <div><h1>みずやり手帳</h1><small>Plant Watering Journal</small></div>
   <div class="season-badge" id="season-badge">🌸 春</div>
+  <div id="sync-indicator" style="font-size:10px;opacity:.7;display:flex;align-items:center;gap:3px;">⏳</div>
   <div class="today-pill"><b id="hd-date">--</b>今日</div>
 </header>
 
@@ -433,6 +434,21 @@ body.select-mode .plant-card{cursor:default;}
       <h3>📊 推奨水やり頻度の考え方</h3>
       <p>植物のグループ・季節・湿度の3つで推奨頻度（日数）を計算しています。現在の設定での推奨日数：</p>
       <table class="freq-table" id="freq-table"></table>
+    </div>
+
+    <!-- Cloud sync -->
+    <div class="settings-section">
+      <h3>☁️ クラウド同期</h3>
+      <p>データはClaudeのクラウドに自動保存されます。PCとiPhoneで同じデータを共有できます。</p>
+      <div class="season-info" id="sync-status-box">
+        <div class="si-row"><span class="si-label">同期状態</span><span class="si-val" id="sync-status-text">確認中...</span></div>
+        <div class="si-row"><span class="si-label">最終同期</span><span class="si-val" id="sync-last-time">—</span></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+        <button class="btn-primary" style="margin-top:0;flex:1;" onclick="syncToCloud()">☁️ クラウドに保存（アップロード）</button>
+        <button class="btn-primary" style="margin-top:0;flex:1;background:var(--green-mid);" onclick="syncFromCloud()">📥 クラウドから読み込み（ダウンロード）</button>
+      </div>
+      <p style="font-size:10px;color:var(--muted);margin-top:8px;">※ 水やり記録を更新したあとは「クラウドに保存」を押してください。別のデバイスで見るときは「クラウドから読み込み」を押してください。</p>
     </div>
   </div>
 </div>
@@ -653,7 +669,9 @@ const PLANT_CATEGORY = {
   'マランタ・レウコネウラ': 'C',
   'スパティフィラム・センセーショナル・バリエガータ': 'C',
   'アンスリウム・クリスタルナム': 'C',
+  'アンスリウム・ベイチー': 'C',
   'アロカシア・オドラ・バリエガータ・バティック': 'C',
+  'アロカシア・ニンジャ': 'B',
   'フィロデンドロン・エルチョコレッド': 'C',
   'フィロデンドロン・プリンス・オブ・オレンジ': 'C',
   // D: 多湿を好む
@@ -872,8 +890,117 @@ let plants = loadPlants();
 let humidity = loadHumidity();
 let customCategories = loadCustomCategories();
 
-function saveLocs()   { localStorage.setItem('pw_locs_v5', JSON.stringify(locations)); }
-function savePlants() { localStorage.setItem('pw_plants_v5', JSON.stringify(plants)); }
+// ── CLOUD SYNC ──────────────────────────────────────────────────────
+const CLOUD_KEY = 'mizuyari_v5_data';
+
+function setSyncIndicator(status) {
+  const el = document.getElementById('sync-indicator');
+  if(!el) return;
+  const map = { ok:'☁️', saving:'⏳', error:'⚠️', loading:'🔄' };
+  el.textContent = map[status] || '☁️';
+}
+
+function updateSyncStatusUI(msg, time) {
+  const st = document.getElementById('sync-status-text');
+  const lt = document.getElementById('sync-last-time');
+  if(st) st.textContent = msg;
+  if(lt && time) lt.textContent = time;
+}
+
+async function syncToCloud() {
+  setSyncIndicator('saving');
+  updateSyncStatusUI('保存中...', '—');
+  try {
+    const payload = JSON.stringify({
+      plants, locations, humidity, customCategories,
+      savedAt: new Date().toISOString()
+    });
+    const result = await window.storage.set(CLOUD_KEY, payload, false);
+    if(!result) throw new Error('storage set failed');
+    const timeStr = new Date().toLocaleString('ja-JP', {month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    setSyncIndicator('ok');
+    updateSyncStatusUI('✅ 同期済み', timeStr);
+    toast('☁️ クラウドに保存しました');
+  } catch(e) {
+    setSyncIndicator('error');
+    updateSyncStatusUI('⚠️ 保存失敗', '—');
+    toast('⚠️ クラウド保存に失敗しました');
+  }
+}
+
+async function syncFromCloud() {
+  if(!confirm('クラウドのデータを読み込みます。現在のデータは上書きされます。よろしいですか？')) return;
+  setSyncIndicator('loading');
+  updateSyncStatusUI('読み込み中...', '—');
+  try {
+    const result = await window.storage.get(CLOUD_KEY, false);
+    if(!result || !result.value) {
+      toast('⚠️ クラウドにデータがありません。先にアップロードしてください。');
+      setSyncIndicator('error');
+      updateSyncStatusUI('データなし', '—');
+      return;
+    }
+    const data = JSON.parse(result.value);
+    plants = data.plants || plants;
+    locations = data.locations || locations;
+    humidity = data.humidity || humidity;
+    customCategories = data.customCategories || customCategories;
+    // ローカルにも保存
+    saveLocs(); savePlants(); saveHumidity(); saveCustomCategories();
+    const savedAt = data.savedAt ? new Date(data.savedAt).toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '不明';
+    setSyncIndicator('ok');
+    updateSyncStatusUI('✅ 同期済み', savedAt);
+    setHumidity(humidity, false);
+    render(); renderManage();
+    toast('📥 クラウドから読み込みました');
+  } catch(e) {
+    setSyncIndicator('error');
+    updateSyncStatusUI('⚠️ 読み込み失敗', '—');
+    toast('⚠️ クラウド読み込みに失敗しました');
+  }
+}
+
+async function autoSyncToCloud() {
+  // 水やり記録・編集時に自動でクラウド保存
+  try {
+    const payload = JSON.stringify({
+      plants, locations, humidity, customCategories,
+      savedAt: new Date().toISOString()
+    });
+    await window.storage.set(CLOUD_KEY, payload, false);
+    setSyncIndicator('ok');
+    const timeStr = new Date().toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    updateSyncStatusUI('✅ 同期済み', timeStr);
+  } catch(e) {
+    setSyncIndicator('error');
+  }
+}
+
+async function checkCloudStatus() {
+  try {
+    const result = await window.storage.get(CLOUD_KEY, false);
+    if(result && result.value) {
+      const data = JSON.parse(result.value);
+      const savedAt = data.savedAt ? new Date(data.savedAt).toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '不明';
+      setSyncIndicator('ok');
+      updateSyncStatusUI('✅ 同期済み', savedAt);
+    } else {
+      setSyncIndicator('error');
+      updateSyncStatusUI('未保存（初回はアップロードしてください）', '—');
+    }
+  } catch(e) {
+    setSyncIndicator('error');
+    updateSyncStatusUI('クラウド接続確認中...', '—');
+  }
+}
+
+function saveLocs()   {
+  localStorage.setItem('pw_locs_v5', JSON.stringify(locations));
+}
+function savePlants() {
+  localStorage.setItem('pw_plants_v5', JSON.stringify(plants));
+  autoSyncToCloud();
+}
 function saveHumidity(){ localStorage.setItem('pw_humidity', humidity); }
 function saveCustomCategories() { localStorage.setItem('pw_custom_cats', JSON.stringify(customCategories)); }
 
@@ -1540,6 +1667,8 @@ buildPotTypeOptions(document.getElementById('i-potType'), '');
 buildPotSizeOptions(document.getElementById('i-potSize'), '');
 setHumidity(humidity, false);
 render();
+// クラウド状態を確認
+checkCloudStatus();
 </script>
 </body>
 </html>
