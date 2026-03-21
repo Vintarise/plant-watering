@@ -251,18 +251,6 @@ body.select-mode .plant-card{cursor:default;}
     <div class="sum-item"><b id="cnt-t">0</b>全体</div>
   </div>
 
-  <!-- Humidity quick bar -->
-  <div class="humidity-bar">
-    <span class="hum-label">💧 湿度:</span>
-    <div class="hum-btns">
-      <button class="hum-btn" id="hq-h40" onclick="setHumidity('h40',true)">〜40%</button>
-      <button class="hum-btn" id="hq-h55" onclick="setHumidity('h55',true)">40〜55%</button>
-      <button class="hum-btn" id="hq-h70" onclick="setHumidity('h70',true)">55〜70%</button>
-      <button class="hum-btn" id="hq-h85" onclick="setHumidity('h85',true)">70%〜</button>
-    </div>
-    <span class="hum-hint" id="hum-hint">推奨頻度に反映されます</span>
-  </div>
-
   <div class="loc-scroll-wrap">
     <div class="loc-tabs" id="loc-tabs"></div>
   </div>
@@ -373,6 +361,16 @@ body.select-mode .plant-card{cursor:default;}
       <div style="display:grid;grid-template-columns:1fr 80px;gap:8px;">
         <div class="form-row"><label>場所の名前 *</label><input id="loc-inp-name" type="text" placeholder="例: リビング"></div>
         <div class="form-row"><label>アイコン</label><input id="loc-inp-icon" type="text" placeholder="🛋" maxlength="2"></div>
+      </div>
+      <div class="form-row">
+        <label>この場所の湿度（任意・未設定時はデフォルト湿度を使用）</label>
+        <select id="loc-inp-hum">
+          <option value="">— デフォルト湿度を使用 —</option>
+          <option value="h40">🏜 40%以下（乾燥）</option>
+          <option value="h55">🌤 40〜55%（標準）</option>
+          <option value="h70">🌦 55〜70%（やや多湿）</option>
+          <option value="h85">💦 70%以上（多湿）</option>
+        </select>
       </div>
       <button class="btn-primary" onclick="addLocation()">📍 追加する</button>
     </div>
@@ -543,6 +541,16 @@ body.select-mode .plant-card{cursor:default;}
     <div style="display:grid;grid-template-columns:1fr 72px;gap:8px;">
       <div class="form-row"><label>名前 *</label><input id="loc-ed-name" type="text"></div>
       <div class="form-row"><label>アイコン</label><input id="loc-ed-icon" type="text" maxlength="2"></div>
+    </div>
+    <div class="form-row">
+      <label>この場所の湿度</label>
+      <select id="loc-ed-hum">
+        <option value="">— デフォルト湿度を使用 —</option>
+        <option value="h40">🏜 40%以下（乾燥）</option>
+        <option value="h55">🌤 40〜55%（標準）</option>
+        <option value="h70">🌦 55〜70%（やや多湿）</option>
+        <option value="h85">💦 70%以上（多湿）</option>
+      </select>
     </div>
     <div class="sh-acts">
       <button class="btn-cancel-sh" onclick="closeOvD('ov-edit-loc')">キャンセル</button>
@@ -733,10 +741,17 @@ function getPotSizeMult(plant) {
   return ps ? ps.mult : POT_SIZE_MULT_DEFAULT;
 }
 
+function getLocHumidity(locId) {
+  if(!locId) return humidity;
+  const loc = locations.find(l=>l.id===locId);
+  return (loc && loc.humidity) ? loc.humidity : humidity;
+}
+
 function getRecommendedFreq(plantName, plant) {
   const cat = PLANT_CATEGORY[plantName] || customCategories[plantName] || 'B';
   const base = BASE_FREQ[cat][SEASON];
-  const humMult     = HUM_MULT[humidity] || 1.0;
+  const locHum      = plant ? getLocHumidity(plant.loc) : humidity;
+  const humMult     = HUM_MULT[locHum] || 1.0;
   const soilMult    = plant ? getSoilMult(plant)    : SOIL_MULT_DEFAULT;
   const potMult     = plant ? getPotMult(plant)     : POT_MULT_DEFAULT;
   const potSizeMult = plant ? getPotSizeMult(plant) : POT_SIZE_MULT_DEFAULT;
@@ -1040,7 +1055,8 @@ function openDetail(idx) {
   else if(st==='soon') freqMsg=`あと約${remaining}日で推奨時期です`;
   else freqMsg=`次回まであと約${remaining}日`;
 
-  const humMult     = HUM_MULT[humidity]||1.0;
+  const locHum      = getLocHumidity(p.loc);
+  const humMult     = HUM_MULT[locHum]||1.0;
   const soilMult    = getSoilMult(p);
   const potMult     = getPotMult(p);
   const potSizeMult = getPotSizeMult(p);
@@ -1050,6 +1066,8 @@ function openDetail(idx) {
   const potLabel    = p.potType  ? (POT_TYPES.find(pt=>pt.id===p.potType)?.label  || p.potType)  : '未設定';
   const potSizeLabel= p.potSize  ? (POT_SIZES.find(s=>s.id===p.potSize)?.label   || p.potSize)  : '未設定';
   const mossLabel   = p.mossMulch==='yes' ? '🌿 あり' : 'なし';
+  const locObj      = locations.find(l=>l.id===p.loc);
+  const humSource   = (locObj && locObj.humidity) ? `${loc.icon}${loc.name}個別設定` : 'デフォルト';
 
   document.getElementById('det-name').textContent=p.name;
   document.getElementById('det-sub').textContent=`${loc.icon} ${loc.name} ／ 最終: ${fmt(p.lastWater)}（${d===9999?'未実施':d+'日前'}）`;
@@ -1059,10 +1077,10 @@ function openDetail(idx) {
     <div class="freq-box">
       <div class="freq-icon">${CAT_ICON[cat]}</div>
       <div class="freq-text">
-        <div class="freq-main">推奨水やり: <b>${freq}日ごと</b>（${SEASON_LABEL} / 湿度${HUM_LABEL[humidity]}）</div>
+        <div class="freq-main">推奨水やり: <b>${freq}日ごと</b>（${SEASON_LABEL} / 湿度${HUM_LABEL[locHum]}）</div>
         <div class="freq-sub">${CAT_LABEL[cat]} ／ ${freqMsg}</div>
         <div class="freq-sub" style="margin-top:4px;line-height:1.7;">
-          補正内訳: 湿度×${humMult.toFixed(2)} × 用土×${soilMult.toFixed(2)} × 鉢タイプ×${potMult.toFixed(2)} × 鉢サイズ×${potSizeMult.toFixed(2)} × 水苔×${mossMult.toFixed(2)} ＝ <b>×${totalMult.toFixed(2)}</b><br>
+          補正内訳: 湿度×${humMult.toFixed(2)}（${humSource}） × 用土×${soilMult.toFixed(2)} × 鉢タイプ×${potMult.toFixed(2)} × 鉢サイズ×${potSizeMult.toFixed(2)} × 水苔×${mossMult.toFixed(2)} ＝ <b>×${totalMult.toFixed(2)}</b><br>
           用土: ${soilLabel} ／ 鉢タイプ: ${potLabel} ／ 鉢サイズ: ${potSizeLabel} ／ 水苔: ${mossLabel}
         </div>
       </div>
@@ -1234,16 +1252,19 @@ function addLocation() {
   const name=document.getElementById('loc-inp-name').value.trim();
   if(!name){alert('場所の名前を入力してください');return;}
   const icon=document.getElementById('loc-inp-icon').value.trim()||'📍';
-  locations.push({id:'loc_'+Date.now(),name,icon});
+  const hum=document.getElementById('loc-inp-hum').value||null;
+  locations.push({id:'loc_'+Date.now(),name,icon,humidity:hum});
   saveLocs(); renderLocTabs(); renderLocManage(); renderManage();
   document.getElementById('loc-inp-name').value='';
   document.getElementById('loc-inp-icon').value='';
+  document.getElementById('loc-inp-hum').value='';
   toast(`📍 ${name} を追加しました`);
 }
 function openEditLoc(idx) {
   editLocIdx=idx; const l=locations[idx];
   document.getElementById('loc-ed-name').value=l.name;
   document.getElementById('loc-ed-icon').value=l.icon;
+  document.getElementById('loc-ed-hum').value=l.humidity||'';
   document.getElementById('ov-edit-loc').classList.add('open');
 }
 function saveEditLoc() {
@@ -1251,7 +1272,9 @@ function saveEditLoc() {
   const l=locations[editLocIdx];
   const nm=document.getElementById('loc-ed-name').value.trim();
   if(!nm){alert('名前を入力してください');return;}
-  l.name=nm; l.icon=document.getElementById('loc-ed-icon').value.trim()||'📍';
+  l.name=nm;
+  l.icon=document.getElementById('loc-ed-icon').value.trim()||'📍';
+  l.humidity=document.getElementById('loc-ed-hum').value||null;
   saveLocs(); closeOvD('ov-edit-loc'); renderLocTabs(); renderLocManage(); render(); renderManage();
   toast('✅ 保存しました');
 }
@@ -1318,8 +1341,10 @@ function render() {
         const ra=a.d/getRecommendedFreq(a.name,a), rb=b.d/getRecommendedFreq(b.name,b);
         return rb-ra;
       });
-      const loc=lid==='none'?{name:'未設定',icon:'📦'}:getLoc(lid);
-      html+=`<div class="loc-section-label"><span class="loc-icon">${loc.icon}</span>${loc.name}</div>`;
+      const loc=lid==='none'?{name:'未設定',icon:'📦',humidity:null}:getLoc(lid);
+      const locHumId = (loc.humidity) ? loc.humidity : humidity;
+      const humBadge = `<span style="font-size:9px;color:var(--muted);font-weight:400;margin-left:6px;">💧 ${HUM_LABEL[locHumId]}${loc.humidity?'':' (デフォルト)'}</span>`;
+      html+=`<div class="loc-section-label"><span class="loc-icon">${loc.icon}</span>${loc.name}${humBadge}</div>`;
       grp.forEach(p=>{ html+=cardHtml(p); });
     });
   } else {
@@ -1434,11 +1459,14 @@ function renderLocManage() {
   if(!locations.length){el.innerHTML=`<div class="empty"><div class="ei">📍</div>置き場所がありません</div>`;return;}
   el.innerHTML=locations.map((l,i)=>{
     const cnt=plants.filter(p=>p.loc===l.id).length;
+    const humLabel = l.humidity ? `💧 ${HUM_LABEL[l.humidity]}` : `💧 デフォルト（${HUM_LABEL[humidity]}）`;
     return `
     <div class="loc-item">
       <span class="loc-item-icon">${l.icon}</span>
-      <span class="loc-item-name">${l.name}</span>
-      <span class="loc-item-count">${cnt}鉢</span>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:700;">${l.name}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px;">${humLabel} ／ ${cnt}鉢</div>
+      </div>
       <button class="btn-edit" onclick="openEditLoc(${i})">編集</button>
       <button class="btn-del" onclick="deleteLoc(${i})">削除</button>
     </div>`;
