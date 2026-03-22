@@ -141,7 +141,7 @@ header small{font-size:9px;opacity:.6;font-family:'Shippori Mincho',serif;}
 .det-tags{display:flex;gap:6px;flex-wrap:wrap;}
 .det-tags span{font-size:11px;background:var(--green-pale);padding:3px 9px;border-radius:20px;color:var(--green-dark);}
 .det-memo{font-size:13px;line-height:1.7;color:var(--text);white-space:pre-wrap;background:var(--bg);border-radius:8px;padding:9px 11px;}
-.hist-list{list-style:none;max-height:120px;overflow-y:auto;}
+.hist-list{list-style:none;max-height:280px;overflow-y:auto;}
 .hist-list li{font-size:12px;padding:4px 0;border-bottom:1px solid var(--border);color:var(--muted);display:flex;gap:8px;}
 .hist-list li span{color:var(--text);font-weight:600;}
 
@@ -222,6 +222,14 @@ body.select-mode .plant-card{cursor:default;}
 .stats-val{font-weight:700;color:var(--green-dark);margin-left:10px;white-space:nowrap;}
 .stats-total{font-size:12px;color:var(--muted);margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--border);}
 
+/* eval */
+.eval-box{background:var(--green-pale);border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.8;color:var(--text);}
+.eval-score{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.eval-score-stars{font-size:18px;letter-spacing:2px;}
+.eval-score-label{font-size:12px;color:var(--muted);}
+.eval-comment{white-space:pre-wrap;}
+.hist-eval{font-size:10px;color:var(--green-mid);font-style:italic;margin-top:2px;line-height:1.5;}
+
 /* soil/pot/moss UI */
 .soil-custom-row{background:var(--green-pale);border-radius:8px;padding:10px 12px !important;}
 .soil-slider-wrap{display:flex;align-items:center;gap:8px;margin-top:6px;}
@@ -239,7 +247,7 @@ body.select-mode .plant-card{cursor:default;}
   <div class="logo">🌿</div>
   <div><h1>みずやり手帳</h1><small>Plant Watering Journal</small></div>
   <div class="season-badge" id="season-badge">🌸 春</div>
-  <div id="sync-indicator" style="font-size:10px;opacity:.7;display:flex;align-items:center;gap:3px;">⏳</div>
+  <div id="weather-display" style="font-size:11px;color:rgba(255,255,255,.85);display:flex;align-items:center;gap:4px;"></div>
   <div class="today-pill"><b id="hd-date">--</b>今日</div>
 </header>
 
@@ -468,19 +476,34 @@ body.select-mode .plant-card{cursor:default;}
       <table class="freq-table" id="freq-table"></table>
     </div>
 
-    <!-- Cloud sync -->
+    <!-- Weather location -->
     <div class="settings-section">
-      <h3>☁️ クラウド同期</h3>
-      <p>データはClaudeのクラウドに自動保存されます。PCとiPhoneで同じデータを共有できます。</p>
-      <div class="season-info" id="sync-status-box">
-        <div class="si-row"><span class="si-label">同期状態</span><span class="si-val" id="sync-status-text">確認中...</span></div>
-        <div class="si-row"><span class="si-label">最終同期</span><span class="si-val" id="sync-last-time">—</span></div>
+      <h3>🌤 天気予報の位置設定</h3>
+      <p>水やりタブのヘッダーに今日の天気・最高/最低気温を表示します。市区町村名で設定してください。</p>
+      <div style="display:flex;gap:8px;">
+        <input id="weather-city-input" type="text" placeholder="例: 東京都江東区、横浜市、大阪市" style="flex:1;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;background:var(--bg);color:var(--text);outline:none;">
+        <button onclick="saveWeatherCity()" style="padding:8px 16px;border-radius:8px;border:none;background:var(--green-dark);color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;">設定</button>
       </div>
-      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
-        <button class="btn-primary" style="margin-top:0;flex:1;" onclick="syncToCloud()">☁️ クラウドに保存（アップロード）</button>
-        <button class="btn-primary" style="margin-top:0;flex:1;background:var(--green-mid);" onclick="syncFromCloud()">📥 クラウドから読み込み（ダウンロード）</button>
+      <div id="weather-city-status" style="font-size:11px;color:var(--muted);margin-top:6px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Watering evaluation overlay -->
+<div class="overlay" id="ov-eval" onclick="closeOv('ov-eval',event)">
+  <div class="sheet">
+    <div class="sh-hdr">
+      <div class="sh-icon" id="eval-icon"></div>
+      <div>
+        <div class="sh-title" id="eval-name"></div>
+        <div class="sh-sub">💧 水やり評価</div>
       </div>
-      <p style="font-size:10px;color:var(--muted);margin-top:8px;">※ 水やり記録を更新したあとは「クラウドに保存」を押してください。別のデバイスで見るときは「クラウドから読み込み」を押してください。</p>
+    </div>
+    <div id="eval-body" style="min-height:80px;display:flex;align-items:center;justify-content:center;">
+      <div style="text-align:center;color:var(--muted);font-size:13px;">🤔 Claudeが評価中...</div>
+    </div>
+    <div class="sh-acts" style="margin-top:16px;">
+      <button class="btn-ok-sh" onclick="closeOvD('ov-eval')">閉じる</button>
     </div>
   </div>
 </div>
@@ -928,119 +951,54 @@ let plants = loadPlants();
 let humidity = loadHumidity();
 let customCategories = loadCustomCategories();
 
-// ── CLOUD SYNC ──────────────────────────────────────────────────────
-const CLOUD_KEY = 'mizuyari_v5_data';
-
-function setSyncIndicator(status) {
-  const el = document.getElementById('sync-indicator');
-  if(!el) return;
-  const map = { ok:'☁️', saving:'⏳', error:'⚠️', loading:'🔄' };
-  el.textContent = map[status] || '☁️';
-}
-
-function updateSyncStatusUI(msg, time) {
-  const st = document.getElementById('sync-status-text');
-  const lt = document.getElementById('sync-last-time');
-  if(st) st.textContent = msg;
-  if(lt && time) lt.textContent = time;
-}
-
-async function syncToCloud() {
-  setSyncIndicator('saving');
-  updateSyncStatusUI('保存中...', '—');
-  try {
-    const payload = JSON.stringify({
-      plants, locations, humidity, customCategories,
-      savedAt: new Date().toISOString()
-    });
-    const result = await window.storage.set(CLOUD_KEY, payload, false);
-    if(!result) throw new Error('storage set failed');
-    const timeStr = new Date().toLocaleString('ja-JP', {month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
-    setSyncIndicator('ok');
-    updateSyncStatusUI('✅ 同期済み', timeStr);
-    toast('☁️ クラウドに保存しました');
-  } catch(e) {
-    setSyncIndicator('error');
-    updateSyncStatusUI('⚠️ 保存失敗', '—');
-    toast('⚠️ クラウド保存に失敗しました');
-  }
-}
-
-async function syncFromCloud() {
-  if(!confirm('クラウドのデータを読み込みます。現在のデータは上書きされます。よろしいですか？')) return;
-  setSyncIndicator('loading');
-  updateSyncStatusUI('読み込み中...', '—');
-  try {
-    const result = await window.storage.get(CLOUD_KEY, false);
-    if(!result || !result.value) {
-      toast('⚠️ クラウドにデータがありません。先にアップロードしてください。');
-      setSyncIndicator('error');
-      updateSyncStatusUI('データなし', '—');
-      return;
-    }
-    const data = JSON.parse(result.value);
-    plants = data.plants || plants;
-    locations = data.locations || locations;
-    humidity = data.humidity || humidity;
-    customCategories = data.customCategories || customCategories;
-    // ローカルにも保存
-    saveLocs(); savePlants(); saveHumidity(); saveCustomCategories();
-    const savedAt = data.savedAt ? new Date(data.savedAt).toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '不明';
-    setSyncIndicator('ok');
-    updateSyncStatusUI('✅ 同期済み', savedAt);
-    setHumidity(humidity, false);
-    render(); renderManage();
-    toast('📥 クラウドから読み込みました');
-  } catch(e) {
-    setSyncIndicator('error');
-    updateSyncStatusUI('⚠️ 読み込み失敗', '—');
-    toast('⚠️ クラウド読み込みに失敗しました');
-  }
-}
-
-async function autoSyncToCloud() {
-  // 水やり記録・編集時に自動でクラウド保存
-  try {
-    const payload = JSON.stringify({
-      plants, locations, humidity, customCategories,
-      savedAt: new Date().toISOString()
-    });
-    await window.storage.set(CLOUD_KEY, payload, false);
-    setSyncIndicator('ok');
-    const timeStr = new Date().toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
-    updateSyncStatusUI('✅ 同期済み', timeStr);
-  } catch(e) {
-    setSyncIndicator('error');
-  }
-}
-
-async function checkCloudStatus() {
-  try {
-    const result = await window.storage.get(CLOUD_KEY, false);
-    if(result && result.value) {
-      const data = JSON.parse(result.value);
-      const savedAt = data.savedAt ? new Date(data.savedAt).toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '不明';
-      setSyncIndicator('ok');
-      updateSyncStatusUI('✅ 同期済み', savedAt);
-    } else {
-      setSyncIndicator('error');
-      updateSyncStatusUI('未保存（初回はアップロードしてください）', '—');
-    }
-  } catch(e) {
-    setSyncIndicator('error');
-    updateSyncStatusUI('クラウド接続確認中...', '—');
-  }
-}
-
-function saveLocs()   {
-  localStorage.setItem('pw_locs_v6', JSON.stringify(locations));
-}
-function savePlants() {
-  localStorage.setItem('pw_plants_v6', JSON.stringify(plants));
-  autoSyncToCloud();
-}
+function saveLocs()   { localStorage.setItem('pw_locs_v6', JSON.stringify(locations)); }
+function savePlants() { localStorage.setItem('pw_plants_v6', JSON.stringify(plants)); }
 function saveHumidity(){ localStorage.setItem('pw_humidity', humidity); }
 function saveCustomCategories() { localStorage.setItem('pw_custom_cats', JSON.stringify(customCategories)); }
+
+// ── WEATHER ──────────────────────────────────────────────────────────
+const WEATHER_ICONS = {
+  0:'☀️', 1:'🌤', 2:'⛅', 3:'☁️',
+  45:'🌫', 48:'🌫',
+  51:'🌦', 53:'🌦', 55:'🌧',
+  61:'🌧', 63:'🌧', 65:'🌧',
+  71:'🌨', 73:'🌨', 75:'🌨',
+  80:'🌦', 81:'🌧', 82:'⛈',
+  95:'⛈', 96:'⛈', 99:'⛈'
+};
+
+function loadWeatherCity() { return localStorage.getItem('pw_weather_city') || ''; }
+function saveWeatherCity() {
+  const city = document.getElementById('weather-city-input').value.trim();
+  if(!city) { alert('市区町村名を入力してください'); return; }
+  localStorage.setItem('pw_weather_city', city);
+  document.getElementById('weather-city-status').textContent = `✅ 「${city}」を設定しました`;
+  fetchWeather(city);
+}
+
+async function fetchWeather(city) {
+  const el = document.getElementById('weather-display');
+  if(!city) { el.innerHTML=''; return; }
+  el.innerHTML = '<span style="opacity:.6;font-size:10px;">天気取得中...</span>';
+  try {
+    // ジオコーディングで緯度経度を取得
+    const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=ja&format=json`);
+    const geoData = await geoRes.json();
+    if(!geoData.results?.length) { el.innerHTML='<span style="opacity:.6;font-size:10px;">📍取得失敗</span>'; return; }
+    const {latitude, longitude} = geoData.results[0];
+
+    // 天気予報を取得
+    const wxRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo&forecast_days=1`);
+    const wxData = await wxRes.json();
+    const code = wxData.daily.weather_code[0];
+    const max  = Math.round(wxData.daily.temperature_2m_max[0]);
+    const min  = Math.round(wxData.daily.temperature_2m_min[0]);
+    const icon = WEATHER_ICONS[code] || '🌡';
+    el.innerHTML = `<span style="font-size:16px;">${icon}</span><span style="font-size:11px;">${max}°/<span style="opacity:.7;">${min}°</span></span>`;
+  } catch(e) {
+    el.innerHTML = '<span style="opacity:.5;font-size:10px;">天気—</span>';
+  }
+}
 
 // ── APP STATE ───────────────────────────────────────────────────────
 let selIds = new Set();
@@ -1226,12 +1184,14 @@ function pickBulkAdd(el, val) {
 }
 function bulkRecord() {
   if(!selIds.size) return;
+  const cutoff = new Date(TODAY);
+  cutoff.setMonth(cutoff.getMonth() - 24);
   selIds.forEach(i=>{
     plants[i].lastWater = TODAY_STR;
     plants[i].additive = bulkAdd;
     if(!plants[i].history) plants[i].history=[];
-    plants[i].history.unshift({date:TODAY_STR,additive:bulkAdd});
-    if(plants[i].history.length>20) plants[i].history.pop();
+    plants[i].history.unshift({date:TODAY_STR, additive:bulkAdd, eval:null});
+    plants[i].history = plants[i].history.filter(h => !h.date || new Date(h.date) >= cutoff);
   });
   const n=selIds.size; savePlants(); clearSel();
   render(); toast(`💧 ${n}件を記録（${ADD_ICON[bulkAdd]} ${bulkAdd}）`);
@@ -1255,15 +1215,122 @@ function pickWaterAdd(val,el) {
   document.querySelectorAll('#sh-chips .chip').forEach(c=>c.classList.remove('sel'));
   el.classList.add('sel');
 }
-function confirmWater() {
+async function confirmWater() {
   if(singleIdx===null) return;
-  plants[singleIdx].lastWater=TODAY_STR; plants[singleIdx].additive=singleAdd;
-  if(!plants[singleIdx].history) plants[singleIdx].history=[];
-  plants[singleIdx].history.unshift({date:TODAY_STR,additive:singleAdd});
-  if(plants[singleIdx].history.length>20) plants[singleIdx].history.pop();
-  savePlants(); closeOvD('ov-water');
+  const p = plants[singleIdx];
+  const prevDate = p.lastWater;
+  const prevDays = daysSince(prevDate);
+  const freq = getRecommendedFreq(p.name, p);
+
+  // 記録を保存
+  p.lastWater = TODAY_STR;
+  p.additive = singleAdd;
+  if(!p.history) p.history = [];
+  p.history.unshift({date:TODAY_STR, additive:singleAdd, eval:null});
+
+  // 24ヶ月（約730日）より古い履歴を削除
+  const cutoff = new Date(TODAY);
+  cutoff.setMonth(cutoff.getMonth() - 24);
+  p.history = p.history.filter(h => !h.date || new Date(h.date) >= cutoff);
+
+  savePlants();
+  closeOvD('ov-water');
   if(document.getElementById('ov-detail').classList.contains('open')) openDetail(singleIdx);
-  render(); toast(`💧 ${plants[singleIdx].name} を記録`);
+  render();
+  toast(`💧 ${p.name} を記録`);
+
+  // 評価オーバーレイを表示（ローディング状態）
+  document.getElementById('eval-name').textContent = p.name;
+  document.getElementById('eval-icon').textContent = getPlantIcon(p.name);
+  document.getElementById('eval-body').innerHTML =
+    `<div style="text-align:center;color:var(--muted);font-size:13px;padding:20px 0;">🤔 Claudeが評価中...</div>`;
+  document.getElementById('ov-eval').classList.add('open');
+
+  // Claude APIで評価を取得
+  const evalResult = await evaluateWatering(p, prevDays, freq);
+
+  // 評価を履歴に保存
+  if(p.history[0]) p.history[0].eval = evalResult;
+  savePlants();
+
+  // 評価結果を表示
+  const stars = evalResult.score >= 4 ? '⭐⭐⭐⭐⭐'.slice(0, evalResult.score*2) :
+    evalResult.score === 3 ? '⭐⭐⭐' : evalResult.score === 2 ? '⭐⭐' : '⭐';
+  document.getElementById('eval-body').innerHTML = `
+    <div class="eval-box">
+      <div class="eval-score">
+        <span class="eval-score-stars">${'⭐'.repeat(evalResult.score)}</span>
+        <span class="eval-score-label">${evalResult.scoreLabel}</span>
+      </div>
+      <div class="eval-comment">${evalResult.comment}</div>
+    </div>`;
+
+  // 詳細が開いていれば更新
+  if(document.getElementById('ov-detail').classList.contains('open')) openDetail(singleIdx);
+}
+
+// ── CLAUDE API: 水やり評価 ───────────────────────────────────────
+async function evaluateWatering(plant, prevDays, freq) {
+  const cat = PLANT_CATEGORY[plant.name] || customCategories[plant.name] || 'B';
+  const locHum = getLocHumidity(plant.loc);
+  const soilLabel = plant.soilType ? (SOIL_PRESETS.find(s=>s.id===plant.soilType)?.label || plant.soilType) : '未設定';
+  const potLabel = plant.potType ? (POT_TYPES.find(pt=>pt.id===plant.potType)?.label || plant.potType) : '未設定';
+  const potSizeLabel = plant.potSize ? (POT_SIZES.find(s=>s.id===plant.potSize)?.label || plant.potSize) : '未設定';
+  const mossLabel = plant.mossMulch === 'yes' ? '水苔マルチあり' : 'なし';
+  const prevStr = prevDays === 9999 ? '初回水やり' : `前回から${prevDays}日経過`;
+
+  const prompt = `あなたは観葉植物の水やり専門家です。以下の植物への水やりを評価してください。
+
+【植物情報】
+- 植物名: ${plant.name}
+- 水やりグループ: ${CAT_LABEL[cat]}（${cat}グループ）
+- 季節: ${SEASON_JA}
+- 湿度環境: ${HUM_LABEL[locHum]}
+- 用土: ${soilLabel}
+- 鉢タイプ: ${potLabel}
+- 鉢サイズ: ${potSizeLabel}
+- 水苔マルチ: ${mossLabel}
+- 活力剤: ${plant.additive || 'なし'}
+
+【今回の水やり】
+- ${prevStr}
+- 推奨水やり間隔: ${freq}日ごと
+- 差異: ${prevDays === 9999 ? '初回のため比較なし' : prevDays < freq ? `推奨より${freq - prevDays}日早め` : prevDays > freq ? `推奨より${prevDays - freq}日遅め` : 'ちょうど推奨通り'}
+
+以下のJSON形式のみで回答してください（他の文字は不要）：
+{"score":数値1-5,"scoreLabel":"一言ラベル","comment":"2-3文の評価コメント（日本語）"}
+
+scoreの基準：5=完璧なタイミング、4=良好、3=やや早め/遅め、2=かなり早め/遅め、1=問題あり
+scoreLabelの例：「完璧なタイミング」「少し早めでした」「やや遅れました」「かなり乾燥していました」など
+commentは植物の状態への気づきや次回へのアドバイスを含めてください。`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 300,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    if(!res.ok) throw new Error('API error');
+    const data = await res.json();
+    const text = data.content?.[0]?.text?.trim() || '';
+    const clean = text.replace(/```json|```/g, '').trim();
+    return JSON.parse(clean);
+  } catch(e) {
+    return {
+      score: prevDays === 9999 ? 5 :
+             Math.abs(prevDays - freq) <= 1 ? 5 :
+             Math.abs(prevDays - freq) <= 3 ? 4 :
+             Math.abs(prevDays - freq) <= 7 ? 3 : 2,
+      scoreLabel: prevDays === 9999 ? '初回記録' :
+                  prevDays < freq ? '少し早めでした' :
+                  prevDays > freq ? 'やや遅れました' : 'ちょうど良いタイミング',
+      comment: '（オフライン中のため簡易評価です）推奨間隔を参考に、次回の水やりの参考にしてください。'
+    };
+  }
 }
 
 // ── DETAIL MODAL ─────────────────────────────────────────────────────
@@ -1321,9 +1388,27 @@ function openDetail(idx) {
   document.getElementById('det-info').innerHTML = tags
     ? `<h4>🌱 植物情報</h4><div class="det-tags">${tags}</div>` : '';
   document.getElementById('det-memo').textContent=p.memo||'（メモなし）';
-  const hist=(p.history||[]).slice(0,10);
+  const hist=(p.history||[]).slice(0,50);
   document.getElementById('det-hist').innerHTML=hist.length
-    ? hist.map(h=>`<li><span>${fmtFull(h.date)}</span>${ADD_ICON[h.additive]||'💧'} ${h.additive||'なし'}</li>`).join('')
+    ? hist.map((h,idx)=>{
+        const prevDate = hist[idx+1]?.date;
+        const interval = prevDate ? Math.floor((new Date(h.date)-new Date(prevDate))/864e5) : null;
+        const intervalText = interval !== null
+          ? `<span style="font-size:10px;color:var(--muted);">（前回から${interval}日 / 推奨${freq}日）</span>`
+          : `<span style="font-size:10px;color:var(--muted);">（初回）</span>`;
+        return `
+        <li>
+          <div style="flex:1;">
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <span>${fmtFull(h.date)}</span>
+              <span>${ADD_ICON[h.additive]||'💧'} ${h.additive||'なし'}</span>
+              ${intervalText}
+              ${h.eval ? `<span style="font-size:10px;margin-left:auto;">★${h.eval.score} ${h.eval.scoreLabel}</span>` : ''}
+            </div>
+            ${h.eval?.comment ? `<div class="hist-eval">${h.eval.comment}</div>` : ''}
+          </div>
+        </li>`;
+      }).join('')
     : '<li>記録なし</li>';
   document.getElementById('ov-detail').classList.add('open');
 }
@@ -1657,7 +1742,8 @@ function renderManage() {
     grp.forEach(p=>{
       const i=p._idx;
       const cat=PLANT_CATEGORY[p.name]||'B';
-      const freq=getRecommendedFreq(p.name);
+      const freq=getRecommendedFreq(p.name, p);
+      const lastWaterStr = p.lastWater ? `💧 ${fmtFull(p.lastWater)}` : '💧 未実施';
       const subParts=[];
       if(p.intro)   subParts.push(`📅 ${fmtFull(p.intro)}`);
       if(p.potSize) subParts.push(`⬜ ${POT_SIZES.find(s=>s.id===p.potSize)?.label.split('（')[0] || p.potSize}`);
@@ -1666,6 +1752,7 @@ function renderManage() {
       if(p.potType)  subParts.push(`${POT_TYPES.find(pt=>pt.id===p.potType)?.icon||''} ${POT_TYPES.find(pt=>pt.id===p.potType)?.label||''}`);
       if(p.mossMulch==='yes') subParts.push('🌿 水苔あり');
       subParts.push(`💧 推奨${freq}日`);
+      subParts.push(lastWaterStr);
       html+=`
       <div class="manage-card">
         <div class="mg-icon">${getPlantIcon(p.name)}</div>
@@ -1674,6 +1761,7 @@ function renderManage() {
           <div class="mg-sub">${subParts.join('  ')}</div>
         </div>
         <div class="mg-acts">
+          <button class="btn-edit" onclick="openDetail(${i})" style="color:var(--green-mid);border-color:var(--green-mid);">履歴</button>
           <button class="btn-edit" onclick="openEdit(${i})">編集</button>
           <button class="btn-del" onclick="deletePlant(${i})">削除</button>
         </div>
@@ -1739,6 +1827,9 @@ function showTab(tab, btn) {
     document.getElementById('si-month').textContent=`${MONTH}月`;
     document.getElementById('si-season').textContent=SEASON_JA;
     document.getElementById('si-trend').textContent=SEASON_TREND;
+    const city = loadWeatherCity();
+    document.getElementById('weather-city-input').value = city;
+    document.getElementById('weather-city-status').textContent = city ? `現在の設定: 「${city}」` : '';
   }
 }
 
@@ -1772,7 +1863,13 @@ buildPotSizeOptions(document.getElementById('i-potSize'), '');
 setHumidity(humidity || 'h55', false);
 render();
 updateShopList();
-checkCloudStatus();
+// 天気を初回取得
+const _weatherCity = loadWeatherCity();
+if(_weatherCity) {
+  document.getElementById('weather-city-input').value = _weatherCity;
+  fetchWeather(_weatherCity);
+}
+
 </script>
 </body>
 </html>
