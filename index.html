@@ -215,6 +215,13 @@ header small{font-size:9px;opacity:.6;font-family:'Shippori Mincho',serif;}
 .empty .ei{font-size:40px;margin-bottom:10px;}
 body.select-mode .plant-card{cursor:default;}
 
+/* stats */
+.stats-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.stats-row:last-child{border-bottom:none;}
+.stats-label{color:var(--text);flex:1;}
+.stats-val{font-weight:700;color:var(--green-dark);margin-left:10px;white-space:nowrap;}
+.stats-total{font-size:12px;color:var(--muted);margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid var(--border);}
+
 /* soil/pot/moss UI */
 .soil-custom-row{background:var(--green-pale);border-radius:8px;padding:10px 12px !important;}
 .soil-slider-wrap{display:flex;align-items:center;gap:8px;margin-top:6px;}
@@ -240,6 +247,7 @@ body.select-mode .plant-card{cursor:default;}
   <button class="tab-btn active" onclick="showTab('list',this)">💧 水やり</button>
   <button class="tab-btn" onclick="showTab('manage',this)">🌱 植物管理</button>
   <button class="tab-btn" onclick="showTab('locations',this)">📍 置き場所</button>
+  <button class="tab-btn" onclick="showTab('stats',this)">📊 集計</button>
   <button class="tab-btn" onclick="showTab('settings',this)">⚙️ 設定</button>
 </div>
 
@@ -309,7 +317,13 @@ body.select-mode .plant-card{cursor:default;}
       <div class="f3">
         <div class="form-row"><label>植え替え年月</label><input id="i-repot" type="month"></div>
         <div class="form-row"><label>鉢サイズ</label><select id="i-potSize"><option value="">— 未設定 —</option></select></div>
-        <div class="form-row"><label>購入場所</label><input id="i-shop" type="text" placeholder="例: 渋谷GREEN"></div>
+        <div class="form-row"><label>購入場所</label>
+          <input id="i-shop" type="text" placeholder="例: スーパービバホーム豊洲" list="shop-list">
+          <datalist id="shop-list"></datalist>
+        </div>
+      </div>
+      <div class="f2">
+        <div class="form-row"><label>購入価格（円）</label><input id="i-price" type="number" placeholder="例: 1980" min="0"></div>
       </div>
       <!-- 用土 -->
       <div class="form-row">
@@ -376,6 +390,24 @@ body.select-mode .plant-card{cursor:default;}
       <button class="btn-primary" onclick="addLocation()">📍 追加する</button>
     </div>
     <div style="padding:10px;" id="loc-manage-list"></div>
+  </div>
+</div>
+
+<!-- STATS TAB -->
+<div id="tab-stats" style="display:none;">
+  <div class="settings-wrap">
+    <div class="settings-section">
+      <h3>📅 月ごとの購入額</h3>
+      <div id="stats-monthly"></div>
+    </div>
+    <div class="settings-section">
+      <h3>🏪 購入場所ごとの植物数</h3>
+      <div id="stats-shop-count"></div>
+    </div>
+    <div class="settings-section">
+      <h3>💴 購入場所ごとの購入額</h3>
+      <div id="stats-shop-price"></div>
+    </div>
   </div>
 </div>
 
@@ -509,7 +541,12 @@ body.select-mode .plant-card{cursor:default;}
     <div class="f3">
       <div class="form-row"><label>植え替え年月</label><input id="ed-repot" type="month"></div>
       <div class="form-row"><label>鉢サイズ</label><select id="ed-potSize"><option value="">— 未設定 —</option></select></div>
-      <div class="form-row"><label>購入場所</label><input id="ed-shop" type="text"></div>
+      <div class="form-row"><label>購入場所</label>
+        <input id="ed-shop" type="text" list="shop-list">
+      </div>
+    </div>
+    <div class="f2">
+      <div class="form-row"><label>購入価格（円）</label><input id="ed-price" type="number" placeholder="例: 1980" min="0"></div>
     </div>
     <!-- 用土 -->
     <div class="form-row">
@@ -807,69 +844,70 @@ function getPlantIcon(name) {
 
 // ── DEFAULT DATA ────────────────────────────────────────────────────
 const DEFAULT_LOCS = [
-  {id:'living', name:'リビング', icon:'🛋'},
-  {id:'bedroom', name:'寝室', icon:'🛏'},
-  {id:'study', name:'書斎', icon:'📚'},
-  {id:'entrance', name:'玄関', icon:'🚪'},
-  {id:'balcony', name:'ベランダ', icon:'🌤'},
-  {id:'other', name:'その他', icon:'📦'},
+  {id:'living',   name:'リビング', icon:'🛋'},
+  {id:'bedroom',  name:'寝室',     icon:'🛏', humidity:'h70'},
+  {id:'entrance', name:'玄関',     icon:'🚪'},
+  {id:'balcony',  name:'ベランダ', icon:'🌤'},
+  {id:'other',    name:'その他',   icon:'📦'},
 ];
 
 const DEFAULT_PLANTS = [
-  {name:'エバーフレッシュ',loc:'living',lastWater:'2026-03-12',additive:'リキダス',intro:null,repot:null,pot:null,soil:null,shop:null,memo:'',history:[]},
-  {name:'モンステラ（リビング）',loc:'living',lastWater:'2026-03-12',additive:'リキダス',intro:null,repot:null,pot:null,soil:null,shop:null,memo:'',history:[]},
-  {name:'ストレリチア・レギネ',loc:'living',lastWater:'2026-03-12',additive:'リキダス',intro:'2026-01-04',repot:null,pot:'8号',soil:null,shop:null,memo:'',history:[]},
-  {name:'パキラ（斑なし）',loc:'living',lastWater:'2026-03-12',additive:'リキダス',intro:null,repot:null,pot:'6号',soil:null,shop:null,memo:'',history:[]},
-  {name:'ザミオクルカス・レイブン',loc:'living',lastWater:'2026-02-23',additive:'なし',intro:'2025-12-18',repot:null,pot:'6号',soil:null,shop:null,memo:'',history:[]},
-  {name:'シェフレラ・ハッピーイエロー',loc:'living',lastWater:'2026-03-06',additive:'なし',intro:'2026-01-04',repot:null,pot:'3号',soil:null,shop:null,memo:'',history:[]},
-  {name:'フィカス・ベンジャミン・ヌダ',loc:'living',lastWater:'2026-03-13',additive:'リキダス',intro:'2025-12-11',repot:null,pot:'9号',soil:null,shop:null,memo:'',history:[]},
-  {name:'フィカス・ベンガレンシス',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-02-12',repot:null,pot:null,soil:null,shop:null,memo:'',history:[]},
-  {name:'フィカス・ソフィア',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-01-04',repot:null,pot:'3号',soil:null,shop:null,memo:'',history:[]},
-  {name:'フィカス・スイートハート',loc:'bedroom',lastWater:'2026-03-08',additive:'なし',intro:'2026-01-04',repot:null,pot:'5号',soil:null,shop:null,memo:'',history:[]},
-  {name:'ベンジャミン・バロック',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-01-04',repot:null,pot:'5号',soil:null,shop:null,memo:'',history:[]},
-  {name:'斑入りパキラ',loc:'bedroom',lastWater:'2026-03-03',additive:'なし',intro:'2025-12-28',repot:null,pot:'3号',soil:null,shop:null,memo:'',history:[]},
-  {name:'ポトス・エンジョイ',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-01-04',repot:null,pot:'3号',soil:null,shop:null,memo:'',history:[]},
-  {name:'ポトス・ゴールデン',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-03-01',repot:null,pot:'5号',soil:null,shop:null,memo:'',history:[]},
-  {name:'アグラオネマ・マリア',loc:'bedroom',lastWater:'2026-03-11',additive:'リキダス',intro:'2026-01-11',repot:null,pot:null,soil:null,shop:null,memo:'',history:[]},
-  {name:'ドラセナ・コンパクタ',loc:'bedroom',lastWater:'2026-02-23',additive:'なし',intro:'2025-12-14',repot:null,pot:null,soil:null,shop:null,memo:'',history:[]},
-  {name:'ドラセナ・ジェイドジュエル',loc:'bedroom',lastWater:'2026-03-11',additive:'リキダス',intro:'2026-02-11',repot:null,pot:'7号',soil:null,shop:null,memo:'',history:[]},
-  {name:'サンスベリア・トリファッシアータ',loc:'bedroom',lastWater:'2026-02-23',additive:'なし',intro:'2026-02-23',repot:null,pot:'7号',soil:null,shop:null,memo:'',history:[]},
-  {name:'カラテア・ホワイトスター',loc:'bedroom',lastWater:'2026-03-18',additive:'リキダス',intro:'2026-01-04',repot:null,pot:'5号',soil:null,shop:null,memo:'',history:[]},
-  {name:'カラテア・マコヤナ',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-02-11',repot:null,pot:'5号',soil:null,shop:null,memo:'',history:[]},
-  {name:'カラテア・ランキフォリア',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-01-04',repot:null,pot:'3号',soil:null,shop:null,memo:'',history:[]},
-  {name:'カラテア・ゼブリナ',loc:'bedroom',lastWater:'2026-03-17',additive:'なし',intro:'2026-03-07',repot:null,pot:'4号',soil:null,shop:null,memo:'',history:[]},
-  {name:'クテナンテ・アマグリス',loc:'bedroom',lastWater:'2026-03-08',additive:'なし',intro:'2026-02-15',repot:null,pot:null,soil:null,shop:null,memo:'',history:[]},
-  {name:'トリオスター',loc:'bedroom',lastWater:'2026-03-15',additive:'リキダス',intro:'2026-01-04',repot:null,pot:null,soil:null,shop:null,memo:'',history:[]},
-  {name:'マランタ・レウコネウラ',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2025-12-21',repot:null,pot:'3号',soil:null,shop:null,memo:'',history:[]},
-  {name:'スパティフィラム・センセーショナル・バリエガータ',loc:'bedroom',lastWater:'2026-03-16',additive:'リキダス',intro:'2026-03-01',repot:null,pot:'4号',soil:null,shop:null,memo:'',history:[]},
-  {name:'アンスリウム・クリスタルナム',loc:'bedroom',lastWater:'2026-03-15',additive:'リキダス',intro:'2026-03-14',repot:null,pot:'3号',soil:null,shop:null,memo:'',history:[]},
-  {name:'アロカシア・オドラ・バリエガータ・バティック',loc:'bedroom',lastWater:'2026-03-15',additive:'リキダス',intro:'2026-03-14',repot:null,pot:'3号',soil:null,shop:null,memo:'',history:[]},
-  {name:'フィロデンドロン・エルチョコレッド',loc:'bedroom',lastWater:'2026-03-18',additive:'リキダス',intro:'2026-03-08',repot:null,pot:'3号',soil:null,shop:null,memo:'',history:[]},
-  {name:'フィロデンドロン・プリンス・オブ・オレンジ',loc:'bedroom',lastWater:null,additive:'なし',intro:'2026-03-15',repot:null,pot:'3号',soil:null,shop:null,memo:'',history:[]},
-  {name:'ホマロメナ・ワリシー・カモフラージュ',loc:'bedroom',lastWater:'2026-03-16',additive:'リキダス',intro:'2026-02-07',repot:null,pot:'3号',soil:null,shop:null,memo:'',history:[]},
-  {name:'ペペロミア・カペラータ',loc:'bedroom',lastWater:'2026-03-16',additive:'リキダス',intro:'2025-12-28',repot:null,pot:'3号',soil:null,shop:null,memo:'',history:[]},
-  {name:'エスキナンサス',loc:'bedroom',lastWater:'2026-03-12',additive:'リキダス',intro:null,repot:null,pot:null,soil:null,shop:null,memo:'',history:[]},
-  {name:'ホヤ・クミンギヤナ',loc:'bedroom',lastWater:'2026-03-06',additive:'なし',intro:'2026-01-04',repot:null,pot:null,soil:null,shop:null,memo:'',history:[]},
-  {name:'ゲオゲナンツス',loc:'bedroom',lastWater:'2026-03-02',additive:'なし',intro:'2026-01-04',repot:null,pot:null,soil:null,shop:null,memo:'',history:[]},
-  {name:'オリヅルラン・ボニー',loc:'bedroom',lastWater:'2026-03-12',additive:'リキダス',intro:'2026-01-04',repot:null,pot:null,soil:null,shop:null,memo:'',history:[]},
-  {name:'リプサリス',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-02-21',repot:null,pot:'6号',soil:null,shop:null,memo:'',history:[]},
-  {name:'ネフロレピス（新株）',loc:'bedroom',lastWater:'2026-03-14',additive:'リキダス',intro:'2026-02-22',repot:null,pot:'6号',soil:null,shop:null,memo:'',history:[]},
-  {name:'ネフロレピス・ブロンド',loc:'bedroom',lastWater:'2026-03-14',additive:'リキダス',intro:'2026-01-04',repot:null,pot:null,soil:null,shop:null,memo:'',history:[]},
-  {name:'ネフロレピス・スコッチ（eスコッチ）',loc:'bedroom',lastWater:'2026-03-14',additive:'リキダス',intro:'2026-02-21',repot:null,pot:'5号',soil:null,shop:null,memo:'',history:[]},
-  {name:'スコッチシダ',loc:'bedroom',lastWater:'2026-03-14',additive:'リキダス',intro:'2025-12-21',repot:null,pot:null,soil:null,shop:null,memo:'',history:[]},
-  {name:'ベゴニア・マクラータ（旧株）',loc:'bedroom',lastWater:'2026-03-18',additive:'リキダス',intro:'2026-01-17',repot:null,pot:'4号',soil:null,shop:null,memo:'',history:[]},
-  {name:'ベゴニア・マクラータ（新株）',loc:'bedroom',lastWater:'2026-03-12',additive:'リキダス',intro:'2026-02-23',repot:null,pot:null,soil:null,shop:null,memo:'',history:[]},
-  {name:'モンステラ・タイコンステレーション',loc:'bedroom',lastWater:'2026-03-15',additive:'リキダス',intro:'2026-03-07',repot:null,pot:'3号',soil:null,shop:null,memo:'',history:[]},
+  {name:'エバーフレッシュ',loc:'living',lastWater:'2026-03-12',additive:'リキダス',intro:null,repot:null,pot:null,soil:null,shop:'メルカリ',memo:'',history:[],potSize:'s89',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'モンステラ',loc:'living',lastWater:'2026-03-21',additive:'メネデール',intro:null,repot:'2026-03',pot:null,soil:null,shop:null,memo:'窓側',history:[],potSize:'s10',soilType:'protoleaf',soilCustomMult:null,potType:'slit',mossMulch:'no',price:null},
+  {name:'ストレリチア・レギネ',loc:'living',lastWater:'2026-03-12',additive:'リキダス',intro:'2026-01-04',repot:null,pot:'8号',soil:null,shop:null,memo:'',history:[],potSize:'s89',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'パキラ（斑なし）',loc:'living',lastWater:'2026-03-12',additive:'リキダス',intro:null,repot:null,pot:'6号',soil:null,shop:'IKEA',memo:'',history:[],potSize:'s67',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'ザミオクルカス・レイブン',loc:'living',lastWater:'2026-02-23',additive:'なし',intro:'2025-12-18',repot:null,pot:'6号',soil:null,shop:'メルカリ',memo:'',history:[],potSize:'s67',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'シェフレラ・ハッピーイエロー',loc:'living',lastWater:'2026-03-06',additive:'なし',intro:'2026-01-04',repot:null,pot:'3号',soil:null,shop:'コーナン',memo:'',history:[],potSize:'s3',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'フィカス・ベンジャミン・ヌダ',loc:'living',lastWater:'2026-03-13',additive:'リキダス',intro:'2025-12-11',repot:null,pot:'9号',soil:null,shop:'Blossom Bgreen',memo:'',history:[],potSize:'s89',soilType:'water_heavy',soilCustomMult:null,potType:'slit',mossMulch:'no',price:null},
+  {name:'フィカス・ベンガレンシス',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-02-12',repot:null,pot:null,soil:null,shop:'ケンマート',memo:'',history:[],potSize:'s67',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'フィカス・ソフィア',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-01-04',repot:null,pot:'3号',soil:null,shop:'IKEA',memo:'',history:[],potSize:'s45',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'フィカス・スイートハート',loc:'bedroom',lastWater:'2026-03-20',additive:'なし',intro:'2026-01-04',repot:null,pot:'5号',soil:null,shop:'ANDPLANTS',memo:'',history:[],potSize:'s45',soilType:'water_heavy',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'ベンジャミン・バロック',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-01-04',repot:null,pot:'5号',soil:null,shop:'ANDPLANTS',memo:'',history:[],potSize:'s45',soilType:'water_heavy',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'斑入りパキラ',loc:'bedroom',lastWater:'2026-03-03',additive:'なし',intro:'2025-12-28',repot:'2025-12',pot:'3号',soil:null,shop:'garage東京',memo:'',history:[],potSize:'s3',soilType:'standard',soilCustomMult:null,potType:'ceramic',mossMulch:'no',price:null},
+  {name:'ポトス・エンジョイ',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-01-04',repot:null,pot:'3号',soil:null,shop:'ANDPLANTS',memo:'',history:[],potSize:'s3',soilType:'water_heavy',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'ポトス・ゴールデン',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-03-01',repot:null,pot:'5号',soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s45',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'アグラオネマ・マリア',loc:'bedroom',lastWater:'2026-03-11',additive:'リキダス',intro:'2026-01-11',repot:null,pot:null,soil:null,shop:'ANDPLANTS',memo:'',history:[],potSize:'s67',soilType:'water_heavy',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'ドラセナ・コンパクタ',loc:'bedroom',lastWater:'2026-02-23',additive:'なし',intro:'2025-12-14',repot:'2025-12',pot:null,soil:null,shop:'Garage東京',memo:'',history:[],potSize:'s89',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'ドラセナ・ジェイドジュエル',loc:'bedroom',lastWater:'2026-03-11',additive:'リキダス',intro:'2026-02-11',repot:null,pot:'7号',soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s67',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'サンスベリア・トリファッシアータ',loc:'bedroom',lastWater:null,additive:'なし',intro:'2026-02-23',repot:null,pot:'7号',soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s67',soilType:'drain_heavy',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'カラテア・ホワイトスター',loc:'bedroom',lastWater:'2026-03-18',additive:'リキダス',intro:'2026-01-04',repot:null,pot:'5号',soil:null,shop:'ANDPLANTS',memo:'',history:[],potSize:'s45',soilType:'water_heavy',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'カラテア・マコヤナ',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-02-11',repot:null,pot:'5号',soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s45',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'カラテア・ランキフォリア',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-01-04',repot:null,pot:'3号',soil:null,shop:'島忠',memo:'',history:[],potSize:'s3',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'カラテア・ゼブリナ',loc:'bedroom',lastWater:'2026-03-17',additive:'なし',intro:'2026-03-07',repot:null,pot:'4号',soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s45',soilType:'drain_heavy',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'クテナンテ・アマグリス',loc:'bedroom',lastWater:'2026-03-08',additive:'なし',intro:'2026-02-15',repot:null,pot:null,soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s45',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'トリオスター',loc:'bedroom',lastWater:'2026-03-20',additive:'メネデール',intro:'2026-01-04',repot:'2026-03',pot:null,soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s45',soilType:'hanagokoro',soilCustomMult:null,potType:'slit',mossMulch:'no',price:null},
+  {name:'マランタ・レウコネウラ',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2025-12-21',repot:null,pot:'3号',soil:null,shop:null,memo:'',history:[],potSize:'s3',soilType:null,soilCustomMult:null,potType:null,mossMulch:'no',price:null},
+  {name:'スパティフィラム・センセーショナル・バリエガータ',loc:'bedroom',lastWater:'2026-03-16',additive:'リキダス',intro:'2026-03-01',repot:null,pot:'4号',soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s3',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'アンスリウム・クリスタルナム',loc:'bedroom',lastWater:'2026-03-20',additive:'メネデール',intro:'2026-03-14',repot:'2026-03',pot:'3号',soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s45',soilType:'hanagokoro',soilCustomMult:null,potType:'slit',mossMulch:'yes',price:null},
+  {name:'アロカシア・オドラ・バリエガータ・バティック',loc:'bedroom',lastWater:'2026-03-15',additive:'リキダス',intro:'2026-03-14',repot:null,pot:'3号',soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s3',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'フィロデンドロン・エルチョコレッド',loc:'bedroom',lastWater:'2026-03-18',additive:'リキダス',intro:'2026-03-08',repot:null,pot:'3号',soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s3',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'フィロデンドロン・プリンス・オブ・オレンジ',loc:'bedroom',lastWater:'2026-03-20',additive:'メネデール',intro:'2026-03-15',repot:'2026-03',pot:'3号',soil:null,shop:'greenbase tokyo',memo:'',history:[],potSize:'s45',soilType:'hanagokoro',soilCustomMult:null,potType:'slit',mossMulch:'no',price:null},
+  {name:'ホマロメナ・ワリシー・カモフラージュ',loc:'bedroom',lastWater:'2026-03-16',additive:'リキダス',intro:'2026-02-07',repot:null,pot:'3号',soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s3',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'ペペロミア・カペラータ',loc:'bedroom',lastWater:'2026-03-16',additive:'リキダス',intro:'2025-12-28',repot:null,pot:'3号',soil:null,shop:'garage東京',memo:'',history:[],potSize:'s3',soilType:'standard',soilCustomMult:null,potType:'ceramic',mossMulch:'no',price:null},
+  {name:'エスキナンサス',loc:'bedroom',lastWater:'2026-03-12',additive:'リキダス',intro:null,repot:null,pot:null,soil:null,shop:'ケンマート',memo:'',history:[],potSize:'s45',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'ホヤ・クミンギヤナ',loc:'bedroom',lastWater:'2026-03-06',additive:'なし',intro:'2026-01-04',repot:null,pot:null,soil:null,shop:null,memo:'',history:[],potSize:null,soilType:null,soilCustomMult:null,potType:null,mossMulch:'no',price:null},
+  {name:'ゲオゲナンツス',loc:'bedroom',lastWater:'2026-03-20',additive:'なし',intro:'2026-01-04',repot:'2026-03',pot:null,soil:null,shop:'ACTUS川崎',memo:'',history:[],potSize:'s3',soilType:'hanagokoro',soilCustomMult:null,potType:'slit',mossMulch:'no',price:null},
+  {name:'オリヅルラン・ボニー',loc:'bedroom',lastWater:'2026-03-12',additive:'リキダス',intro:'2026-01-04',repot:null,pot:null,soil:null,shop:'ACTUS川崎',memo:'',history:[],potSize:'s3',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'リプサリス',loc:'bedroom',lastWater:'2026-03-13',additive:'リキダス',intro:'2026-02-21',repot:null,pot:'6号',soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s67',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'ネフロレピス（新株）',loc:'bedroom',lastWater:'2026-03-14',additive:'リキダス',intro:'2026-02-22',repot:null,pot:'6号',soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s45',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'ネフロレピス・ブロンド',loc:'bedroom',lastWater:'2026-03-21',additive:'メネデール',intro:'2026-01-04',repot:'2026-03',pot:null,soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s67',soilType:'hanagokoro',soilCustomMult:null,potType:'slit',mossMulch:'no',price:null},
+  {name:'ネフロレピス・スコッチ（eスコッチ）',loc:'bedroom',lastWater:'2026-03-14',additive:'リキダス',intro:'2026-02-21',repot:null,pot:'5号',soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s45',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'スコッチシダ',loc:'bedroom',lastWater:'2026-03-14',additive:'リキダス',intro:'2025-12-21',repot:null,pot:null,soil:null,shop:'Rust横浜',memo:'',history:[],potSize:'s45',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'ベゴニア・マクラータ（旧株）',loc:'bedroom',lastWater:'2026-03-18',additive:'リキダス',intro:'2026-01-17',repot:null,pot:'4号',soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s45',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'ベゴニア・マクラータ（新株）',loc:'bedroom',lastWater:'2026-03-12',additive:'リキダス',intro:'2026-02-23',repot:null,pot:null,soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s45',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
+  {name:'モンステラ・タイコンステレーション',loc:'bedroom',lastWater:'2026-03-21',additive:'メネデール',intro:'2026-03-07',repot:null,pot:'3号',soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s3',soilType:'custom',soilCustomMult:0.75,potType:'slit',mossMulch:'no',price:null},
+  {name:'アロカシア・ニンジャ',loc:'bedroom',lastWater:null,additive:'なし',intro:'2026-03-21',repot:null,pot:null,soil:null,shop:'スーパービバホーム豊洲',memo:'',history:[],potSize:'s3',soilType:'standard',soilCustomMult:null,potType:'plastic',mossMulch:'no',price:null},
 ];
 
+
 // ── LOAD STATE ──────────────────────────────────────────────────────
-// pw_locs_v5 / pw_plants_v5 を引き継ぎ
+// pw_locs_v6 / pw_plants_v6
 function loadLocs() {
-  const s = localStorage.getItem('pw_locs_v5');
+  const s = localStorage.getItem('pw_locs_v6');
   return s ? JSON.parse(s) : DEFAULT_LOCS.map(l=>({...l}));
 }
 function loadPlants() {
-  const s = localStorage.getItem('pw_plants_v5');
+  const s = localStorage.getItem('pw_plants_v6');
   return s ? JSON.parse(s) : DEFAULT_PLANTS.map(p=>({...p}));
 }
 function loadHumidity() {
@@ -995,10 +1033,10 @@ async function checkCloudStatus() {
 }
 
 function saveLocs()   {
-  localStorage.setItem('pw_locs_v5', JSON.stringify(locations));
+  localStorage.setItem('pw_locs_v6', JSON.stringify(locations));
 }
 function savePlants() {
-  localStorage.setItem('pw_plants_v5', JSON.stringify(plants));
+  localStorage.setItem('pw_plants_v6', JSON.stringify(plants));
   autoSyncToCloud();
 }
 function saveHumidity(){ localStorage.setItem('pw_humidity', humidity); }
@@ -1032,6 +1070,66 @@ function closeOvD(id) { document.getElementById(id).classList.remove('open'); }
 function buildLocOptions(el, sel) {
   el.innerHTML = '<option value="">— 未設定 —</option>' +
     locations.map(l=>`<option value="${l.id}" ${l.id===sel?'selected':''}>${l.icon} ${l.name}</option>`).join('');
+}
+
+// ── 購入場所datalist更新 ─────────────────────────────────────────
+function updateShopList() {
+  const shops = [...new Set(plants.map(p=>p.shop).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'ja'));
+  const dl = document.getElementById('shop-list');
+  if(dl) dl.innerHTML = shops.map(s=>`<option value="${s}">`).join('');
+}
+
+// ── 集計レンダリング ────────────────────────────────────────────
+function renderStats() {
+  // 月ごとの購入額
+  const monthly = {};
+  plants.forEach(p => {
+    if(!p.intro || !p.price) return;
+    const ym = p.intro.slice(0,7); // YYYY-MM
+    monthly[ym] = (monthly[ym]||0) + Number(p.price);
+  });
+  const monthlyEl = document.getElementById('stats-monthly');
+  const monthlyKeys = Object.keys(monthly).sort().reverse();
+  if(!monthlyKeys.length) {
+    monthlyEl.innerHTML = '<p style="font-size:12px;color:var(--muted);">購入価格が登録されると表示されます</p>';
+  } else {
+    const total = Object.values(monthly).reduce((a,b)=>a+b,0);
+    monthlyEl.innerHTML = `
+      <div class="stats-total">合計: <b>¥${total.toLocaleString()}</b></div>
+      ${monthlyKeys.map(ym=>{
+        const [y,m] = ym.split('-');
+        return `<div class="stats-row"><span class="stats-label">${y}年${parseInt(m)}月</span><span class="stats-val">¥${monthly[ym].toLocaleString()}</span></div>`;
+      }).join('')}`;
+  }
+
+  // 購入場所ごとの植物数
+  const shopCount = {};
+  plants.forEach(p => { if(p.shop) shopCount[p.shop] = (shopCount[p.shop]||0) + 1; });
+  const shopCountEl = document.getElementById('stats-shop-count');
+  const shopCountKeys = Object.keys(shopCount).sort((a,b)=>shopCount[b]-shopCount[a]);
+  if(!shopCountKeys.length) {
+    shopCountEl.innerHTML = '<p style="font-size:12px;color:var(--muted);">購入場所が登録されると表示されます</p>';
+  } else {
+    shopCountEl.innerHTML = shopCountKeys.map(s=>
+      `<div class="stats-row"><span class="stats-label">🏪 ${s}</span><span class="stats-val">${shopCount[s]}鉢</span></div>`
+    ).join('');
+  }
+
+  // 購入場所ごとの購入額
+  const shopPrice = {};
+  plants.forEach(p => { if(p.shop && p.price) shopPrice[p.shop] = (shopPrice[p.shop]||0) + Number(p.price); });
+  const shopPriceEl = document.getElementById('stats-shop-price');
+  const shopPriceKeys = Object.keys(shopPrice).sort((a,b)=>shopPrice[b]-shopPrice[a]);
+  if(!shopPriceKeys.length) {
+    shopPriceEl.innerHTML = '<p style="font-size:12px;color:var(--muted);">購入場所と価格が登録されると表示されます</p>';
+  } else {
+    const total = Object.values(shopPrice).reduce((a,b)=>a+b,0);
+    shopPriceEl.innerHTML = `
+      <div class="stats-total">合計: <b>¥${total.toLocaleString()}</b></div>
+      ${shopPriceKeys.map(s=>
+        `<div class="stats-row"><span class="stats-label">🏪 ${s}</span><span class="stats-val">¥${shopPrice[s].toLocaleString()}</span></div>`
+      ).join('')}`;
+  }
 }
 
 // ── 用土・鉢UI helpers ────────────────────────────────────────────
@@ -1218,6 +1316,7 @@ function openDetail(idx) {
   if(p.repot) tags+=`<span>🪴 植替: ${fmtMonth(p.repot)}</span>`;
   if(p.pot)   tags+=`<span>⬜ 鉢: ${p.pot}</span>`;
   if(p.shop)  tags+=`<span>🏪 ${p.shop}</span>`;
+  if(p.price) tags+=`<span>💴 ¥${Number(p.price).toLocaleString()}</span>`;
   if(p.additive&&p.additive!=='なし') tags+=`<span>${ADD_ICON[p.additive]} ${p.additive}</span>`;
   document.getElementById('det-info').innerHTML = tags
     ? `<h4>🌱 植物情報</h4><div class="det-tags">${tags}</div>` : '';
@@ -1242,6 +1341,7 @@ function openEdit(idx) {
   document.getElementById('ed-intro').value=p.intro||'';
   document.getElementById('ed-repot').value=p.repot||'';
   document.getElementById('ed-shop').value=p.shop||'';
+  document.getElementById('ed-price').value=p.price||'';
   document.getElementById('ed-add').value=p.additive||'なし';
   document.getElementById('ed-memo').value=p.memo||'';
   // soil custom
@@ -1267,6 +1367,7 @@ function saveEdit() {
   p.repot=document.getElementById('ed-repot').value||null;
   p.potSize=document.getElementById('ed-potSize').value||null;
   p.shop=document.getElementById('ed-shop').value.trim()||null;
+  p.price=document.getElementById('ed-price').value ? Number(document.getElementById('ed-price').value) : null;
   p.soilType=document.getElementById('ed-soilType').value||null;
   p.soilCustomMult=p.soilType==='custom' ? parseInt(document.getElementById('ed-soilCustomMult').value)/100 : null;
   p.potType=document.getElementById('ed-potType').value||null;
@@ -1352,17 +1453,19 @@ async function addPlant() {
     potType: document.getElementById('i-potType').value||null,
     mossMulch: document.getElementById('i-mossMulch').value||'no',
     shop: document.getElementById('i-shop').value.trim()||null,
+    price: document.getElementById('i-price').value ? Number(document.getElementById('i-price').value) : null,
     memo: document.getElementById('i-memo').value.trim(),
     history: []
   });
   savePlants(); render(); renderManage();
-  ['i-name','i-water','i-intro','i-repot','i-shop','i-memo'].forEach(id=>document.getElementById(id).value='');
+  ['i-name','i-water','i-intro','i-repot','i-shop','i-memo','i-price'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('i-add').value='なし';
   document.getElementById('i-soilType').value='';
   document.getElementById('i-potType').value='';
   document.getElementById('i-potSize').value='';
   document.getElementById('i-soil-custom').style.display='none';
   selectMoss('i-moss-btns','no');
+  updateShopList();
 
   const newPlant = plants[plants.length-1];
   const freq = getRecommendedFreq(name, newPlant);
@@ -1623,13 +1726,14 @@ function renderFreqTable() {
 
 // ── TABS ─────────────────────────────────────────────────────────────
 function showTab(tab, btn) {
-  ['list','manage','locations','settings'].forEach(t=>{
+  ['list','manage','locations','stats','settings'].forEach(t=>{
     document.getElementById('tab-'+t).style.display=t===tab?'':'none';
   });
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  if(tab==='manage') renderManage();
+  if(tab==='manage') { renderManage(); updateShopList(); }
   if(tab==='locations') renderLocManage();
+  if(tab==='stats') renderStats();
   if(tab==='settings') {
     renderFreqTable();
     document.getElementById('si-month').textContent=`${MONTH}月`;
@@ -1665,9 +1769,9 @@ document.getElementById('i-intro').value=TODAY_STR;
 buildSoilOptions(document.getElementById('i-soilType'), '');
 buildPotTypeOptions(document.getElementById('i-potType'), '');
 buildPotSizeOptions(document.getElementById('i-potSize'), '');
-setHumidity(humidity, false);
+setHumidity(humidity || 'h55', false);
 render();
-// クラウド状態を確認
+updateShopList();
 checkCloudStatus();
 </script>
 </body>
