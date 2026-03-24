@@ -85,8 +85,8 @@ header small{font-size:9px;opacity:.5;font-family:'Shippori Mincho',serif;}
 
 /* photo card variant */
 .plant-card.has-photo{flex-direction:column;}
-.plant-card.has-photo .plant-icon-box{width:100%;height:180px;min-height:unset;border-radius:0;font-size:48px;}
-.plant-card.has-photo .plant-icon-box img{width:100%;height:180px;object-fit:cover;}
+.plant-card.has-photo .plant-icon-box{width:100%;height:240px;min-height:unset;border-radius:0;font-size:48px;background:var(--gray-1);}
+.plant-card.has-photo .plant-icon-box img{width:100%;height:240px;object-fit:contain;display:block;}
 .plant-card.has-photo .plant-card-inner{display:flex;align-items:stretch;flex:1;}
 .plant-card.has-photo .status-bar{width:3px;align-self:stretch;flex-shrink:0;}
 .plant-card.has-photo .plant-body{flex:1;padding:9px 8px;min-width:0;}
@@ -187,7 +187,7 @@ header small{font-size:9px;opacity:.5;font-family:'Shippori Mincho',serif;}
 .manage-list{padding:8px 10px;display:flex;flex-direction:column;gap:5px;}
 .manage-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);display:flex;align-items:center;overflow:hidden;}
 .manage-card.has-photo{flex-direction:column;align-items:stretch;}
-.manage-card.has-photo .mg-photo{width:100%;height:140px;object-fit:cover;display:block;}
+.manage-card.has-photo .mg-photo{width:100%;height:180px;object-fit:contain;display:block;background:var(--gray-1);}
 .manage-card.has-photo .mg-row{display:flex;align-items:center;}
 .mg-icon{width:48px;height:48px;flex-shrink:0;background:var(--gray-1);display:flex;align-items:center;justify-content:center;font-size:22px;}
 .mg-icon img{width:48px;height:48px;object-fit:cover;border-radius:0;}
@@ -1431,7 +1431,7 @@ function compressImage(file, maxSize, quality, callback) {
 function handleEditPhoto(event) {
   const file = event.target.files[0];
   if(!file) return;
-  compressImage(file, 300, 0.75, base64 => {
+  compressImage(file, 800, 0.88, base64 => {
     document.getElementById('ed-photo-preview').src = base64;
     document.getElementById('ed-photo-preview').classList.add('has-img');
     document.getElementById('ed-photo-remove').classList.add('vis');
@@ -1447,7 +1447,7 @@ function removeEditPhoto() {
 function handleAddPhoto(event) {
   const file = event.target.files[0];
   if(!file) return;
-  compressImage(file, 300, 0.75, base64 => {
+  compressImage(file, 800, 0.88, base64 => {
     document.getElementById('i-photo-preview').src = base64;
     document.getElementById('i-photo-preview').classList.add('has-img');
     document.getElementById('i-photo-remove').classList.add('vis');
@@ -1468,7 +1468,7 @@ function triggerDetailPhoto() {
 function handleDetailPhoto(event) {
   const file = event.target.files[0];
   if(!file || detailIdx === null) return;
-  compressImage(file, 300, 0.75, base64 => {
+  compressImage(file, 800, 0.88, base64 => {
     plants[detailIdx].photo = base64;
     savePlants();
     renderDetailIcon(plants[detailIdx]);
