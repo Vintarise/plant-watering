@@ -27,7 +27,7 @@ header small{font-size:9px;opacity:.5;font-family:'Shippori Mincho',serif;}
 /* season badge in header */
 .season-badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:3px 9px;font-size:11px;display:flex;align-items:center;gap:4px;}
 
-.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:55px;z-index:50;}
+.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:var(--header-h, 55px);z-index:50;}
 .tab-btn{flex:1;padding:10px 4px;border:none;background:transparent;font-family:inherit;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .18s;letter-spacing:.04em;}
 .tab-btn.active{color:var(--text);border-bottom-color:var(--text);}
 
@@ -62,7 +62,7 @@ header small{font-size:9px;opacity:.5;font-family:'Shippori Mincho',serif;}
 .sel-mode-btn.on{background:var(--text);color:#fff;}
 .sel-hint{font-size:11px;color:var(--muted);}
 
-.bulk-bar{display:none;background:var(--text);color:#fff;padding:10px 14px;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:55px;z-index:45;}
+.bulk-bar{display:none;background:var(--text);color:#fff;padding:10px 14px;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:var(--header-h, 55px);z-index:45;}
 .bulk-bar.vis{display:flex;}
 .bulk-count{font-size:12px;font-weight:700;min-width:60px;}
 .bulk-add-group{display:flex;gap:5px;flex-wrap:wrap;align-items:center;flex:1;}
@@ -2289,10 +2289,14 @@ function renderFreqTable() {
     D:'ネフロレピス・ポトス・ベゴニア・エスキナンサス',
     E:'ホヤ・リプサリス・ペペロミア・ゲオゲナンツス',
   };
-  cats.forEach(c=>{
+  const rows = cats.map(c => {
     const base = BASE_FREQ[c][SEASON];
     const mult = HUM_MULT[humidity] || 1.0;
     const f = Math.max(2, Math.round(base * mult));
+    return { c, f };
+  });
+  rows.sort((a, b) => a.f - b.f);
+  rows.forEach(({c, f}) => {
     html+=`<tr><td>${CAT_ICON[c]} ${CAT_LABEL[c]}</td><td><b>${f}日ごと</b></td><td style="font-size:10px;color:#7a7a68;">${reps[c]}</td></tr>`;
   });
   const el=document.getElementById('freq-table');
@@ -2320,7 +2324,13 @@ function showTab(tab, btn) {
   }
 }
 
-// ── INIT ─────────────────────────────────────────────────────────────
+// ヘッダー高さをCSS変数にセット（sticky位置のずれを防ぐ）
+function setHeaderHeight() {
+  const h = document.querySelector('header').getBoundingClientRect().height;
+  document.documentElement.style.setProperty('--header-h', h + 'px');
+}
+setHeaderHeight();
+window.addEventListener('resize', setHeaderHeight);
 // 既存データのpot（テキスト）をpotSize（ID）に自動変換
 function migratePotSize(potText) {
   if(!potText) return null;
