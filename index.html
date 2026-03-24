@@ -84,13 +84,9 @@ header small{font-size:9px;opacity:.5;font-family:'Shippori Mincho',serif;}
 .plant-card.sel-card{box-shadow:0 0 0 2px var(--text);}
 
 /* photo card variant */
-.plant-card.has-photo{flex-direction:column;}
-.plant-card.has-photo .plant-icon-box{width:100%;height:240px;min-height:unset;border-radius:0;font-size:48px;background:var(--gray-1);}
-.plant-card.has-photo .plant-icon-box img{width:100%;height:240px;object-fit:contain;display:block;}
-.plant-card.has-photo .plant-card-inner{display:flex;align-items:stretch;flex:1;}
-.plant-card.has-photo .status-bar{width:3px;align-self:stretch;flex-shrink:0;}
-.plant-card.has-photo .plant-body{flex:1;padding:9px 8px;min-width:0;}
-.plant-card.has-photo .plant-right{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px 9px 6px 4px;flex-shrink:0;}
+/* photo card variant - アイコンと同サイズで置き換えるだけ */
+.plant-card.has-photo{flex-direction:row;}
+.plant-icon-box img{width:58px;height:58px;object-fit:cover;display:block;}
 
 .card-check{display:none;width:44px;flex-shrink:0;align-items:center;justify-content:center;cursor:pointer;background:transparent;border:none;}
 .select-mode .card-check{display:flex;}
@@ -98,8 +94,8 @@ header small{font-size:9px;opacity:.5;font-family:'Shippori Mincho',serif;}
 .sel-card .chk-circle{background:var(--green-mid);border-color:var(--green-mid);color:#fff;}
 
 /* plant icon (replaces image) */
-.plant-icon-box{width:58px;min-height:58px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;overflow:hidden;position:relative;}
-.plant-icon-box img{width:58px;height:58px;object-fit:cover;display:block;}
+.plant-icon-box{width:80px;min-height:80px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:36px;cursor:pointer;overflow:hidden;position:relative;}
+.plant-icon-box img{width:80px;height:80px;object-fit:cover;display:block;}
 .plant-icon-box .photo-hint{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.45);color:#fff;font-size:8px;text-align:center;padding:2px 0;opacity:0;transition:opacity .2s;}
 .plant-icon-box:hover .photo-hint{opacity:1;}
 
@@ -113,7 +109,7 @@ header small{font-size:9px;opacity:.5;font-family:'Shippori Mincho',serif;}
 .photo-remove-btn.vis{display:block;}
 
 /* mg-icon photo */
-.mg-icon img{width:48px;height:48px;object-fit:cover;border-radius:0;}
+.mg-icon img{width:80px;height:80px;object-fit:cover;display:block;}
 
 .status-bar{width:3px;align-self:stretch;flex-shrink:0;}
 .urgent .status-bar{background:var(--red);}
@@ -186,11 +182,8 @@ header small{font-size:9px;opacity:.5;font-family:'Shippori Mincho',serif;}
 
 .manage-list{padding:8px 10px;display:flex;flex-direction:column;gap:5px;}
 .manage-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);display:flex;align-items:center;overflow:hidden;}
-.manage-card.has-photo{flex-direction:column;align-items:stretch;}
-.manage-card.has-photo .mg-photo{width:100%;height:180px;object-fit:contain;display:block;background:var(--gray-1);}
-.manage-card.has-photo .mg-row{display:flex;align-items:center;}
-.mg-icon{width:48px;height:48px;flex-shrink:0;background:var(--gray-1);display:flex;align-items:center;justify-content:center;font-size:22px;}
-.mg-icon img{width:48px;height:48px;object-fit:cover;border-radius:0;}
+.mg-icon{width:80px;height:80px;flex-shrink:0;background:var(--gray-1);display:flex;align-items:center;justify-content:center;font-size:32px;}
+.mg-icon img{width:80px;height:80px;object-fit:cover;display:block;}
 .mg-body{flex:1;padding:7px 9px;min-width:0;}
 .mg-name{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .mg-sub{font-size:10px;color:var(--muted);margin-top:2px;}
@@ -2226,26 +2219,16 @@ function cardHtml(p) {
       <button class="btn-detail" onclick="openDetail(${p.idx})">📋 詳細</button>
     </div>`;
 
-  if(p.photo) {
-    return `
-    <div class="plant-card has-photo ${st} ${sel?'sel-card':''}" id="card-${p.idx}">
-      <button class="card-check" onclick="toggleSel(${p.idx})" aria-label="選択" style="position:absolute;top:8px;left:8px;z-index:2;width:36px;height:36px;background:rgba(0,0,0,.4);border-radius:50%;border:none;">
-        <div class="chk-circle" style="background:transparent;border-color:rgba(255,255,255,.7);color:#fff;">${sel?'✓':''}</div>
-      </button>
-      <div class="plant-icon-box" onclick="${selMode?`toggleSel(${p.idx})`:`openDetail(${p.idx})`}">
-        <img src="${p.photo}" alt="${p.name}">
-        <span class="photo-hint">📷 変更</span>
-      </div>
-      <div class="plant-card-inner">${innerHtml}</div>
-    </div>`;
-  }
+  const iconHtml = p.photo
+    ? `<img src="${p.photo}" alt="${p.name}">`
+    : icon;
 
   return `
   <div class="plant-card ${st} ${sel?'sel-card':''}" id="card-${p.idx}">
     <button class="card-check" onclick="toggleSel(${p.idx})" aria-label="選択">
       <div class="chk-circle">${sel?'✓':''}</div>
     </button>
-    <div class="plant-icon-box" onclick="${selMode?`toggleSel(${p.idx})`:`openDetail(${p.idx})`}">${icon}<span class="photo-hint">📷</span></div>
+    <div class="plant-icon-box" onclick="${selMode?`toggleSel(${p.idx})`:`openDetail(${p.idx})`}">${iconHtml}<span class="photo-hint">📷</span></div>
     ${innerHtml}
   </div>`;
 }
@@ -2294,39 +2277,21 @@ function renderManage() {
       subParts.push(`💧 推奨${freq}日`);
       subParts.push(lastWaterStr);
       const mgIconHtml = p.photo
-        ? `<img src="${p.photo}" style="width:48px;height:48px;object-fit:cover;" alt="${p.name}">`
+        ? `<img src="${p.photo}" alt="${p.name}">`
         : getPlantIcon(p.name);
-      if(p.photo) {
-        html+=`
-        <div class="manage-card has-photo">
-          <img class="mg-photo" src="${p.photo}" alt="${p.name}">
-          <div class="mg-row">
-            <div class="mg-body">
-              <div class="mg-name">${p.name}</div>
-              <div class="mg-sub">${subParts.join('  ')}</div>
-            </div>
-            <div class="mg-acts">
-              <button class="btn-edit" onclick="openDetail(${i})" style="color:var(--green-mid);border-color:var(--green-mid);">履歴</button>
-              <button class="btn-edit" onclick="openEdit(${i})">編集</button>
-              <button class="btn-del" onclick="deletePlant(${i})">削除</button>
-            </div>
-          </div>
-        </div>`;
-      } else {
-        html+=`
-        <div class="manage-card">
-          <div class="mg-icon">${mgIconHtml}</div>
-          <div class="mg-body">
-            <div class="mg-name">${p.name}</div>
-            <div class="mg-sub">${subParts.join('  ')}</div>
-          </div>
-          <div class="mg-acts">
-            <button class="btn-edit" onclick="openDetail(${i})" style="color:var(--green-mid);border-color:var(--green-mid);">履歴</button>
-            <button class="btn-edit" onclick="openEdit(${i})">編集</button>
-            <button class="btn-del" onclick="deletePlant(${i})">削除</button>
-          </div>
-        </div>`;
-      }
+      html+=`
+      <div class="manage-card">
+        <div class="mg-icon">${mgIconHtml}</div>
+        <div class="mg-body">
+          <div class="mg-name">${p.name}</div>
+          <div class="mg-sub">${subParts.join('  ')}</div>
+        </div>
+        <div class="mg-acts">
+          <button class="btn-edit" onclick="openDetail(${i})" style="color:var(--green-mid);border-color:var(--green-mid);">履歴</button>
+          <button class="btn-edit" onclick="openEdit(${i})">編集</button>
+          <button class="btn-del" onclick="deletePlant(${i})">削除</button>
+        </div>
+      </div>`;
     });
   });
   el.innerHTML=html;
