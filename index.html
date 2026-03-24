@@ -353,6 +353,16 @@ body.select-mode .plant-card{cursor:default;}
     <div class="add-form-body" id="add-form-body">
 
       <!-- 植物名・置き場所 -->
+      <!-- 画像アップロード -->
+      <div class="form-row">
+        <label>📷 植物の写真（任意）</label>
+        <div class="photo-upload-row">
+          <img id="i-photo-preview" class="photo-preview" src="" alt="プレビュー">
+          <label class="photo-upload-btn" for="i-photo-input">📷 タップして写真を選択</label>
+          <input type="file" id="i-photo-input" accept="image/*" style="display:none;" onchange="handleAddPhoto(event)">
+          <button type="button" class="photo-remove-btn" id="i-photo-remove" onclick="removeAddPhoto()">✕ 削除</button>
+        </div>
+      </div>
       <div class="form-row"><label>植物名 *</label><input id="i-name" type="text" placeholder="例: モンステラ・デリシオーサ"></div>
       <div class="form-row"><label>置き場所</label><select id="i-loc"></select></div>
 
@@ -1421,6 +1431,22 @@ function removeEditPhoto() {
   document.getElementById('ed-photo-remove').classList.remove('vis');
   document._editPhotoData = null;
 }
+function handleAddPhoto(event) {
+  const file = event.target.files[0];
+  if(!file) return;
+  compressImage(file, 300, 0.75, base64 => {
+    document.getElementById('i-photo-preview').src = base64;
+    document.getElementById('i-photo-preview').classList.add('has-img');
+    document.getElementById('i-photo-remove').classList.add('vis');
+    document._addPhotoData = base64;
+  });
+}
+function removeAddPhoto() {
+  document.getElementById('i-photo-preview').src = '';
+  document.getElementById('i-photo-preview').classList.remove('has-img');
+  document.getElementById('i-photo-remove').classList.remove('vis');
+  document._addPhotoData = null;
+}
 
 // 詳細画面の写真タップ
 function triggerDetailPhoto() {
@@ -2015,6 +2041,7 @@ async function addPlant() {
     shop: document.getElementById('i-shop').value.trim()||null,
     price: document.getElementById('i-price').value ? Number(document.getElementById('i-price').value) : null,
     memo: document.getElementById('i-memo').value.trim(),
+    photo: document._addPhotoData || null,
     history: []
   });
   savePlants(); render(); renderManage();
@@ -2031,6 +2058,8 @@ async function addPlant() {
   selectEnvCard('i-potType-group','','i-potType');
   selectEnvCard('i-potSize-group','','i-potSize');
   document.getElementById('i-soil-custom').style.display='none';
+  removeAddPhoto();
+  document.getElementById('i-photo-input').value='';
   updateShopList();
 
   const newPlant = plants[plants.length-1];
