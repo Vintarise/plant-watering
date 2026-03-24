@@ -7,28 +7,29 @@
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;700&family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#f2efe8; --surface:#fdfbf6; --green-dark:#2a3d2a; --green-mid:#4a7a55;
-  --green-light:#8ab89a; --green-pale:#daeade; --amber:#b8823a;
-  --text:#1e1e14; --muted:#7a7a68; --border:#dedad0;
+  --bg:#f7f6f3; --surface:#ffffff; --green-dark:#1a2a1a; --green-mid:#2d4a2d;
+  --green-light:#6a8a6a; --green-pale:#e8ece8; --amber:#b8823a;
+  --text:#0a0a0a; --muted:#8a8a8a; --border:rgba(0,0,0,0.1);
   --red:#b83232; --red-pale:#fbeaea; --yellow:#c89a10; --yellow-pale:#fdf6dc;
-  --r:14px;
+  --gray-1:#f4f3f1; --gray-2:#e8e7e4; --gray-dark:#2a2a2a;
+  --r:10px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Zen Kaku Gothic New',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-header{background:var(--green-dark);color:#fff;padding:13px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:60;}
+header{background:var(--text);color:#fff;padding:13px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:60;}
 .logo{font-size:22px;}
-header h1{font-size:16px;font-weight:700;letter-spacing:.04em;}
-header small{font-size:9px;opacity:.6;font-family:'Shippori Mincho',serif;}
-.today-pill{margin-left:auto;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);border-radius:30px;padding:3px 11px;font-size:11px;text-align:center;line-height:1.5;}
-.today-pill b{display:block;font-size:14px;}
+header h1{font-size:15px;font-weight:700;letter-spacing:.08em;font-family:'Shippori Mincho',serif;}
+header small{font-size:9px;opacity:.5;font-family:'Shippori Mincho',serif;}
+.today-pill{margin-left:auto;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:30px;padding:3px 11px;font-size:11px;text-align:center;line-height:1.5;}
+.today-pill b{display:block;font-size:14px;font-family:'Shippori Mincho',serif;}
 
 /* season badge in header */
 .season-badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:3px 9px;font-size:11px;display:flex;align-items:center;gap:4px;}
 
-.tabs{display:flex;background:var(--surface);border-bottom:2px solid var(--border);position:sticky;top:55px;z-index:50;}
-.tab-btn{flex:1;padding:10px 4px;border:none;background:transparent;font-family:inherit;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .18s;}
-.tab-btn.active{color:var(--green-mid);border-bottom-color:var(--green-mid);}
+.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:55px;z-index:50;}
+.tab-btn{flex:1;padding:10px 4px;border:none;background:transparent;font-family:inherit;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .18s;letter-spacing:.04em;}
+.tab-btn.active{color:var(--text);border-bottom-color:var(--text);}
 
 .summary{display:flex;background:var(--surface);border-bottom:1px solid var(--border);}
 .sum-item{flex:1;padding:8px 4px;text-align:center;border-right:1px solid var(--border);font-size:10px;color:var(--muted);}
@@ -47,21 +48,21 @@ header small{font-size:9px;opacity:.6;font-family:'Shippori Mincho',serif;}
 .loc-scroll-wrap{background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;}
 .loc-scroll-wrap::-webkit-scrollbar{display:none;}
 .loc-tabs{display:flex;gap:0;min-width:max-content;padding:0 10px;}
-.loc-tab{padding:8px 14px;border:none;background:transparent;font-family:inherit;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:0;white-space:nowrap;transition:all .15s;}
-.loc-tab.active{color:var(--green-mid);border-bottom-color:var(--green-mid);}
+.loc-tab{padding:8px 14px;border:none;background:transparent;font-family:inherit;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:0;white-space:nowrap;transition:all .15s;}
+.loc-tab.active{color:var(--text);border-bottom-color:var(--text);}
 
 .controls{padding:8px 10px;display:flex;gap:5px;flex-wrap:wrap;align-items:center;}
-.filter-btn{padding:4px 10px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:inherit;font-size:11px;cursor:pointer;color:var(--muted);transition:all .15s;white-space:nowrap;}
-.filter-btn.active{background:var(--green-dark);border-color:var(--green-dark);color:#fff;}
-.search-box{margin-left:auto;padding:5px 10px;border:1.5px solid var(--border);border-radius:20px;background:var(--surface);font-family:inherit;font-size:12px;color:var(--text);outline:none;width:130px;}
-.search-box:focus{border-color:var(--green-mid);}
+.filter-btn{padding:4px 10px;border-radius:4px;border:1px solid var(--border);background:transparent;font-family:inherit;font-size:11px;cursor:pointer;color:var(--muted);transition:all .15s;white-space:nowrap;}
+.filter-btn.active{background:var(--text);border-color:var(--text);color:#fff;}
+.search-box{margin-left:auto;padding:5px 10px;border:1px solid var(--border);border-radius:4px;background:var(--surface);font-family:inherit;font-size:12px;color:var(--text);outline:none;width:130px;}
+.search-box:focus{border-color:var(--text);}
 
 .sel-mode-bar{background:var(--surface);border-bottom:2px solid var(--border);padding:8px 12px;display:flex;align-items:center;gap:8px;}
-.sel-mode-btn{padding:7px 16px;border-radius:20px;border:2px solid var(--green-mid);background:transparent;color:var(--green-mid);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;}
-.sel-mode-btn.on{background:var(--green-mid);color:#fff;}
+.sel-mode-btn{padding:7px 16px;border-radius:4px;border:1px solid var(--text);background:transparent;color:var(--text);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;}
+.sel-mode-btn.on{background:var(--text);color:#fff;}
 .sel-hint{font-size:11px;color:var(--muted);}
 
-.bulk-bar{display:none;background:var(--green-dark);color:#fff;padding:10px 14px;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:55px;z-index:45;}
+.bulk-bar{display:none;background:var(--text);color:#fff;padding:10px 14px;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:55px;z-index:45;}
 .bulk-bar.vis{display:flex;}
 .bulk-count{font-size:12px;font-weight:700;min-width:60px;}
 .bulk-add-group{display:flex;gap:5px;flex-wrap:wrap;align-items:center;flex:1;}
@@ -77,10 +78,10 @@ header small{font-size:9px;opacity:.6;font-family:'Shippori Mincho',serif;}
 .status-section-label{font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;padding:6px 5px 2px;border-top:1px dashed var(--border);margin-top:2px;}
 
 /* plant card */
-.plant-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);display:flex;align-items:stretch;overflow:hidden;transition:all .15s;position:relative;}
+.plant-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);display:flex;align-items:stretch;overflow:hidden;transition:all .15s;position:relative;}
 .plant-card.urgent{border-color:#f0c0c0;background:var(--red-pale);}
 .plant-card.soon{border-color:#f0e0a0;background:var(--yellow-pale);}
-.plant-card.sel-card{box-shadow:0 0 0 2.5px var(--green-mid);}
+.plant-card.sel-card{box-shadow:0 0 0 2px var(--text);}
 
 .card-check{display:none;width:44px;flex-shrink:0;align-items:center;justify-content:center;cursor:pointer;background:transparent;border:none;}
 .select-mode .card-check{display:flex;}
@@ -88,12 +89,27 @@ header small{font-size:9px;opacity:.6;font-family:'Shippori Mincho',serif;}
 .sel-card .chk-circle{background:var(--green-mid);border-color:var(--green-mid);color:#fff;}
 
 /* plant icon (replaces image) */
-.plant-icon-box{width:58px;min-height:58px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;}
+.plant-icon-box{width:58px;min-height:58px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;overflow:hidden;position:relative;}
+.plant-icon-box img{width:58px;height:58px;object-fit:cover;display:block;}
+.plant-icon-box .photo-hint{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.45);color:#fff;font-size:8px;text-align:center;padding:2px 0;opacity:0;transition:opacity .2s;}
+.plant-icon-box:hover .photo-hint{opacity:1;}
 
-.status-bar{width:4px;align-self:stretch;flex-shrink:0;}
+/* photo upload in form */
+.photo-upload-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+.photo-preview{width:56px;height:56px;border-radius:8px;border:1px solid var(--border);object-fit:cover;display:none;flex-shrink:0;}
+.photo-preview.has-img{display:block;}
+.photo-upload-btn{flex:1;padding:10px 12px;border-radius:var(--r);border:1px dashed var(--border);background:var(--bg);font-family:inherit;font-size:12px;color:var(--muted);cursor:pointer;text-align:center;transition:all .15s;}
+.photo-upload-btn:hover{border-color:var(--text);color:var(--text);}
+.photo-remove-btn{padding:6px 10px;border-radius:6px;border:1px solid #f0c0c0;background:var(--red-pale);color:var(--red);font-family:inherit;font-size:11px;cursor:pointer;display:none;flex-shrink:0;}
+.photo-remove-btn.vis{display:block;}
+
+/* mg-icon photo */
+.mg-icon img{width:48px;height:48px;object-fit:cover;border-radius:0;}
+
+.status-bar{width:3px;align-self:stretch;flex-shrink:0;}
 .urgent .status-bar{background:var(--red);}
 .soon .status-bar{background:var(--yellow);}
-.ok .status-bar{background:var(--green-light);}
+.ok .status-bar{background:var(--gray-2);}
 
 .plant-body{flex:1;padding:9px 8px;min-width:0;cursor:pointer;}
 .plant-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -108,7 +124,7 @@ header small{font-size:9px;opacity:.6;font-family:'Shippori Mincho',serif;}
 .days-pill .dl{font-size:9px;opacity:.7;}
 .urgent .days-pill{background:rgba(184,50,50,.1);color:var(--red);}
 .soon .days-pill{background:rgba(200,154,16,.12);color:var(--yellow);}
-.ok .days-pill{background:var(--green-pale);color:var(--green-dark);}
+.ok .days-pill{background:var(--gray-1);color:var(--gray-dark);}
 .btn-detail{padding:3px 8px;border-radius:6px;border:1px solid var(--border);background:rgba(255,255,255,.8);color:var(--muted);font-size:10px;cursor:pointer;white-space:nowrap;}
 .select-mode .btn-detail{display:none;}
 
@@ -130,10 +146,10 @@ header small{font-size:9px;opacity:.6;font-family:'Shippori Mincho',serif;}
 .btn-ok-sh{flex:2;padding:11px;border-radius:10px;border:none;background:var(--green-dark);color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;}
 
 /* freq info box in detail */
-.freq-box{background:var(--green-pale);border-radius:10px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.freq-box{background:var(--gray-1);border-radius:var(--r);padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;border:1px solid var(--border);}
 .freq-box .freq-icon{font-size:22px;}
 .freq-box .freq-text{flex:1;}
-.freq-box .freq-main{font-size:13px;font-weight:700;color:var(--green-dark);}
+.freq-box .freq-main{font-size:13px;font-weight:700;color:var(--text);}
 .freq-box .freq-sub{font-size:10px;color:var(--muted);margin-top:2px;}
 
 .det-sec{margin-bottom:13px;}
@@ -156,7 +172,8 @@ header small{font-size:9px;opacity:.6;font-family:'Shippori Mincho',serif;}
 .form-row textarea{min-height:55px;}
 .f2{display:flex;flex-direction:column;gap:0;}
 .f3{display:flex;flex-direction:column;gap:0;}
-.btn-primary{width:100%;padding:10px;border-radius:10px;border:none;background:var(--green-dark);color:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;}
+.btn-primary{width:100%;padding:12px;border-radius:4px;border:none;background:var(--text);color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px;letter-spacing:.06em;transition:opacity .15s;}
+.btn-primary:hover{opacity:.85;}
 
 .manage-list{padding:8px 10px;display:flex;flex-direction:column;gap:5px;}
 .manage-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);display:flex;align-items:center;overflow:hidden;}
@@ -230,15 +247,37 @@ body.select-mode .plant-card{cursor:default;}
 .eval-comment{white-space:pre-wrap;}
 .hist-eval{font-size:10px;color:var(--green-mid);font-style:italic;margin-top:2px;line-height:1.5;}
 
-/* soil/pot/moss UI */
-.soil-custom-row{background:var(--green-pale);border-radius:8px;padding:10px 12px !important;}
+/* manage tab add form collapsible */
+.add-form-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--surface);border:none;border-bottom:1px solid var(--border);cursor:pointer;font-family:inherit;}
+.add-form-toggle-label{font-size:13px;font-weight:700;color:var(--text);letter-spacing:.04em;display:flex;align-items:center;gap:8px;}
+.add-form-toggle-icon{width:28px;height:28px;border-radius:4px;background:var(--text);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;transition:transform .2s;flex-shrink:0;}
+.add-form-toggle-icon.open{transform:rotate(45deg);}
+.add-form-body{display:none;padding:16px;background:var(--surface);border-bottom:1px solid var(--border);}
+.add-form-body.open{display:block;}
+
+/* form section divider */
+.form-section-title{font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--muted);padding:14px 0 8px;border-top:1px solid var(--border);margin-top:10px;}
+.form-section-title:first-child{border-top:none;margin-top:0;padding-top:0;}
+
+/* light & airflow card selector */
+.env-card-group{display:flex;flex-direction:column;gap:6px;margin-top:4px;}
+.env-card{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);cursor:pointer;transition:all .15s;text-align:left;}
+.env-card.active{border-color:var(--green-mid);background:var(--green-pale);}
+.env-card-icon{font-size:22px;flex-shrink:0;width:32px;text-align:center;}
+.env-card-text{flex:1;}
+.env-card-title{font-size:12px;font-weight:700;color:var(--text);}
+.env-card.active .env-card-title{color:var(--green-dark);}
+.env-card-desc{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.5;}
+.env-help-toggle{font-size:10px;color:var(--green-mid);cursor:pointer;display:inline-flex;align-items:center;gap:3px;margin-top:4px;margin-bottom:6px;background:none;border:none;font-family:inherit;padding:0;}
+.env-help-box{display:none;background:var(--yellow-pale);border:1px solid #f0e0a0;border-radius:8px;padding:10px 12px;font-size:11px;color:#666;line-height:1.7;margin-bottom:6px;}
+.env-help-box.open{display:block;}
 .soil-slider-wrap{display:flex;align-items:center;gap:8px;margin-top:6px;}
-.soil-slider-wrap input[type=range]{flex:1;accent-color:var(--green-mid);}
+.soil-slider-wrap input[type=range]{flex:1;accent-color:var(--text);}
 .slider-lbl{font-size:10px;color:var(--muted);white-space:nowrap;}
-.moss-btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
-.moss-btn{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg);font-family:inherit;font-size:12px;cursor:pointer;transition:all .15s;}
-.moss-btn.active{background:var(--green-pale);border-color:var(--green-mid);font-weight:700;color:var(--green-dark);}
-.soil-mult-badge{font-size:10px;color:var(--green-mid);font-weight:700;margin-left:4px;}
+.moss-btns{display:flex;flex-direction:column;gap:6px;margin-top:4px;}
+.moss-btn{padding:10px 12px;border-radius:var(--r);border:1px solid var(--border);background:var(--bg);font-family:inherit;font-size:12px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:8px;text-align:left;}
+.moss-btn.active{background:var(--gray-1);border-color:var(--text);font-weight:700;color:var(--text);}
+.soil-mult-badge{font-size:10px;color:var(--muted);font-weight:700;margin-left:4px;}
 </style>
 </head>
 <body>
@@ -305,40 +344,70 @@ body.select-mode .plant-card{cursor:default;}
 <!-- MANAGE TAB -->
 <div id="tab-manage" style="display:none;">
   <div class="manage-wrap">
-    <div class="manage-section">
-      <h3>➕ 新しい植物を追加</h3>
+
+    <!-- 折りたたみ追加フォーム -->
+    <button class="add-form-toggle" onclick="toggleAddForm(this)">
+      <span class="add-form-toggle-label">🌱 新しい植物を追加</span>
+      <span class="add-form-toggle-icon" id="add-form-icon">＋</span>
+    </button>
+    <div class="add-form-body" id="add-form-body">
+
+      <!-- 植物名・置き場所 -->
       <div class="form-row"><label>植物名 *</label><input id="i-name" type="text" placeholder="例: モンステラ・デリシオーサ"></div>
       <div class="form-row"><label>置き場所</label><select id="i-loc"></select></div>
-      <div class="f2">
-        <div class="form-row"><label>活力剤</label>
-          <select id="i-add">
-            <option value="なし">なし</option><option value="リキダス">リキダス</option>
-            <option value="メネデール">メネデール</option><option value="ハイポネックス">ハイポネックス</option>
-            <option value="その他">その他</option>
-          </select>
+
+      <!-- 水やり計算に使う項目 -->
+      <div class="form-section-title">💧 水やり頻度の計算に使う項目</div>
+
+      <!-- 日当たり -->
+      <div class="form-row">
+        <label>☀️ 日当たり <button type="button" class="env-help-toggle" onclick="toggleEnvHelp('i-light-help')">？ 詳しく見る</button></label>
+        <div class="env-help-box" id="i-light-help">
+          <b>直射日光</b>：南向き窓際・屋外。1日4時間以上直射光が当たる場所。<br>
+          <b>明るい間接光</b>：レースカーテン越しの窓際。育成ライトなら50cm以内。<br>
+          <b>半日陰</b>：窓から1〜2m。育成ライト50〜100cm。日中薄明るい場所。<br>
+          <b>明るい日陰</b>：窓から2〜3m。本が読める程度の明るさ。<br>
+          <b>暗い日陰</b>：窓から3m以上・廊下・トイレ。
         </div>
-      </div>
-      <div class="f2">
-        <div class="form-row"><label>最終水やり日</label><input id="i-water" type="date"></div>
-        <div class="form-row"><label>導入年月日</label><input id="i-intro" type="date"></div>
-      </div>
-      <div class="f3">
-        <div class="form-row"><label>植え替え年月</label><input id="i-repot" type="month"></div>
-        <div class="form-row"><label>鉢サイズ</label><select id="i-potSize"><option value="">— 未設定 —</option></select></div>
-        <div class="form-row"><label>購入場所</label>
-          <input id="i-shop" type="text" placeholder="例: スーパービバホーム豊洲" list="shop-list">
-          <datalist id="shop-list"></datalist>
+        <div class="env-card-group" id="i-light-group">
+          <button type="button" class="env-card" data-val="direct" onclick="selectEnvCard('i-light-group','direct','i-light')"><span class="env-card-icon">☀️</span><span class="env-card-text"><div class="env-card-title">直射日光</div><div class="env-card-desc">南向き窓際・屋外 / 乾きやすい</div></span></button>
+          <button type="button" class="env-card active" data-val="bright" onclick="selectEnvCard('i-light-group','bright','i-light')"><span class="env-card-icon">🌤</span><span class="env-card-text"><div class="env-card-title">明るい間接光（標準）</div><div class="env-card-desc">レースカーテン越し / 育成ライト50cm以内</div></span></button>
+          <button type="button" class="env-card" data-val="semi" onclick="selectEnvCard('i-light-group','semi','i-light')"><span class="env-card-icon">⛅</span><span class="env-card-text"><div class="env-card-title">半日陰</div><div class="env-card-desc">窓から1〜2m / 育成ライト50〜100cm</div></span></button>
+          <button type="button" class="env-card" data-val="shade" onclick="selectEnvCard('i-light-group','shade','i-light')"><span class="env-card-icon">🌥</span><span class="env-card-text"><div class="env-card-title">明るい日陰</div><div class="env-card-desc">窓から2〜3m / 本が読める程度</div></span></button>
+          <button type="button" class="env-card" data-val="dark" onclick="selectEnvCard('i-light-group','dark','i-light')"><span class="env-card-icon">🌑</span><span class="env-card-text"><div class="env-card-title">暗い日陰</div><div class="env-card-desc">窓から3m以上・廊下・トイレ</div></span></button>
         </div>
+        <input type="hidden" id="i-light" value="bright">
       </div>
-      <div class="f2">
-        <div class="form-row"><label>購入価格（円）</label><input id="i-price" type="number" placeholder="例: 1980" min="0"></div>
+
+      <!-- 風通し -->
+      <div class="form-row">
+        <label>🍃 風通し <button type="button" class="env-help-toggle" onclick="toggleEnvHelp('i-air-help')">？ 詳しく見る</button></label>
+        <div class="env-help-box" id="i-air-help">
+          <b>良好</b>：窓を開けることが多い・サーキュレーター使用。葉が揺れる程度の空気の流れがある。<br>
+          <b>普通</b>：一般的な室内。時々換気する程度。<br>
+          <b>悪い</b>：常に閉め切り・換気が少ない・空気がよどみやすい。
+        </div>
+        <div class="env-card-group" id="i-air-group">
+          <button type="button" class="env-card" data-val="good" onclick="selectEnvCard('i-air-group','good','i-air')"><span class="env-card-icon">💨</span><span class="env-card-text"><div class="env-card-title">良好</div><div class="env-card-desc">窓を開けることが多い / サーキュレーター使用</div></span></button>
+          <button type="button" class="env-card active" data-val="normal" onclick="selectEnvCard('i-air-group','normal','i-air')"><span class="env-card-icon">🌿</span><span class="env-card-text"><div class="env-card-title">普通（標準）</div><div class="env-card-desc">一般的な室内 / 時々換気する程度</div></span></button>
+          <button type="button" class="env-card" data-val="poor" onclick="selectEnvCard('i-air-group','poor','i-air')"><span class="env-card-icon">😶‍🌫️</span><span class="env-card-text"><div class="env-card-title">悪い</div><div class="env-card-desc">常に閉め切り / 空気がよどみやすい</div></span></button>
+        </div>
+        <input type="hidden" id="i-air" value="normal">
       </div>
+
       <!-- 用土 -->
       <div class="form-row">
-        <label>用土</label>
-        <select id="i-soilType" onchange="toggleSoilSlider('i-soil-custom')">
-          <option value="">— 未設定 —</option>
-        </select>
+        <label>🌱 用土</label>
+        <div class="env-card-group" id="i-soilType-group">
+          <button type="button" class="env-card active" data-val="" onclick="selectEnvCard('i-soilType-group','','i-soilType');toggleSoilSlider('i-soil-custom')"><span class="env-card-icon">−</span><span class="env-card-text"><div class="env-card-title">未設定（標準）</div><div class="env-card-desc">標準的な観葉植物の土と同等</div></span></button>
+          <button type="button" class="env-card" data-val="hanagokoro" onclick="selectEnvCard('i-soilType-group','hanagokoro','i-soilType');toggleSoilSlider('i-soil-custom')"><span class="env-card-icon">🌿</span><span class="env-card-text"><div class="env-card-title">花ごころ 観葉植物の土</div><div class="env-card-desc">有機質 / 保水性やや高め</div></span></button>
+          <button type="button" class="env-card" data-val="protoleaf" onclick="selectEnvCard('i-soilType-group','protoleaf','i-soilType');toggleSoilSlider('i-soil-custom')"><span class="env-card-icon">🪨</span><span class="env-card-text"><div class="env-card-title">プロトリーフ 硬質premium</div><div class="env-card-desc">無機質 / 排水性高め・乾きやすい</div></span></button>
+          <button type="button" class="env-card" data-val="standard" onclick="selectEnvCard('i-soilType-group','standard','i-soilType');toggleSoilSlider('i-soil-custom')"><span class="env-card-icon">🌱</span><span class="env-card-text"><div class="env-card-title">標準的な観葉植物の土</div><div class="env-card-desc">市販汎用品 / 標準</div></span></button>
+          <button type="button" class="env-card" data-val="drain_heavy" onclick="selectEnvCard('i-soilType-group','drain_heavy','i-soilType');toggleSoilSlider('i-soil-custom')"><span class="env-card-icon">💧</span><span class="env-card-text"><div class="env-card-title">排水性重視ブレンド</div><div class="env-card-desc">赤玉土多め・パーライト多め</div></span></button>
+          <button type="button" class="env-card" data-val="water_heavy" onclick="selectEnvCard('i-soilType-group','water_heavy','i-soilType');toggleSoilSlider('i-soil-custom')"><span class="env-card-icon">💦</span><span class="env-card-text"><div class="env-card-title">保水性重視ブレンド</div><div class="env-card-desc">腐葉土多め・ピートモス多め</div></span></button>
+          <button type="button" class="env-card" data-val="custom" onclick="selectEnvCard('i-soilType-group','custom','i-soilType');toggleSoilSlider('i-soil-custom')"><span class="env-card-icon">⚙️</span><span class="env-card-text"><div class="env-card-title">その他</div><div class="env-card-desc">スライダーで手動調整</div></span></button>
+        </div>
+        <input type="hidden" id="i-soilType" value="">
       </div>
       <div id="i-soil-custom" style="display:none;" class="form-row soil-custom-row">
         <label>乾きやすさを調整 <span id="i-soil-val">1.0×</span></label>
@@ -348,25 +417,70 @@ body.select-mode .plant-card{cursor:default;}
           <span class="slider-lbl">乾きにくい</span>
         </div>
       </div>
+
       <!-- 鉢タイプ -->
       <div class="form-row">
-        <label>鉢タイプ</label>
-        <select id="i-potType">
-          <option value="">— 未設定 —</option>
-        </select>
+        <label>🪣 鉢タイプ</label>
+        <div class="env-card-group" id="i-potType-group">
+          <button type="button" class="env-card active" data-val="" onclick="selectEnvCard('i-potType-group','','i-potType')"><span class="env-card-icon">−</span><span class="env-card-text"><div class="env-card-title">未設定（標準）</div><div class="env-card-desc">通常プラスチック鉢と同等</div></span></button>
+          <button type="button" class="env-card" data-val="plastic" onclick="selectEnvCard('i-potType-group','plastic','i-potType')"><span class="env-card-icon">🪣</span><span class="env-card-text"><div class="env-card-title">通常プラスチック鉢</div><div class="env-card-desc">標準的な乾き方</div></span></button>
+          <button type="button" class="env-card" data-val="slit" onclick="selectEnvCard('i-potType-group','slit','i-potType')"><span class="env-card-icon">🔲</span><span class="env-card-text"><div class="env-card-title">スリット鉢</div><div class="env-card-desc">通気性高く乾きやすい</div></span></button>
+          <button type="button" class="env-card" data-val="terracotta" onclick="selectEnvCard('i-potType-group','terracotta','i-potType')"><span class="env-card-icon">🏺</span><span class="env-card-text"><div class="env-card-title">素焼き鉢</div><div class="env-card-desc">鉢が水分を吸う・乾きやすい</div></span></button>
+          <button type="button" class="env-card" data-val="ceramic" onclick="selectEnvCard('i-potType-group','ceramic','i-potType')"><span class="env-card-icon">🫙</span><span class="env-card-text"><div class="env-card-title">陶器・グレーズ鉢</div><div class="env-card-desc">保水性高く乾きにくい</div></span></button>
+        </div>
+        <input type="hidden" id="i-potType" value="">
       </div>
+
+      <!-- 鉢サイズ -->
+      <div class="form-row">
+        <label>⬜ 鉢サイズ</label>
+        <div class="env-card-group" id="i-potSize-group">
+          <button type="button" class="env-card active" data-val="" onclick="selectEnvCard('i-potSize-group','','i-potSize')"><span class="env-card-icon">−</span><span class="env-card-text"><div class="env-card-title">未設定（標準）</div><div class="env-card-desc">6〜7号相当として計算</div></span></button>
+          <button type="button" class="env-card" data-val="s2" onclick="selectEnvCard('i-potSize-group','s2','i-potSize')"><span class="env-card-icon">🔵</span><span class="env-card-text"><div class="env-card-title">2号以下</div><div class="env-card-desc">直径6cm以下 / 乾きやすい</div></span></button>
+          <button type="button" class="env-card" data-val="s3" onclick="selectEnvCard('i-potSize-group','s3','i-potSize')"><span class="env-card-icon">🟢</span><span class="env-card-text"><div class="env-card-title">3号</div><div class="env-card-desc">直径9cm</div></span></button>
+          <button type="button" class="env-card" data-val="s45" onclick="selectEnvCard('i-potSize-group','s45','i-potSize')"><span class="env-card-icon">🟡</span><span class="env-card-text"><div class="env-card-title">4〜5号</div><div class="env-card-desc">直径12〜15cm</div></span></button>
+          <button type="button" class="env-card" data-val="s67" onclick="selectEnvCard('i-potSize-group','s67','i-potSize')"><span class="env-card-icon">🟠</span><span class="env-card-text"><div class="env-card-title">6〜7号（標準）</div><div class="env-card-desc">直径18〜21cm</div></span></button>
+          <button type="button" class="env-card" data-val="s89" onclick="selectEnvCard('i-potSize-group','s89','i-potSize')"><span class="env-card-icon">🔴</span><span class="env-card-text"><div class="env-card-title">8〜9号</div><div class="env-card-desc">直径24〜27cm / 乾きにくい</div></span></button>
+          <button type="button" class="env-card" data-val="s10" onclick="selectEnvCard('i-potSize-group','s10','i-potSize')"><span class="env-card-icon">🟣</span><span class="env-card-text"><div class="env-card-title">10号以上</div><div class="env-card-desc">直径30cm以上 / かなり乾きにくい</div></span></button>
+        </div>
+        <input type="hidden" id="i-potSize" value="">
+      </div>
+
       <!-- 水苔マルチ -->
       <div class="form-row">
-        <label>表土の水苔マルチ</label>
+        <label>🌿 表土の水苔マルチ</label>
         <div class="moss-btns" id="i-moss-btns">
-          <button type="button" class="moss-btn active" data-val="no" onclick="selectMoss('i-moss-btns','no')">なし</button>
-          <button type="button" class="moss-btn" data-val="yes" onclick="selectMoss('i-moss-btns','yes')">🌿 あり（乾きにくくなります）</button>
+          <button type="button" class="moss-btn active" data-val="no" onclick="selectMoss('i-moss-btns','no')"><span>✕</span> なし</button>
+          <button type="button" class="moss-btn" data-val="yes" onclick="selectMoss('i-moss-btns','yes')"><span>🌿</span> あり（乾きにくくなります）</button>
         </div>
         <input type="hidden" id="i-mossMulch" value="no">
+      </div>
+
+      <!-- その他の情報 -->
+      <div class="form-section-title">📋 その他の情報</div>
+      <div class="form-row"><label>活力剤</label>
+        <select id="i-add">
+          <option value="なし">なし</option><option value="リキダス">リキダス</option>
+          <option value="メネデール">メネデール</option><option value="ハイポネックス">ハイポネックス</option>
+          <option value="その他">その他</option>
+        </select>
+      </div>
+      <div class="f2">
+        <div class="form-row"><label>最終水やり日</label><input id="i-water" type="date"></div>
+        <div class="form-row"><label>導入年月日</label><input id="i-intro" type="date"></div>
+      </div>
+      <div class="f2">
+        <div class="form-row"><label>植え替え年月</label><input id="i-repot" type="month"></div>
+        <div class="form-row"><label>購入価格（円）</label><input id="i-price" type="number" placeholder="例: 1980" min="0"></div>
+      </div>
+      <div class="form-row"><label>購入場所</label>
+        <input id="i-shop" type="text" placeholder="例: スーパービバホーム豊洲" list="shop-list">
+        <datalist id="shop-list"></datalist>
       </div>
       <div class="form-row"><label>メモ・エピソード</label><textarea id="i-memo" placeholder="例: 引越し祝いにもらった。"></textarea></div>
       <button class="btn-primary" onclick="addPlant()">🌱 追加する</button>
     </div>
+
     <div class="manage-sort-bar">
       <span class="manage-sort-label">並び順：</span>
       <button class="msort-btn active" id="msort-kana" onclick="setManageSort('kana',this)">あいうえお順</button>
@@ -547,7 +661,10 @@ body.select-mode .plant-card{cursor:default;}
 <div class="overlay" id="ov-detail" onclick="closeOv('ov-detail',event)">
   <div class="sheet">
     <div class="sh-hdr">
-      <div class="sh-icon" id="det-icon"></div>
+      <div class="sh-icon" id="det-icon" onclick="triggerDetailPhoto()" style="cursor:pointer;position:relative;overflow:hidden;border-radius:12px;" title="タップして画像を変更">
+        <span class="photo-hint" style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);color:#fff;font-size:8px;text-align:center;padding:2px 0;">📷 変更</span>
+      </div>
+      <input type="file" id="det-photo-input" accept="image/*" style="display:none;" onchange="handleDetailPhoto(event)">
       <div><div class="sh-title" id="det-name"></div><div class="sh-sub" id="det-sub"></div></div>
     </div>
     <div id="det-freq-box"></div>
@@ -569,37 +686,71 @@ body.select-mode .plant-card{cursor:default;}
 <div class="edit-ov" id="ov-edit" onclick="closeOv('ov-edit',event)">
   <div class="edit-sheet">
     <h3>✏️ 植物を編集</h3>
+    <!-- 画像アップロード -->
+    <div class="form-row">
+      <label>📷 植物の写真</label>
+      <div class="photo-upload-row">
+        <img id="ed-photo-preview" class="photo-preview" src="" alt="プレビュー">
+        <label class="photo-upload-btn" for="ed-photo-input">📷 タップして写真を選択</label>
+        <input type="file" id="ed-photo-input" accept="image/*" style="display:none;" onchange="handleEditPhoto(event)">
+        <button type="button" class="photo-remove-btn" id="ed-photo-remove" onclick="removeEditPhoto()">✕ 削除</button>
+      </div>
+    </div>
     <div class="form-row"><label>植物名 *</label><input id="ed-name" type="text"></div>
     <div class="form-row"><label>置き場所</label><select id="ed-loc"></select></div>
-    <div class="f2">
-      <div class="form-row"><label>活力剤</label>
-        <select id="ed-add">
-          <option value="なし">なし</option><option value="リキダス">リキダス</option>
-          <option value="メネデール">メネデール</option><option value="ハイポネックス">ハイポネックス</option>
-          <option value="その他">その他</option>
-        </select>
+
+    <!-- 水やり計算に使う項目 -->
+    <div class="form-section-title">💧 水やり頻度の計算に使う項目</div>
+
+    <!-- 日当たり -->
+    <div class="form-row">
+      <label>☀️ 日当たり <button type="button" class="env-help-toggle" onclick="toggleEnvHelp('ed-light-help')">？ 詳しく見る</button></label>
+      <div class="env-help-box" id="ed-light-help">
+        <b>直射日光</b>：南向き窓際・屋外。1日4時間以上直射光が当たる場所。<br>
+        <b>明るい間接光</b>：レースカーテン越し。育成ライト50cm以内。<br>
+        <b>半日陰</b>：窓から1〜2m。育成ライト50〜100cm。<br>
+        <b>明るい日陰</b>：窓から2〜3m。本が読める程度。<br>
+        <b>暗い日陰</b>：窓から3m以上・廊下・トイレ。
       </div>
-    </div>
-    <div class="f2">
-      <div class="form-row"><label>最終水やり日</label><input id="ed-water" type="date"></div>
-      <div class="form-row"><label>導入年月日</label><input id="ed-intro" type="date"></div>
-    </div>
-    <div class="f3">
-      <div class="form-row"><label>植え替え年月</label><input id="ed-repot" type="month"></div>
-      <div class="form-row"><label>鉢サイズ</label><select id="ed-potSize"><option value="">— 未設定 —</option></select></div>
-      <div class="form-row"><label>購入場所</label>
-        <input id="ed-shop" type="text" list="shop-list">
+      <div class="env-card-group" id="ed-light-group">
+        <button type="button" class="env-card" data-val="direct" onclick="selectEnvCard('ed-light-group','direct','ed-light')"><span class="env-card-icon">☀️</span><span class="env-card-text"><div class="env-card-title">直射日光</div><div class="env-card-desc">南向き窓際・屋外 / 乾きやすい</div></span></button>
+        <button type="button" class="env-card active" data-val="bright" onclick="selectEnvCard('ed-light-group','bright','ed-light')"><span class="env-card-icon">🌤</span><span class="env-card-text"><div class="env-card-title">明るい間接光（標準）</div><div class="env-card-desc">レースカーテン越し / 育成ライト50cm以内</div></span></button>
+        <button type="button" class="env-card" data-val="semi" onclick="selectEnvCard('ed-light-group','semi','ed-light')"><span class="env-card-icon">⛅</span><span class="env-card-text"><div class="env-card-title">半日陰</div><div class="env-card-desc">窓から1〜2m / 育成ライト50〜100cm</div></span></button>
+        <button type="button" class="env-card" data-val="shade" onclick="selectEnvCard('ed-light-group','shade','ed-light')"><span class="env-card-icon">🌥</span><span class="env-card-text"><div class="env-card-title">明るい日陰</div><div class="env-card-desc">窓から2〜3m / 本が読める程度</div></span></button>
+        <button type="button" class="env-card" data-val="dark" onclick="selectEnvCard('ed-light-group','dark','ed-light')"><span class="env-card-icon">🌑</span><span class="env-card-text"><div class="env-card-title">暗い日陰</div><div class="env-card-desc">窓から3m以上・廊下・トイレ</div></span></button>
       </div>
+      <input type="hidden" id="ed-light" value="bright">
     </div>
-    <div class="f2">
-      <div class="form-row"><label>購入価格（円）</label><input id="ed-price" type="number" placeholder="例: 1980" min="0"></div>
+
+    <!-- 風通し -->
+    <div class="form-row">
+      <label>🍃 風通し <button type="button" class="env-help-toggle" onclick="toggleEnvHelp('ed-air-help')">？ 詳しく見る</button></label>
+      <div class="env-help-box" id="ed-air-help">
+        <b>良好</b>：窓を開けることが多い・サーキュレーター使用。<br>
+        <b>普通</b>：一般的な室内。時々換気する程度。<br>
+        <b>悪い</b>：常に閉め切り・換気が少ない。
+      </div>
+      <div class="env-card-group" id="ed-air-group">
+        <button type="button" class="env-card" data-val="good" onclick="selectEnvCard('ed-air-group','good','ed-air')"><span class="env-card-icon">💨</span><span class="env-card-text"><div class="env-card-title">良好</div><div class="env-card-desc">窓を開けることが多い / サーキュレーター使用</div></span></button>
+        <button type="button" class="env-card active" data-val="normal" onclick="selectEnvCard('ed-air-group','normal','ed-air')"><span class="env-card-icon">🌿</span><span class="env-card-text"><div class="env-card-title">普通（標準）</div><div class="env-card-desc">一般的な室内 / 時々換気する程度</div></span></button>
+        <button type="button" class="env-card" data-val="poor" onclick="selectEnvCard('ed-air-group','poor','ed-air')"><span class="env-card-icon">😶‍🌫️</span><span class="env-card-text"><div class="env-card-title">悪い</div><div class="env-card-desc">常に閉め切り / 空気がよどみやすい</div></span></button>
+      </div>
+      <input type="hidden" id="ed-air" value="normal">
     </div>
+
     <!-- 用土 -->
     <div class="form-row">
-      <label>用土</label>
-      <select id="ed-soilType" onchange="toggleSoilSlider('ed-soil-custom')">
-        <option value="">— 未設定 —</option>
-      </select>
+      <label>🌱 用土</label>
+      <div class="env-card-group" id="ed-soilType-group">
+        <button type="button" class="env-card active" data-val="" onclick="selectEnvCard('ed-soilType-group','','ed-soilType');toggleSoilSlider('ed-soil-custom')"><span class="env-card-icon">−</span><span class="env-card-text"><div class="env-card-title">未設定（標準）</div><div class="env-card-desc">標準的な観葉植物の土と同等</div></span></button>
+        <button type="button" class="env-card" data-val="hanagokoro" onclick="selectEnvCard('ed-soilType-group','hanagokoro','ed-soilType');toggleSoilSlider('ed-soil-custom')"><span class="env-card-icon">🌿</span><span class="env-card-text"><div class="env-card-title">花ごころ 観葉植物の土</div><div class="env-card-desc">有機質 / 保水性やや高め</div></span></button>
+        <button type="button" class="env-card" data-val="protoleaf" onclick="selectEnvCard('ed-soilType-group','protoleaf','ed-soilType');toggleSoilSlider('ed-soil-custom')"><span class="env-card-icon">🪨</span><span class="env-card-text"><div class="env-card-title">プロトリーフ 硬質premium</div><div class="env-card-desc">無機質 / 排水性高め・乾きやすい</div></span></button>
+        <button type="button" class="env-card" data-val="standard" onclick="selectEnvCard('ed-soilType-group','standard','ed-soilType');toggleSoilSlider('ed-soil-custom')"><span class="env-card-icon">🌱</span><span class="env-card-text"><div class="env-card-title">標準的な観葉植物の土</div><div class="env-card-desc">市販汎用品 / 標準</div></span></button>
+        <button type="button" class="env-card" data-val="drain_heavy" onclick="selectEnvCard('ed-soilType-group','drain_heavy','ed-soilType');toggleSoilSlider('ed-soil-custom')"><span class="env-card-icon">💧</span><span class="env-card-text"><div class="env-card-title">排水性重視ブレンド</div><div class="env-card-desc">赤玉土多め・パーライト多め</div></span></button>
+        <button type="button" class="env-card" data-val="water_heavy" onclick="selectEnvCard('ed-soilType-group','water_heavy','ed-soilType');toggleSoilSlider('ed-soil-custom')"><span class="env-card-icon">💦</span><span class="env-card-text"><div class="env-card-title">保水性重視ブレンド</div><div class="env-card-desc">腐葉土多め・ピートモス多め</div></span></button>
+        <button type="button" class="env-card" data-val="custom" onclick="selectEnvCard('ed-soilType-group','custom','ed-soilType');toggleSoilSlider('ed-soil-custom')"><span class="env-card-icon">⚙️</span><span class="env-card-text"><div class="env-card-title">その他</div><div class="env-card-desc">スライダーで手動調整</div></span></button>
+      </div>
+      <input type="hidden" id="ed-soilType" value="">
     </div>
     <div id="ed-soil-custom" style="display:none;" class="form-row soil-custom-row">
       <label>乾きやすさを調整 <span id="ed-soil-val">1.0×</span></label>
@@ -609,23 +760,65 @@ body.select-mode .plant-card{cursor:default;}
         <span class="slider-lbl">乾きにくい</span>
       </div>
     </div>
+
     <!-- 鉢タイプ -->
     <div class="form-row">
-      <label>鉢タイプ</label>
-      <select id="ed-potType">
-        <option value="">— 未設定 —</option>
-      </select>
+      <label>🪣 鉢タイプ</label>
+      <div class="env-card-group" id="ed-potType-group">
+        <button type="button" class="env-card active" data-val="" onclick="selectEnvCard('ed-potType-group','','ed-potType')"><span class="env-card-icon">−</span><span class="env-card-text"><div class="env-card-title">未設定（標準）</div><div class="env-card-desc">通常プラスチック鉢と同等</div></span></button>
+        <button type="button" class="env-card" data-val="plastic" onclick="selectEnvCard('ed-potType-group','plastic','ed-potType')"><span class="env-card-icon">🪣</span><span class="env-card-text"><div class="env-card-title">通常プラスチック鉢</div><div class="env-card-desc">標準的な乾き方</div></span></button>
+        <button type="button" class="env-card" data-val="slit" onclick="selectEnvCard('ed-potType-group','slit','ed-potType')"><span class="env-card-icon">🔲</span><span class="env-card-text"><div class="env-card-title">スリット鉢</div><div class="env-card-desc">通気性高く乾きやすい</div></span></button>
+        <button type="button" class="env-card" data-val="terracotta" onclick="selectEnvCard('ed-potType-group','terracotta','ed-potType')"><span class="env-card-icon">🏺</span><span class="env-card-text"><div class="env-card-title">素焼き鉢</div><div class="env-card-desc">鉢が水分を吸う・乾きやすい</div></span></button>
+        <button type="button" class="env-card" data-val="ceramic" onclick="selectEnvCard('ed-potType-group','ceramic','ed-potType')"><span class="env-card-icon">🫙</span><span class="env-card-text"><div class="env-card-title">陶器・グレーズ鉢</div><div class="env-card-desc">保水性高く乾きにくい</div></span></button>
+      </div>
+      <input type="hidden" id="ed-potType" value="">
     </div>
+
+    <!-- 鉢サイズ -->
+    <div class="form-row">
+      <label>⬜ 鉢サイズ</label>
+      <div class="env-card-group" id="ed-potSize-group">
+        <button type="button" class="env-card active" data-val="" onclick="selectEnvCard('ed-potSize-group','','ed-potSize')"><span class="env-card-icon">−</span><span class="env-card-text"><div class="env-card-title">未設定（標準）</div><div class="env-card-desc">6〜7号相当として計算</div></span></button>
+        <button type="button" class="env-card" data-val="s2" onclick="selectEnvCard('ed-potSize-group','s2','ed-potSize')"><span class="env-card-icon">🔵</span><span class="env-card-text"><div class="env-card-title">2号以下</div><div class="env-card-desc">直径6cm以下 / 乾きやすい</div></span></button>
+        <button type="button" class="env-card" data-val="s3" onclick="selectEnvCard('ed-potSize-group','s3','ed-potSize')"><span class="env-card-icon">🟢</span><span class="env-card-text"><div class="env-card-title">3号</div><div class="env-card-desc">直径9cm</div></span></button>
+        <button type="button" class="env-card" data-val="s45" onclick="selectEnvCard('ed-potSize-group','s45','ed-potSize')"><span class="env-card-icon">🟡</span><span class="env-card-text"><div class="env-card-title">4〜5号</div><div class="env-card-desc">直径12〜15cm</div></span></button>
+        <button type="button" class="env-card" data-val="s67" onclick="selectEnvCard('ed-potSize-group','s67','ed-potSize')"><span class="env-card-icon">🟠</span><span class="env-card-text"><div class="env-card-title">6〜7号（標準）</div><div class="env-card-desc">直径18〜21cm</div></span></button>
+        <button type="button" class="env-card" data-val="s89" onclick="selectEnvCard('ed-potSize-group','s89','ed-potSize')"><span class="env-card-icon">🔴</span><span class="env-card-text"><div class="env-card-title">8〜9号</div><div class="env-card-desc">直径24〜27cm / 乾きにくい</div></span></button>
+        <button type="button" class="env-card" data-val="s10" onclick="selectEnvCard('ed-potSize-group','s10','ed-potSize')"><span class="env-card-icon">🟣</span><span class="env-card-text"><div class="env-card-title">10号以上</div><div class="env-card-desc">直径30cm以上 / かなり乾きにくい</div></span></button>
+      </div>
+      <input type="hidden" id="ed-potSize" value="">
+    </div>
+
     <!-- 水苔マルチ -->
     <div class="form-row">
-      <label>表土の水苔マルチ</label>
+      <label>🌿 表土の水苔マルチ</label>
       <div class="moss-btns" id="ed-moss-btns">
-        <button type="button" class="moss-btn active" data-val="no" onclick="selectMoss('ed-moss-btns','no')">なし</button>
-        <button type="button" class="moss-btn" data-val="yes" onclick="selectMoss('ed-moss-btns','yes')">🌿 あり（乾きにくくなります）</button>
+        <button type="button" class="moss-btn active" data-val="no" onclick="selectMoss('ed-moss-btns','no')"><span>✕</span> なし</button>
+        <button type="button" class="moss-btn" data-val="yes" onclick="selectMoss('ed-moss-btns','yes')"><span>🌿</span> あり（乾きにくくなります）</button>
       </div>
       <input type="hidden" id="ed-mossMulch" value="no">
     </div>
+
+    <!-- その他 -->
+    <div class="form-section-title">📋 その他の情報</div>
+    <div class="form-row"><label>活力剤</label>
+      <select id="ed-add">
+        <option value="なし">なし</option><option value="リキダス">リキダス</option>
+        <option value="メネデール">メネデール</option><option value="ハイポネックス">ハイポネックス</option>
+        <option value="その他">その他</option>
+      </select>
+    </div>
+    <div class="f2">
+      <div class="form-row"><label>最終水やり日</label><input id="ed-water" type="date"></div>
+      <div class="form-row"><label>導入年月日</label><input id="ed-intro" type="date"></div>
+    </div>
+    <div class="f2">
+      <div class="form-row"><label>植え替え年月</label><input id="ed-repot" type="month"></div>
+      <div class="form-row"><label>購入価格（円）</label><input id="ed-price" type="number" placeholder="例: 1980" min="0"></div>
+    </div>
+    <div class="form-row"><label>購入場所</label><input id="ed-shop" type="text" list="shop-list"></div>
     <div class="form-row"><label>メモ</label><textarea id="ed-memo"></textarea></div>
+
     <div class="sh-acts">
       <button class="btn-cancel-sh" onclick="closeOvD('ov-edit')">キャンセル</button>
       <button class="btn-ok-sh" onclick="saveEdit()">保存する</button>
@@ -837,6 +1030,33 @@ const POT_SIZES = [
 ];
 const POT_SIZE_MULT_DEFAULT = 1.0;
 
+// ── 日当たり ───────────────────────────────────────────────────────
+const LIGHT_OPTIONS = [
+  { id:'direct', label:'直射日光',       icon:'☀️',  mult:0.80, desc:'南向き窓際・屋外' },
+  { id:'bright', label:'明るい間接光',   icon:'🌤',  mult:1.00, desc:'標準' },
+  { id:'semi',   label:'半日陰',         icon:'⛅',  mult:1.15, desc:'窓から1〜2m' },
+  { id:'shade',  label:'明るい日陰',     icon:'🌥',  mult:1.25, desc:'窓から2〜3m' },
+  { id:'dark',   label:'暗い日陰',       icon:'🌑',  mult:1.40, desc:'窓から3m以上' },
+];
+const LIGHT_MULT_DEFAULT = 1.0;
+
+// ── 風通し ─────────────────────────────────────────────────────────
+const AIR_OPTIONS = [
+  { id:'good',   label:'良好', icon:'💨',       mult:0.90 },
+  { id:'normal', label:'普通', icon:'🌿',       mult:1.00 },
+  { id:'poor',   label:'悪い', icon:'😶‍🌫️', mult:1.10 },
+];
+const AIR_MULT_DEFAULT = 1.0;
+
+function getLightMult(plant) {
+  const opt = LIGHT_OPTIONS.find(l => l.id === plant.light);
+  return opt ? opt.mult : LIGHT_MULT_DEFAULT;
+}
+function getAirMult(plant) {
+  const opt = AIR_OPTIONS.find(a => a.id === plant.air);
+  return opt ? opt.mult : AIR_MULT_DEFAULT;
+}
+
 function getPotSizeMult(plant) {
   const ps = POT_SIZES.find(s => s.id === plant.potSize);
   return ps ? ps.mult : POT_SIZE_MULT_DEFAULT;
@@ -857,7 +1077,9 @@ function getRecommendedFreq(plantName, plant) {
   const potMult     = plant ? getPotMult(plant)     : POT_MULT_DEFAULT;
   const potSizeMult = plant ? getPotSizeMult(plant) : POT_SIZE_MULT_DEFAULT;
   const mossMult    = plant ? getMossMult(plant)    : 1.0;
-  const total = humMult * soilMult * potMult * potSizeMult * mossMult;
+  const lightMult   = plant ? getLightMult(plant)   : LIGHT_MULT_DEFAULT;
+  const airMult     = plant ? getAirMult(plant)     : AIR_MULT_DEFAULT;
+  const total = humMult * soilMult * potMult * potSizeMult * mossMult * lightMult * airMult;
   return Math.max(2, Math.round(base * total));
 }
 
@@ -1133,9 +1355,9 @@ function buildPotSizeOptions(el, selectedId) {
 }
 function toggleSoilSlider(wrapperId) {
   const prefix = wrapperId.startsWith('i-') ? 'i' : 'ed';
-  const sel = document.getElementById(prefix+'-soilType');
+  const val = document.getElementById(prefix+'-soilType').value;
   const wrap = document.getElementById(wrapperId);
-  wrap.style.display = sel.value === 'custom' ? 'block' : 'none';
+  wrap.style.display = val === 'custom' ? 'block' : 'none';
 }
 function updateSoilSliderLabel(labelId, val) {
   document.getElementById(labelId).textContent = (val/100).toFixed(2) + '×';
@@ -1145,6 +1367,83 @@ function selectMoss(groupId, val) {
   btns.forEach(b=>b.classList.toggle('active', b.dataset.val===val));
   const prefix = groupId.startsWith('i-') ? 'i' : 'ed';
   document.getElementById(prefix+'-mossMulch').value = val;
+}
+function toggleEnvHelp(helpId) {
+  const el = document.getElementById(helpId);
+  el.classList.toggle('open');
+}
+function selectEnvCard(groupId, val, hiddenId) {
+  document.querySelectorAll(`#${groupId} .env-card`).forEach(b => {
+    b.classList.toggle('active', b.dataset.val === val);
+  });
+  document.getElementById(hiddenId).value = val;
+}
+function toggleAddForm(btn) {
+  const body = document.getElementById('add-form-body');
+  const icon = document.getElementById('add-form-icon');
+  const isOpen = body.classList.toggle('open');
+  icon.classList.toggle('open', isOpen);
+}
+
+// ── PHOTO ─────────────────────────────────────────────────────────────
+function compressImage(file, maxSize, quality, callback) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let w = img.width, h = img.height;
+      if(w > h) { if(w > maxSize){ h = h*maxSize/w; w = maxSize; } }
+      else       { if(h > maxSize){ w = w*maxSize/h; h = maxSize; } }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      callback(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// 編集フォームの写真
+function handleEditPhoto(event) {
+  const file = event.target.files[0];
+  if(!file) return;
+  compressImage(file, 300, 0.75, base64 => {
+    document.getElementById('ed-photo-preview').src = base64;
+    document.getElementById('ed-photo-preview').classList.add('has-img');
+    document.getElementById('ed-photo-remove').classList.add('vis');
+    document._editPhotoData = base64;
+  });
+}
+function removeEditPhoto() {
+  document.getElementById('ed-photo-preview').src = '';
+  document.getElementById('ed-photo-preview').classList.remove('has-img');
+  document.getElementById('ed-photo-remove').classList.remove('vis');
+  document._editPhotoData = null;
+}
+
+// 詳細画面の写真タップ
+function triggerDetailPhoto() {
+  document.getElementById('det-photo-input').click();
+}
+function handleDetailPhoto(event) {
+  const file = event.target.files[0];
+  if(!file || detailIdx === null) return;
+  compressImage(file, 300, 0.75, base64 => {
+    plants[detailIdx].photo = base64;
+    savePlants();
+    renderDetailIcon(plants[detailIdx]);
+    render(); renderManage();
+    toast('📷 写真を保存しました');
+  });
+}
+function renderDetailIcon(p) {
+  const el = document.getElementById('det-icon');
+  if(p.photo) {
+    el.innerHTML = `<img src="${p.photo}" style="width:56px;height:56px;object-fit:cover;border-radius:10px;display:block;"><span class="photo-hint" style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);color:#fff;font-size:8px;text-align:center;padding:2px 0;">📷 変更</span>`;
+  } else {
+    el.textContent = getPlantIcon(p.name);
+  }
 }
 
 // ── HUMIDITY ────────────────────────────────────────────────────────
@@ -1439,8 +1738,8 @@ function openDetail(idx) {
   const freq=getRecommendedFreq(p.name, p);
   const cat=PLANT_CATEGORY[p.name]||customCategories[p.name]||'B';
   const st=status(d, p.name, p);
+  renderDetailIcon(p);
   const remaining = freq - d;
-  let freqMsg = '';
   if(d===9999) freqMsg='まだ水やり記録がありません';
   else if(st==='urgent') freqMsg=`推奨の${freq}日を${d-freq}日超過しています`;
   else if(st==='soon') freqMsg=`あと約${remaining}日で推奨時期です`;
@@ -1452,11 +1751,15 @@ function openDetail(idx) {
   const potMult     = getPotMult(p);
   const potSizeMult = getPotSizeMult(p);
   const mossMult    = getMossMult(p);
-  const totalMult   = humMult * soilMult * potMult * potSizeMult * mossMult;
+  const lightMult   = getLightMult(p);
+  const airMult     = getAirMult(p);
+  const totalMult   = humMult * soilMult * potMult * potSizeMult * mossMult * lightMult * airMult;
   const soilLabel   = p.soilType ? (SOIL_PRESETS.find(s=>s.id===p.soilType)?.label || p.soilType) : '未設定';
   const potLabel    = p.potType  ? (POT_TYPES.find(pt=>pt.id===p.potType)?.label  || p.potType)  : '未設定';
   const potSizeLabel= p.potSize  ? (POT_SIZES.find(s=>s.id===p.potSize)?.label   || p.potSize)  : '未設定';
   const mossLabel   = p.mossMulch==='yes' ? '🌿 あり' : 'なし';
+  const lightLabel  = LIGHT_OPTIONS.find(l=>l.id===p.light)?.label || '明るい間接光（標準）';
+  const airLabel    = AIR_OPTIONS.find(a=>a.id===p.air)?.label || '普通（標準）';
   const locObj      = locations.find(l=>l.id===p.loc);
   const humSource   = (locObj && locObj.humidity) ? `${loc.icon}${loc.name}個別設定` : 'デフォルト';
 
@@ -1471,8 +1774,8 @@ function openDetail(idx) {
         <div class="freq-main">推奨水やり: <b>${freq}日ごと</b>（${SEASON_LABEL} / 湿度${HUM_LABEL[locHum]}）</div>
         <div class="freq-sub">${CAT_LABEL[cat]} ／ ${freqMsg}</div>
         <div class="freq-sub" style="margin-top:4px;line-height:1.7;">
-          補正内訳: 湿度×${humMult.toFixed(2)}（${humSource}） × 用土×${soilMult.toFixed(2)} × 鉢タイプ×${potMult.toFixed(2)} × 鉢サイズ×${potSizeMult.toFixed(2)} × 水苔×${mossMult.toFixed(2)} ＝ <b>×${totalMult.toFixed(2)}</b><br>
-          用土: ${soilLabel} ／ 鉢タイプ: ${potLabel} ／ 鉢サイズ: ${potSizeLabel} ／ 水苔: ${mossLabel}
+          補正内訳: 湿度×${humMult.toFixed(2)}（${humSource}） × 用土×${soilMult.toFixed(2)} × 鉢タイプ×${potMult.toFixed(2)} × 鉢サイズ×${potSizeMult.toFixed(2)} × 水苔×${mossMult.toFixed(2)} × 日当たり×${lightMult.toFixed(2)} × 風通し×${airMult.toFixed(2)} ＝ <b>×${totalMult.toFixed(2)}</b><br>
+          用土: ${soilLabel} ／ 鉢: ${potLabel}（${potSizeLabel}）／ 水苔: ${mossLabel} ／ 日当たり: ${lightLabel} ／ 風通し: ${airLabel}
         </div>
       </div>
     </div>`;
@@ -1537,9 +1840,6 @@ function openEdit(idx) {
   editIdx=idx; const p=plants[idx];
   document.getElementById('ed-name').value=p.name||'';
   buildLocOptions(document.getElementById('ed-loc'), p.loc||'');
-  buildSoilOptions(document.getElementById('ed-soilType'), p.soilType||'');
-  buildPotTypeOptions(document.getElementById('ed-potType'), p.potType||'');
-  buildPotSizeOptions(document.getElementById('ed-potSize'), p.potSize||'');
   document.getElementById('ed-water').value=p.lastWater||'';
   document.getElementById('ed-intro').value=p.intro||'';
   document.getElementById('ed-repot').value=p.repot||'';
@@ -1547,16 +1847,40 @@ function openEdit(idx) {
   document.getElementById('ed-price').value=p.price||'';
   document.getElementById('ed-add').value=p.additive||'なし';
   document.getElementById('ed-memo').value=p.memo||'';
-  // soil custom
+  // soil
+  const soil = p.soilType||'';
+  selectEnvCard('ed-soilType-group', soil, 'ed-soilType');
   const customMult = p.soilCustomMult ? Math.round(p.soilCustomMult*100) : 100;
   document.getElementById('ed-soilCustomMult').value=customMult;
   updateSoilSliderLabel('ed-soil-val', customMult);
-  document.getElementById('ed-soil-custom').style.display = p.soilType==='custom' ? 'block' : 'none';
+  document.getElementById('ed-soil-custom').style.display = soil==='custom' ? 'block' : 'none';
+  // pot type
+  selectEnvCard('ed-potType-group', p.potType||'', 'ed-potType');
+  // pot size
+  selectEnvCard('ed-potSize-group', p.potSize||'', 'ed-potSize');
   // moss
   const moss = p.mossMulch || 'no';
   document.getElementById('ed-mossMulch').value=moss;
   document.querySelectorAll('#ed-moss-btns .moss-btn').forEach(b=>b.classList.toggle('active',b.dataset.val===moss));
+  // light
+  const light = p.light || 'bright';
+  document.getElementById('ed-light').value = light;
+  document.querySelectorAll('#ed-light-group .env-card').forEach(b => b.classList.toggle('active', b.dataset.val === light));
+  // air
+  const air = p.air || 'normal';
+  document.getElementById('ed-air').value = air;
+  document.querySelectorAll('#ed-air-group .env-card').forEach(b => b.classList.toggle('active', b.dataset.val === air));
   document.getElementById('ov-edit').classList.add('open');
+  // photo
+  document._editPhotoData = p.photo || null;
+  const prev = document.getElementById('ed-photo-preview');
+  const removeBtn = document.getElementById('ed-photo-remove');
+  if(p.photo) {
+    prev.src = p.photo; prev.classList.add('has-img'); removeBtn.classList.add('vis');
+  } else {
+    prev.src = ''; prev.classList.remove('has-img'); removeBtn.classList.remove('vis');
+  }
+  document.getElementById('ed-photo-input').value = '';
 }
 async function saveEdit() {
   if(editIdx===null) return;
@@ -1578,6 +1902,9 @@ async function saveEdit() {
   p.mossMulch=document.getElementById('ed-mossMulch').value||'no';
   p.additive=document.getElementById('ed-add').value;
   p.memo=document.getElementById('ed-memo').value.trim();
+  p.light=document.getElementById('ed-light').value||'bright';
+  p.air=document.getElementById('ed-air').value||'normal';
+  if(document._editPhotoData !== undefined) p.photo = document._editPhotoData || null;
   savePlants(); closeOvD('ov-edit'); render(); renderManage(); toast('✅ 保存しました');
 
   // 植え替え年月が新たに入力・変更されたときだけ評価
@@ -1683,6 +2010,8 @@ async function addPlant() {
     soilType, soilCustomMult,
     potType: document.getElementById('i-potType').value||null,
     mossMulch: document.getElementById('i-mossMulch').value||'no',
+    light: document.getElementById('i-light').value||'bright',
+    air: document.getElementById('i-air').value||'normal',
     shop: document.getElementById('i-shop').value.trim()||null,
     price: document.getElementById('i-price').value ? Number(document.getElementById('i-price').value) : null,
     memo: document.getElementById('i-memo').value.trim(),
@@ -1696,6 +2025,12 @@ async function addPlant() {
   document.getElementById('i-potSize').value='';
   document.getElementById('i-soil-custom').style.display='none';
   selectMoss('i-moss-btns','no');
+  selectEnvCard('i-light-group','bright','i-light');
+  selectEnvCard('i-air-group','normal','i-air');
+  selectEnvCard('i-soilType-group','','i-soilType');
+  selectEnvCard('i-potType-group','','i-potType');
+  selectEnvCard('i-potSize-group','','i-potSize');
+  document.getElementById('i-soil-custom').style.display='none';
   updateShopList();
 
   const newPlant = plants[plants.length-1];
@@ -1836,13 +2171,16 @@ function cardHtml(p) {
   const freqTag=`<span class="freq-tag">💧${freq}日</span>`;
   const memoSnip=p.memo?`<div class="memo-snip">💬 ${p.memo}</div>`:'';
   const icon=getPlantIcon(p.name);
+  const iconHtml = p.photo
+    ? `<img src="${p.photo}" style="width:58px;height:58px;object-fit:cover;display:block;" alt="${p.name}">`
+    : icon;
 
   return `
   <div class="plant-card ${st} ${sel?'sel-card':''}" id="card-${p.idx}">
     <button class="card-check" onclick="toggleSel(${p.idx})" aria-label="選択">
       <div class="chk-circle">${sel?'✓':''}</div>
     </button>
-    <div class="plant-icon-box" onclick="${selMode?`toggleSel(${p.idx})`:`openDetail(${p.idx})`}">${icon}</div>
+    <div class="plant-icon-box" onclick="${selMode?`toggleSel(${p.idx})`:`openDetail(${p.idx})`}">${iconHtml}<span class="photo-hint">📷</span></div>
     <div class="status-bar"></div>
     <div class="plant-body" onclick="${selMode?`toggleSel(${p.idx})`:`openDetail(${p.idx})`}">
       <div class="plant-name">${p.name}</div>
@@ -1899,9 +2237,12 @@ function renderManage() {
       if(p.mossMulch==='yes') subParts.push('🌿 水苔あり');
       subParts.push(`💧 推奨${freq}日`);
       subParts.push(lastWaterStr);
+      const mgIconHtml = p.photo
+        ? `<img src="${p.photo}" style="width:48px;height:48px;object-fit:cover;" alt="${p.name}">`
+        : getPlantIcon(p.name);
       html+=`
       <div class="manage-card">
-        <div class="mg-icon">${getPlantIcon(p.name)}</div>
+        <div class="mg-icon">${mgIconHtml}</div>
         <div class="mg-body">
           <div class="mg-name">${p.name}</div>
           <div class="mg-sub">${subParts.join('  ')}</div>
@@ -2003,9 +2344,6 @@ document.getElementById('hd-date').textContent=`${TODAY.getMonth()+1}/${TODAY.ge
 document.getElementById('season-badge').textContent=SEASON_LABEL;
 document.getElementById('i-water').value=TODAY_STR;
 document.getElementById('i-intro').value=TODAY_STR;
-buildSoilOptions(document.getElementById('i-soilType'), '');
-buildPotTypeOptions(document.getElementById('i-potType'), '');
-buildPotSizeOptions(document.getElementById('i-potSize'), '');
 setHumidity(humidity || 'h55', false);
 render();
 updateShopList();
